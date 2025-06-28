@@ -1,0 +1,24 @@
+{
+  "name": "genscript",
+  "version": "1.0.0",
+  "description": "JSX code generation",
+  "license": "MIT",
+  "author": "SquareX Team",
+  "type": "module",
+  "module": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    },
+    "./jsx-runtime": "./dist/jsx-runtime.js"
+  },
+  "scripts": {
+    "prepublish": "npx tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
