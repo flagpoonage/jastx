@@ -1,0 +1,20 @@
+{
+  "name": "genscript-test",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npx vitest dev",
+    "test": "npx vitest --mode production"
+  },
+  "devDependencies": {
+    "genscript": "file:///../genscript",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "vitest": "^3.2.4"
+  }
+}

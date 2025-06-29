@@ -1,13 +1,16 @@
 {
-  "name": "genscript",
+  "private": true,
+  "name": "genscript-root",
   "version": "1.0.0",
   "description": "JSX code generation",
   "license": "MIT",
   "author": "SquareX Team",
   "type": "module",
   "module": "./dist/index.js",
-  "files": [
-    "dist"
+  "types": "./dist/index.d.ts",
+  "workspaces": [
+    "genscript",
+    "genscript-test"
   ],
   "exports": {
     ".": {
@@ -16,9 +19,14 @@
     "./jsx-runtime": "./dist/jsx-runtime.js"
   },
   "scripts": {
-    "prepublish": "npx tsc"
+    "dev": "concurrently 'npm run dev -w genscript' 'npm run dev -w genscript-test' -n 'build,test' -c 'yellow,green'",
+    "build": "npm run build --workspaces --if-present",
+    "prepublish": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "concurrently": "^9.2.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }

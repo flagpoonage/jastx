@@ -1,4 +1,7 @@
-import { AstNode } from "src/types.js";
+import { assertZeroChildren } from "../asserts.js";
+import { AstNode } from "../types.js";
+
+const type = "exact-literal";
 
 export interface ExactLiteralProps {
   value: string;
@@ -10,8 +13,9 @@ export interface ExactLiteralNode extends AstNode {
 }
 
 export function createExactLiteral(props: ExactLiteralProps): ExactLiteralNode {
+  assertZeroChildren(type, props);
   return {
-    type: "exact-literal",
+    type,
     props,
     render: () => props.value,
   };

@@ -1,5 +1,5 @@
-import { InvalidSyntaxError } from "src/errors.js";
-import { AstNode } from "src/types.js";
+import { InvalidSyntaxError } from "../errors.js";
+import { AstNode } from "../types.js";
 import { ExactLiteralNode } from "./exact-literal.js";
 import { IdentifierNode } from "./identifier.js";
 

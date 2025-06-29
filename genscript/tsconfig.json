@@ -4,11 +4,12 @@
     "target": "es2024",
     "module": "NodeNext",
     "outDir": "dist",
+    "strict": true,
     "baseUrl": ".",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["../node_modules/@types"]
   },
   "exclude": ["node_modules"]
 }

@@ -1,8 +1,14 @@
+const _properties = ["var-name", "fun-name", "initializer", "type"] as const;
+export type PassthroughElementType = (typeof _properties)[number];
+
 export type ElementType =
   | "variable-statement"
+  | "variable-declaration"
+  | "variable-declaration-list"
   | "identifier"
   | "variable-declaration-name"
-  | "exact-literal";
+  | "exact-literal"
+  | `p:${PassthroughElementType}`;
 
 export type AstNode = {
   type: ElementType;

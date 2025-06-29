@@ -1,17 +1,22 @@
-import { AstNode } from "src/types.js";
+import { assertZeroChildren } from "../asserts.js";
+import { AstNode } from "../types.js";
+
+const type = "identifier";
 
 export interface IdentifierProps {
   name: string;
 }
 
 export interface IdentifierNode extends AstNode {
-  type: "identifier";
+  type: typeof type;
   props: IdentifierProps;
 }
 
 export function createIdentifier(props: IdentifierProps): IdentifierNode {
+  assertZeroChildren(type, props);
+
   return {
-    type: "identifier",
+    type,
     props,
     render: () => props.name,
   };
