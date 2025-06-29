@@ -15,7 +15,7 @@ export interface VariableDeclarationListNode extends AstNode {
   props: VariableDeclarationListProps;
 }
 
-export function createVariableDeclaration(
+export function createVariableDeclarationList(
   props: VariableDeclarationListProps
 ): VariableDeclarationListNode {
   const walker = createChildWalker(props);
