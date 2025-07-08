@@ -1,71 +1,91 @@
 import { expect, test } from "vitest";
 
-test("expr:non-null renders correctly with an simple literal", () => {
+test("expr:prop-access renders correctly with identifiers", () => {
   const v = (
     <expr:prop-access>
-      <l:number value={1} />
-      <l:number value={1} />
+      <ident name="x" />
+      <ident name="toString" />
     </expr:prop-access>
   );
-  expect(v.render()).toBe("1!");
+  expect(v.render()).toBe("x.toString");
 });
 
-test("expr:non-null renders correctly with a parens expression", () => {
+test("expr:prop-access renders correctly with a string literal LHS", () => {
   const v = (
-    <expr:non-null>
+    <expr:prop-access>
+      <l:string value="Hello" />
+      <ident name="toString" />
+    </expr:prop-access>
+  );
+  expect(v.render()).toBe("\"Hello\".toString");
+});
+
+test("expr:prop-access renders correctly with a boolean literal LHS", () => {
+  const v = (
+    <expr:prop-access>
+      <l:boolean value={false} />
+      <ident name="toString" />
+    </expr:prop-access>
+  );
+  expect(v.render()).toBe("false.toString");
+});
+
+test("expr:prop-access renders correctly with a number literal in parenthesis LHS", () => {
+  const v = (
+    <expr:prop-access>
       <expr:parens>
-        <expr:as type="string">
-          <l:string value="test" />
-        </expr:as>
+        <l:number value={10} />
       </expr:parens>
-    </expr:non-null>
+      <ident name="toString" />
+    </expr:prop-access>
   );
-  expect(v.render()).toBe('("test" as string)!');
+  expect(v.render()).toBe("(10).toString");
 });
 
-test("expr:non-null renders correctly with an identifier", () => {
+test("expr:prop-access renders correctly with a nested prop access", () => {
   const v = (
-    <expr:non-null>
-      <ident name="x" />
-    </expr:non-null>
+    <expr:prop-access>
+      <expr:prop-access>
+        <ident name="a" />
+        <ident name="b" />
+      </expr:prop-access>
+      <ident name="c" />
+    </expr:prop-access>
   );
-  expect(v.render()).toBe("x!");
+  expect(v.render()).toBe("a.b.c");
 });
 
-test("expr:non-null throws an error when it has no children", () => {
-  // @ts-expect-error
-  expect(() => <expr:non-null></expr:non-null>).toThrowError();
+test("expr:prop-access renders correctly with optional chaining", () => {
+  const v = (
+    <expr:prop-access optionalChain={true}>
+      <expr:prop-access>
+        <ident name="a" />
+        <ident name="b" />
+      </expr:prop-access>
+      <ident name="c" />
+    </expr:prop-access>
+  );
+  expect(v.render()).toBe("a.b?.c");
 });
 
-test("expr:non-null throws an error when it has multiple children", () => {
+test("expr:prop-access throws an error with a number literal LHS", () => {
   expect(() => (
-    <expr:non-null>
-      <expr:as type="string">
-        <l:number value={20} />
-      </expr:as>
-      <expr:as type="string">
-        <l:number value={20} />
-      </expr:as>
-    </expr:non-null>
+    <expr:prop-access>
+      <l:number value={10} />
+      <ident name="toString" />
+    </expr:prop-access>
   )).toThrowError();
 });
 
-test("expr:non-null throws an error when it contains non-expressions or literals", () => {
+test("expr:prop-access throws an error with a prop-access RHS", () => {
   expect(() => (
-    <expr:non-null>
-      <var:declaration-list type="const">
-        <var:declaration identifier="a" type="string" />
-      </var:declaration-list>
-    </expr:non-null>
+    <expr:prop-access>
+      <ident name="c" />
+      <expr:prop-access>
+        <ident name="a" />
+        <ident name="b" />
+      </expr:prop-access>
+    </expr:prop-access>
   )).toThrowError();
 });
 
-test("expr:non-null throws an error when it contains a non-parens expression", () => {
-  expect(() => (
-    <expr:non-null>
-      <expr:as type="string">
-        <l:string value="test" />
-      </expr:as>
-    </expr:non-null>
-  )).toThrowError();
-});

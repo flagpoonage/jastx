@@ -1,3 +1,4 @@
+import { InvalidSyntaxError } from "../errors.js";
 import { assertZeroChildren } from "../asserts.js";
 import { AstNode } from "../types.js";
 
@@ -14,6 +15,16 @@ export interface IdentifierNode extends AstNode {
 
 export function createIdentifier(props: IdentifierProps): IdentifierNode {
   assertZeroChildren(type, props);
+
+  if (!props.name) {
+    throw new InvalidSyntaxError(`An identifier name cannot be empty`);
+  }
+
+  if (/[0-9]/.test(props.name[0])) {
+    throw new InvalidSyntaxError(
+      `An identifier name cannot start with a digit.`
+    );
+  }
 
   return {
     type,

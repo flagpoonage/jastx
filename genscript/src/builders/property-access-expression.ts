@@ -25,7 +25,7 @@ export function createPropertyAccessExpression(
   assertNChildren(type, 2, props);
 
   const lhs = props.children[0];
-  const rhs = props.children[0];
+  const rhs = props.children[1];
 
   if (rhs.type !== "ident") {
     throw new InvalidSyntaxError(
@@ -33,7 +33,7 @@ export function createPropertyAccessExpression(
     );
   }
 
-  const lhs_types = [...EXPRESSION_TYPES, "ident"];
+  const lhs_types = [...EXPRESSION_TYPES, "ident", "l:string", "l:boolean"];
 
   if (!lhs_types.includes(lhs.type)) {
     throw new InvalidSyntaxError(
