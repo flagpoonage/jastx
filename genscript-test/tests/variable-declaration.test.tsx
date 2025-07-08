@@ -1,50 +1,102 @@
 import { expect, test } from "vitest";
 
-test("variable-declaration renders correctly with just a name", () => {
+test("var:declaration renders correctly with just a name", () => {
   const v = (
-    <variable-declaration>
+    <var:declaration>
       <p:var-name>
-        <identifier name="test" />
+        <ident name="test" />
       </p:var-name>
-    </variable-declaration>
+    </var:declaration>
   );
   expect(v.render()).toBe("test");
 });
 
-test("variable-declaration throws with no children", () => {
+test("var:declaration throws with no children", () => {
   expect(() => (
     // @ts-expect-error
-    <variable-declaration name="James" />
+    <var:declaration name="James" />
   )).toThrowError();
 });
 
-test("variable-declaration renders correctly with type", () => {
+test("var:declaration renders correctly with type", () => {
   const v = (
-    <variable-declaration>
+    <var:declaration>
       <p:var-name>
-        <identifier name="test" />
+        <ident name="test" />
       </p:var-name>
       <p:type>
-        <exact-literal value="string" />
+        <t:primitive type="string" />
       </p:type>
-    </variable-declaration>
+    </var:declaration>
   );
   expect(v.render()).toBe("test:string");
 });
 
-test("variable-declaration renders correctly with type and initializer", () => {
+test("var:declaration renders correctly with type and initializer", () => {
   const v = (
-    <variable-declaration>
+    <var:declaration>
       <p:var-name>
-        <identifier name="test" />
+        <ident name="test" />
       </p:var-name>
       <p:type>
-        <exact-literal value="string" />
+        <t:primitive type="string" />
       </p:type>
-      <p:initializer>
-        <exact-literal value={`"Hello"`} />
-      </p:initializer>
-    </variable-declaration>
+      <l:string value="Hello" />
+    </var:declaration>
   );
   expect(v.render()).toBe('test:string="Hello"');
+});
+
+test("var:declaration renders correctly with identifier attribute", () => {
+  const v = (
+    <var:declaration identifier="test">
+      <p:type>
+        <t:primitive type="string" />
+      </p:type>
+      <l:string value="Hello" />
+    </var:declaration>
+  );
+  expect(v.render()).toBe('test:string="Hello"');
+});
+
+test("var:declaration renders correctly with type attribute", () => {
+  const v = (
+    <var:declaration type="string">
+      <p:var-name>
+        <ident name="test" />
+      </p:var-name>
+      <l:string value="Hello" />
+    </var:declaration>
+  );
+  expect(v.render()).toBe('test:string="Hello"');
+});
+
+test("var:declaration renders correctly with all attributes", () => {
+  const v = (
+    <var:declaration type="string" identifier="test">
+      <l:string value="Hello" />
+    </var:declaration>
+  );
+  expect(v.render()).toBe('test:string="Hello"');
+});
+
+test("var:declaration errors when idents are specified in attributes and children", () => {
+  expect(() => (
+    <var:declaration type="string" identifier="test">
+      <p:var-name>
+        <ident name="test" />
+      </p:var-name>
+    </var:declaration>
+  )).toThrowError();
+});
+
+test("var:declaration errors when types are specified in attributes and children", () => {
+  expect(() => (
+    <var:declaration type="string" identifier="test">
+      <p:type>
+        <t:primitive type="string" />
+      </p:type>
+      <l:string value="Hello" />
+    </var:declaration>
+  )).toThrowError();
 });

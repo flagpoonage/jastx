@@ -1,9 +1,9 @@
-import { InvalidSyntaxError } from "src/errors.js";
 import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
+import { InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
 
-const type = "variable-declaration-list";
+const type = "var:declaration-list";
 
 export interface VariableDeclarationListProps {
   children: any;
@@ -18,12 +18,12 @@ export interface VariableDeclarationListNode extends AstNode {
 export function createVariableDeclarationList(
   props: VariableDeclarationListProps
 ): VariableDeclarationListNode {
-  const walker = createChildWalker(props);
+  const walker = createChildWalker(type, props);
 
-  const variable_declarations = walker.spliceAssertGroup(
-    "variable-declaration",
-    [1, undefined]
-  );
+  const variable_declarations = walker.spliceAssertGroup("var:declaration", [
+    1,
+    undefined,
+  ]);
 
   const remaining = walker.remainingChildren;
 

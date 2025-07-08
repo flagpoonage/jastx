@@ -1,6 +1,10 @@
+import { InvalidSyntaxError } from "./errors.js";
 import { AstNode, ElementType } from "./types.js";
 
-export function createChildWalker(props: { children?: any }) {
+export function createChildWalker(
+  parentType: ElementType,
+  props: { children?: any }
+) {
   const children = Array.isArray(props?.children) ? props.children : [];
 
   return {
@@ -8,7 +12,7 @@ export function createChildWalker(props: { children?: any }) {
       return children;
     },
     spliceAssertGroup: (
-      type: ElementType,
+      type: ElementType | ElementType[],
       size?: [number | undefined, number | undefined]
     ): AstNode[] => {
       const [min, max] = !size
@@ -18,6 +22,7 @@ export function createChildWalker(props: { children?: any }) {
             typeof size[1] === "number" ? Math.max(0, size[1]) : Infinity,
           ];
       const group = [];
+      const search_types = Array.isArray(type) ? type : [type];
 
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
@@ -25,7 +30,7 @@ export function createChildWalker(props: { children?: any }) {
           continue;
         }
 
-        if (child.type !== type) {
+        if (!search_types.includes(child.type)) {
           continue;
         }
 
@@ -33,15 +38,19 @@ export function createChildWalker(props: { children?: any }) {
         i--;
 
         if (group.length > max) {
-          throw new Error(
-            `Reached max child count while extracting [${type}]. More than [${max}] elements found`
+          throw new InvalidSyntaxError(
+            `<${parentType}> is not allowed more than [${max}] elements of type:\n${search_types
+              .map((a) => `- <${a}>`)
+              .join("\n")}`
           );
         }
       }
 
       if (group.length < min) {
-        throw new Error(
-          `Minimum child count not met while extracting [${type}]. Only found [${group.length}] but needed [${min}]`
+        throw new InvalidSyntaxError(
+          `<${parentType}> requires at least [${min}] elements of type:\n${search_types
+            .map((a) => `- <${a}>`)
+            .join("\n")}\n but only [${group.length}] were found`
         );
       }
 
@@ -49,7 +58,7 @@ export function createChildWalker(props: { children?: any }) {
     },
 
     spliceAssertOneof: (
-      types: ElementType[],
+      types: readonly ElementType[],
       maxAllowed: number = Infinity
     ): AstNode => {
       let count = 0;
@@ -77,15 +86,19 @@ export function createChildWalker(props: { children?: any }) {
         count++;
 
         if (count > maxAllowed) {
-          throw new Error(
-            `Reached max child count while extracting [${types}]. More than [${maxAllowed}] elements found`
+          throw new InvalidSyntaxError(
+            `<${parentType}> is not allowed more than [${maxAllowed}] of the elements:\n${types
+              .map((a) => `- <${a}>`)
+              .join("\n")}`
           );
         }
       }
 
       if (!single) {
-        throw new Error(
-          `No matching children found while extracting [${types}]`
+        throw new InvalidSyntaxError(
+          `<${parentType}> expected one of the elements:\n${types
+            .map((a) => `- <${a}>`)
+            .join("\n")}\nbut none were found`
         );
       }
 
@@ -121,15 +134,15 @@ export function createChildWalker(props: { children?: any }) {
         count++;
 
         if (count > maxAllowed) {
-          throw new Error(
-            `Reached max child count while extracting [${type}]. More than [${maxAllowed}] elements found`
+          throw new InvalidSyntaxError(
+            `<${parentType}> is not allowed more than [${maxAllowed}] <${type}> elements`
           );
         }
       }
 
       if (!single) {
-        throw new Error(
-          `No matching children found while extracting [${type}]`
+        throw new InvalidSyntaxError(
+          `<${parentType}> requires at a <${type}> element, but none were found`
         );
       }
 
@@ -137,11 +150,12 @@ export function createChildWalker(props: { children?: any }) {
     },
 
     spliceAssertSingleOptional: (
-      type: ElementType,
+      type: ElementType | ElementType[],
       maxAllowed: number = Infinity
     ): AstNode | undefined => {
       let count = 0;
       let single: AstNode | undefined;
+      let search_types = Array.isArray(type) ? type : [type];
 
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
@@ -149,7 +163,7 @@ export function createChildWalker(props: { children?: any }) {
           continue;
         }
 
-        if (child.type !== type) {
+        if (!search_types.includes(child.type)) {
           continue;
         }
 
@@ -165,8 +179,8 @@ export function createChildWalker(props: { children?: any }) {
         count++;
 
         if (count > maxAllowed) {
-          throw new Error(
-            `Reached max child count while extracting [${type}]. More than [${maxAllowed}] elements found`
+          throw new InvalidSyntaxError(
+            `<${parentType}> is not allowed more than [${maxAllowed}] <${type}> elements`
           );
         }
       }

@@ -1,51 +1,53 @@
 import { expect, test } from "vitest";
 
-test("variable-declaration renders correctly with just a name", () => {
+test("var:declaration-list renders correctly with const", () => {
   const v = (
-    <varia
-    <variable-declaration>
-      <p:var-name>
-        <identifier name="test" />
-      </p:var-name>
-    </variable-declaration>
+    <var:declaration-list type="const">
+      <var:declaration type="string" identifier="x">
+        <l:string value="Hello" />
+      </var:declaration>
+    </var:declaration-list>
   );
-  expect(v.render()).toBe("test");
+  expect(v.render()).toBe('const x:string="Hello"');
 });
 
-test("variable-declaration throws with no children", () => {
-  expect(() => (
-    // @ts-expect-error
-    <variable-declaration name="James" />
-  )).toThrowError();
+test("var:declaration-list renders correctly with let", () => {
+  const v = (
+    <var:declaration-list type="let">
+      <var:declaration type="string" identifier="x">
+        <l:string value="Hello" />
+      </var:declaration>
+    </var:declaration-list>
+  );
+  expect(v.render()).toBe('let x:string="Hello"');
 });
 
-test("variable-declaration renders correctly with type", () => {
+test("var:declaration-list renders correctly with var", () => {
   const v = (
-    <variable-declaration>
-      <p:var-name>
-        <identifier name="test" />
-      </p:var-name>
-      <p:type>
-        <exact-literal value="string" />
-      </p:type>
-    </variable-declaration>
+    <var:declaration-list type="var">
+      <var:declaration type="string" identifier="x">
+        <l:string value="Hello" />
+      </var:declaration>
+    </var:declaration-list>
   );
-  expect(v.render()).toBe("test:string");
+  expect(v.render()).toBe('var x:string="Hello"');
 });
 
-test("variable-declaration renders correctly with type and initializer", () => {
+test("var:declaration-list renders correctly with a multiple declarations", () => {
   const v = (
-    <variable-declaration>
-      <p:var-name>
-        <identifier name="test" />
-      </p:var-name>
-      <p:type>
-        <exact-literal value="string" />
-      </p:type>
-      <p:initializer>
-        <exact-literal value={`"Hello"`} />
-      </p:initializer>
-    </variable-declaration>
+    <var:declaration-list type="const">
+      <var:declaration type="string" identifier="x">
+        <l:string value="Hello" />
+      </var:declaration>
+      <var:declaration type="number" identifier="y">
+        <expr:as type="number">
+          <l:number value={10} />
+        </expr:as>
+      </var:declaration>
+      <var:declaration identifier="z">
+        <exact-literal value="{}" />
+      </var:declaration>
+    </var:declaration-list>
   );
-  expect(v.render()).toBe('test:string="Hello"');
+  expect(v.render()).toBe('const x:string="Hello",y:number=10 as number,z={}');
 });

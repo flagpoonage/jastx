@@ -1,15 +1,15 @@
 import { expect, test } from "vitest";
 
-test("identifier works correctly", () => {
-  const v = <identifier name="James" />;
+test("ident works correctly", () => {
+  const v = <ident name="James" />;
   expect(v.render()).toBe("James");
 });
 
-test("identifier throws with children", () => {
+test("ident throws with children", () => {
   expect(() => (
     // @ts-expect-error
-    <identifier name="James">
-      <identifier name="James" />
-    </identifier>
-  )).toThrowError("<identifier> expected [0] children but received [1]");
+    <ident name="James">
+      <ident name="James" />
+    </ident>
+  )).toThrowError("<ident> expected [0] children but received [1]");
 });

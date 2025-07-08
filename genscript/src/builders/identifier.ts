@@ -1,7 +1,7 @@
 import { assertZeroChildren } from "../asserts.js";
 import { AstNode } from "../types.js";
 
-const type = "identifier";
+const type = "ident";
 
 export interface IdentifierProps {
   name: string;

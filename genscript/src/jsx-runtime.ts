@@ -1,16 +1,40 @@
 import {
+  AsExpressionProps,
+  createAsExpression,
+} from "./builders/as-expression.js";
+import {
   createExactLiteral,
   ExactLiteralProps,
 } from "./builders/exact-literal.js";
+import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
 import {
-  createIdentifier,
-  IdentifierNode,
-  IdentifierProps,
-} from "./builders/identifier.js";
+  BooleanLiteralProps,
+  createBooleanLiteral,
+  createNumberLiteral,
+  createStringLiteral,
+  NumberLiteralProps,
+  StringLiteralProps,
+} from "./builders/literals.js";
+import {
+  createNonNullExpression,
+  NonNullExpressionProps,
+} from "./builders/non-null-expression.js";
+import {
+  createParensExpression,
+  ParensExpressionProps,
+} from "./builders/parens-expressions.js";
 import {
   createPropertyElement,
   PropertyPassthroughProps,
 } from "./builders/properties.js";
+import {
+  createPropertyAccessExpression,
+  PropertyAccessExpressionProps,
+} from "./builders/property-access-expression.js";
+import {
+  createTypePrimitive,
+  TypePrimitiveProps,
+} from "./builders/type-primitive.js";
 import {
   createVariableDeclarationList,
   VariableDeclarationListProps,
@@ -45,15 +69,33 @@ export const jsxs = <T>(
 
   try {
     switch (element) {
-      case "identifier":
+      case "ident":
         return createIdentifier(options as IdentifierProps);
       case "exact-literal":
         return createExactLiteral(options as ExactLiteralProps);
-      case "variable-declaration":
+      case "var:declaration":
         return createVariableDeclaration(options as VariableDeclarationProps);
-      case "variable-declaration-list":
+      case "var:declaration-list":
         return createVariableDeclarationList(
           options as VariableDeclarationListProps
+        );
+      case "expr:as":
+        return createAsExpression(options as AsExpressionProps);
+      case "expr:parens":
+        return createParensExpression(options as ParensExpressionProps);
+      case "l:boolean":
+        return createBooleanLiteral(options as BooleanLiteralProps);
+      case "l:number":
+        return createNumberLiteral(options as NumberLiteralProps);
+      case "l:string":
+        return createStringLiteral(options as StringLiteralProps);
+      case "t:primitive":
+        return createTypePrimitive(options as TypePrimitiveProps);
+      case "expr:non-null":
+        return createNonNullExpression(options as NonNullExpressionProps);
+      case "expr:prop-access":
+        return createPropertyAccessExpression(
+          options as PropertyAccessExpressionProps
         );
     }
 
@@ -93,14 +135,24 @@ declare global {
     type Element = AstNode;
 
     interface IntrinsicElements {
-      ["identifier"]: IdentifierProps;
-      ["exact-literal"]: ExactLiteralProps;
-      ["variable-declaration"]: VariableDeclarationProps;
-      ["variable-declaration-list"]: VariableDeclarationListProps;
       ["p:var-name"]: PropertyPassthroughProps;
       ["p:fun-name"]: PropertyPassthroughProps;
-      ["p:initializer"]: PropertyPassthroughProps;
       ["p:type"]: PropertyPassthroughProps;
+
+      ["l:boolean"]: BooleanLiteralProps;
+      ["l:number"]: NumberLiteralProps;
+      ["l:string"]: StringLiteralProps;
+
+      ["t:primitive"]: TypePrimitiveProps;
+
+      ["ident"]: IdentifierProps;
+      ["exact-literal"]: ExactLiteralProps;
+      ["var:declaration"]: VariableDeclarationProps;
+      ["var:declaration-list"]: VariableDeclarationListProps;
+      ["expr:as"]: AsExpressionProps;
+      ["expr:parens"]: ParensExpressionProps;
+      ["expr:non-null"]: NonNullExpressionProps;
+      ["expr:prop-access"]: PropertyAccessExpressionProps;
     }
   }
 }
