@@ -12,41 +12,52 @@ const _properties = ["var-name", "fun-name", "type"] as const;
 export type PassthroughElementTypeName = (typeof _properties)[number];
 export type PassthroughElementType = `p:${PassthroughElementTypeName}`;
 
-const _literals = ["boolean", "number", "string", "regex"] as const;
+const _literals = ["boolean", "number", "string", "regex", "bigint"] as const;
 
 export type LiteralElementTypeName = (typeof _literals)[number];
 export type LiteralElementType = `l:${LiteralElementTypeName}`;
 
+const _expressions = [
+  "as",
+  "binary",
+  "non-null",
+  "parens",
+  "prop-access",
+  "elem-access",
+  "template",
+] as const;
+
+export type ExpressionTypeName = (typeof _expressions)[number];
+export type ExpressionType = `expr:${ExpressionTypeName}`;
+
 export type ElementType =
   | "ident"
+  | "text"
   | "var:statement"
   | "var:declaration"
   | "var:declaration-list"
   | "var:declaration-name"
   | "exact-literal"
-  | "expr:as"
-  | "expr:binary"
-  | "expr:non-null"
-  | "expr:parens"
-  | "expr:prop-access"
-  | "expr:elem-access"
+  | ExpressionType
   | "t:primitive"
   | LiteralElementType
   | PassthroughElementType;
 
-export const EXPRESSION_TYPES: readonly ElementType[] = [
+export const EXPRESSION_TYPES: readonly ExpressionType[] = [
   "expr:as",
   "expr:parens",
   "expr:binary",
   "expr:non-null",
   "expr:prop-access",
   "expr:elem-access",
+  "expr:template",
 ];
 
 export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
   "l:number",
   "l:boolean",
   "l:string",
+  "l:bigint",
 ];
 
 export const LITERAL_TYPES: readonly LiteralElementType[] = [
@@ -64,8 +75,6 @@ export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
   ...EXPRESSION_TYPES,
   ...LITERAL_TYPES,
 ];
-
-export type ExpressionType = Extract<ElementType, "parens-expression">;
 
 export type AstNode = {
   type: ElementType;

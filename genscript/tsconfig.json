@@ -5,7 +5,6 @@
     "module": "NodeNext",
     "outDir": "dist",
     "strict": true,
-    "baseUrl": ".",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,

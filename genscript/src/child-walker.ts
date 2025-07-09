@@ -1,5 +1,11 @@
+import { createTextNode } from "./builders/text-node.js";
 import { InvalidSyntaxError } from "./errors.js";
 import { AstNode, ElementType } from "./types.js";
+
+interface AssertGroupOptions {
+  allowText?: boolean;
+  size?: [number | undefined, number | undefined];
+}
 
 export function createChildWalker(
   parentType: ElementType,
@@ -13,19 +19,34 @@ export function createChildWalker(
     },
     spliceAssertGroup: (
       type: ElementType | ElementType[],
-      size?: [number | undefined, number | undefined]
+      options?: AssertGroupOptions
     ): AstNode[] => {
-      const [min, max] = !size
-        ? [0, Infinity]
-        : [
-            typeof size[0] === "number" ? Math.max(0, size[0]) : 0,
-            typeof size[1] === "number" ? Math.max(0, size[1]) : Infinity,
-          ];
+      const { size = [0, Infinity], allowText = false } = options ?? {};
+
+      const [min, max] = [
+        typeof size[0] === "number" ? Math.max(0, size[0]) : 0,
+        typeof size[1] === "number" ? Math.max(0, size[1]) : Infinity,
+      ];
+
       const group = [];
       const search_types = Array.isArray(type) ? type : [type];
 
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
+
+        if (typeof child === "string") {
+          if (allowText) {
+            const text = children.splice(i, 1)[0] as string;
+            group.push(createTextNode({ value: text }));
+            i--;
+            continue;
+          }
+
+          throw new InvalidSyntaxError(
+            `<${parentType}> text nodes are not allowed in this type`
+          );
+        }
+
         if (!child || !("type" in child)) {
           continue;
         }

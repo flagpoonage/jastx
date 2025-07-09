@@ -1,4 +1,5 @@
 import { assertZeroChildren } from "../asserts.js";
+import { InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
 
 const boolean_type = "l:boolean";
@@ -93,15 +94,15 @@ export interface RegexLiteralProps {
 // y	Perform a "sticky" search that matches starting at the current position in the target string.	sticky
 
 export interface RegexLiteralNode extends AstNode {
-  type: typeof string_type;
+  type: typeof regex_type;
   props: RegexLiteralProps;
 }
 
 export function createRegexLiteral(props: RegexLiteralProps): RegexLiteralNode {
-  assertZeroChildren(string_type, props);
+  assertZeroChildren(regex_type, props);
 
   return {
-    type: string_type,
+    type: regex_type,
     props,
     render: () =>
       `/${props.value}/${props.hasIndices ? "d" : ""}${
@@ -111,5 +112,34 @@ export function createRegexLiteral(props: RegexLiteralProps): RegexLiteralNode {
       }${props.unicode ? "u" : ""}${props.unicodeSets ? "v" : ""}${
         props.sticky ? "y" : ""
       }`,
+  };
+}
+
+const bigint_type = "l:bigint";
+
+export interface BigintLiteralProps {
+  value: number;
+}
+
+export interface BigintLiteralNode extends AstNode {
+  type: typeof bigint_type;
+  props: BigintLiteralProps;
+}
+
+export function createBigintLiteral(
+  props: BigintLiteralProps
+): BigintLiteralNode {
+  assertZeroChildren(bigint_type, props);
+
+  if (!Number.isInteger(props.value) || props.value.toString().includes("e")) {
+    throw new InvalidSyntaxError(
+      `<${bigint_type}> value must be a non-exponential integer value`
+    );
+  }
+
+  return {
+    type: bigint_type,
+    props,
+    render: () => `${props.value}n`,
   };
 }

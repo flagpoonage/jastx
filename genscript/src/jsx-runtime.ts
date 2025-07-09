@@ -12,7 +12,9 @@ import {
 } from "./builders/exact-literal.js";
 import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
 import {
+  BigintLiteralProps,
   BooleanLiteralProps,
+  createBigintLiteral,
   createBooleanLiteral,
   createNumberLiteral,
   createRegexLiteral,
@@ -37,6 +39,10 @@ import {
   createPropertyAccessExpression,
   PropertyAccessExpressionProps,
 } from "./builders/property-access-expression.js";
+import {
+  createTemplateExpression,
+  TemplateExpressionlProps,
+} from "./builders/template-expression.js";
 import {
   createTypePrimitive,
   TypePrimitiveProps,
@@ -97,6 +103,8 @@ export const jsxs = <T>(
         return createStringLiteral(options as StringLiteralProps);
       case "l:regex":
         return createRegexLiteral(options as RegexLiteralProps);
+      case "l:bigint":
+        return createBigintLiteral(options as BigintLiteralProps);
       case "t:primitive":
         return createTypePrimitive(options as TypePrimitiveProps);
       case "expr:non-null":
@@ -109,6 +117,8 @@ export const jsxs = <T>(
         return createElementAccessExpression(
           options as ElementAccessExpressionProps
         );
+      case "expr:template":
+        return createTemplateExpression(options as TemplateExpressionlProps);
     }
 
     if (element.startsWith("p:")) {
@@ -154,6 +164,7 @@ declare global {
       ["l:boolean"]: BooleanLiteralProps;
       ["l:number"]: NumberLiteralProps;
       ["l:string"]: StringLiteralProps;
+      ["l:bigint"]: BigintLiteralProps;
 
       ["t:primitive"]: TypePrimitiveProps;
 
@@ -166,6 +177,7 @@ declare global {
       ["expr:non-null"]: NonNullExpressionProps;
       ["expr:prop-access"]: PropertyAccessExpressionProps;
       ["expr:elem-access"]: ElementAccessExpressionProps;
+      ["expr:template"]: TemplateExpressionlProps;
     }
   }
 }
