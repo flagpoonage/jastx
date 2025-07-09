@@ -12,7 +12,7 @@ const _properties = ["var-name", "fun-name", "type"] as const;
 export type PassthroughElementTypeName = (typeof _properties)[number];
 export type PassthroughElementType = `p:${PassthroughElementTypeName}`;
 
-const _literals = ["boolean", "number", "string"] as const;
+const _literals = ["boolean", "number", "string", "regex"] as const;
 
 export type LiteralElementTypeName = (typeof _literals)[number];
 export type LiteralElementType = `l:${LiteralElementTypeName}`;
@@ -29,6 +29,7 @@ export type ElementType =
   | "expr:non-null"
   | "expr:parens"
   | "expr:prop-access"
+  | "expr:elem-access"
   | "t:primitive"
   | LiteralElementType
   | PassthroughElementType;
@@ -39,12 +40,18 @@ export const EXPRESSION_TYPES: readonly ElementType[] = [
   "expr:binary",
   "expr:non-null",
   "expr:prop-access",
+  "expr:elem-access",
 ];
 
-export const LITERAL_TYPES: readonly LiteralElementType[] = [
+export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
   "l:number",
   "l:boolean",
   "l:string",
+];
+
+export const LITERAL_TYPES: readonly LiteralElementType[] = [
+  ...LITERAL_PRIMITIVE_TYPES,
+  "l:regex",
 ];
 
 export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [

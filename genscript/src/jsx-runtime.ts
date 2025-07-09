@@ -3,6 +3,10 @@ import {
   createAsExpression,
 } from "./builders/as-expression.js";
 import {
+  createElementAccessExpression,
+  ElementAccessExpressionProps,
+} from "./builders/element-access-expression.js";
+import {
   createExactLiteral,
   ExactLiteralProps,
 } from "./builders/exact-literal.js";
@@ -11,8 +15,10 @@ import {
   BooleanLiteralProps,
   createBooleanLiteral,
   createNumberLiteral,
+  createRegexLiteral,
   createStringLiteral,
   NumberLiteralProps,
+  RegexLiteralProps,
   StringLiteralProps,
 } from "./builders/literals.js";
 import {
@@ -89,6 +95,8 @@ export const jsxs = <T>(
         return createNumberLiteral(options as NumberLiteralProps);
       case "l:string":
         return createStringLiteral(options as StringLiteralProps);
+      case "l:regex":
+        return createRegexLiteral(options as RegexLiteralProps);
       case "t:primitive":
         return createTypePrimitive(options as TypePrimitiveProps);
       case "expr:non-null":
@@ -96,6 +104,10 @@ export const jsxs = <T>(
       case "expr:prop-access":
         return createPropertyAccessExpression(
           options as PropertyAccessExpressionProps
+        );
+      case "expr:elem-access":
+        return createElementAccessExpression(
+          options as ElementAccessExpressionProps
         );
     }
 
@@ -153,6 +165,7 @@ declare global {
       ["expr:parens"]: ParensExpressionProps;
       ["expr:non-null"]: NonNullExpressionProps;
       ["expr:prop-access"]: PropertyAccessExpressionProps;
+      ["expr:elem-access"]: ElementAccessExpressionProps;
     }
   }
 }

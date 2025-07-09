@@ -55,6 +55,19 @@ test("expr:prop-access renders correctly with a nested prop access", () => {
   expect(v.render()).toBe("a.b.c");
 });
 
+test("expr:elem-access renders correctly with a nested element access", () => {
+  const v = (
+    <expr:prop-access>
+      <expr:elem-access>
+        <ident name="a" />
+        <ident name="b" />
+      </expr:elem-access>
+      <ident name="c" />
+    </expr:prop-access>
+  );
+  expect(v.render()).toBe("a[b].c");
+});
+
 test("expr:prop-access renders correctly with optional chaining", () => {
   const v = (
     <expr:prop-access optionalChain={true}>

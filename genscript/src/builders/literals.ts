@@ -69,3 +69,47 @@ export function createStringLiteral(
     render: () => `${JSON.stringify(props.value)}`,
   };
 }
+
+const regex_type = "l:regex";
+export interface RegexLiteralProps {
+  value: string;
+  hasIndices?: boolean;
+  ignoreCase?: boolean;
+  global?: boolean;
+  multiline?: boolean;
+  dotAll?: boolean;
+  unicode?: boolean;
+  unicodeSets?: boolean;
+  sticky?: boolean;
+}
+
+// d	Generate indices for substring matches.	hasIndices
+// g	Global search.	global
+// i	Case-insensitive search.	ignoreCase
+// m	Makes ^ and $ match the start and end of each line instead of those of the entire string.	multiline
+// s	Allows . to match newline characters.	dotAll
+// u	"Unicode"; treat a pattern as a sequence of Unicode code points.	unicode
+// v	An upgrade to the u mode with more Unicode features.	unicodeSets
+// y	Perform a "sticky" search that matches starting at the current position in the target string.	sticky
+
+export interface RegexLiteralNode extends AstNode {
+  type: typeof string_type;
+  props: RegexLiteralProps;
+}
+
+export function createRegexLiteral(props: RegexLiteralProps): RegexLiteralNode {
+  assertZeroChildren(string_type, props);
+
+  return {
+    type: string_type,
+    props,
+    render: () =>
+      `/${props.value}/${props.hasIndices ? "d" : ""}${
+        props.global ? "g" : ""
+      }${props.ignoreCase ? "i" : ""}${props.multiline ? "m" : ""}${
+        props.dotAll ? "s" : ""
+      }${props.unicode ? "u" : ""}${props.unicodeSets ? "v" : ""}${
+        props.sticky ? "y" : ""
+      }`,
+  };
+}
