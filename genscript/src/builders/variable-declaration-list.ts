@@ -1,4 +1,3 @@
-import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
@@ -20,18 +19,15 @@ export function createVariableDeclarationList(
 ): VariableDeclarationListNode {
   const walker = createChildWalker(type, props);
 
-  const variable_declarations = walker.spliceAssertGroup("var:declaration", [
-    1,
-    undefined,
-  ]);
+  const variable_declarations = walker.spliceAssertGroup("var:declaration", {
+    size: [1, undefined],
+  });
 
   const remaining = walker.remainingChildren;
 
   if (remaining.length > 0) {
     throw new InvalidSyntaxError(
-      `<variable-declaration> has invalid children: ${remaining.map(
-        (a) => `<${a.type}>`
-      )}`
+      `<${type}> has invalid children: ${remaining.map((a) => `<${a.type}>`)}`
     );
   }
 

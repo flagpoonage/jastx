@@ -30,6 +30,11 @@ const _expressions = [
 export type ExpressionTypeName = (typeof _expressions)[number];
 export type ExpressionType = `expr:${ExpressionTypeName}`;
 
+const _types = ["primitive"] as const;
+
+export type TypeElementTypeName = (typeof _types)[number];
+export type TypeElementType = `t:${TypeElementTypeName}`;
+
 export type ElementType =
   | "ident"
   | "text"
@@ -37,6 +42,10 @@ export type ElementType =
   | "var:declaration"
   | "var:declaration-list"
   | "var:declaration-name"
+  | "bind:array"
+  | "bind:array-elem"
+  | "bind:object"
+  | "bind:object-elem"
   | "exact-literal"
   | ExpressionType
   | "t:primitive"
@@ -70,6 +79,8 @@ export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
   "p:var-name",
   "p:type",
 ];
+
+export const TYPE_TYPES: readonly TypeElementType[] = ["t:primitive"];
 
 export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
   ...EXPRESSION_TYPES,

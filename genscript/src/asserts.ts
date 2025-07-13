@@ -68,4 +68,6 @@ export function assertNChildren(name: string, n: number, props: any) {
       `<${name}> expected [${n}] children but received [${props.children.length}]`
     );
   }
+
+  return props.children;
 }

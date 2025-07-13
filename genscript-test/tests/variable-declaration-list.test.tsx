@@ -25,7 +25,8 @@ test("var:declaration-list renders correctly with let", () => {
 test("var:declaration-list renders correctly with var", () => {
   const v = (
     <var:declaration-list type="var">
-      <var:declaration type="string" identifier="x">
+      <var:declaration type="string">
+        <ident name="x" />
         <l:string value="Hello" />
       </var:declaration>
     </var:declaration-list>

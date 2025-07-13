@@ -11,7 +11,9 @@ export function createChildWalker(
   parentType: ElementType,
   props: { children?: any }
 ) {
-  const children = Array.isArray(props?.children) ? props.children : [];
+  const og_children = Array.isArray(props?.children) ? props.children : [];
+  const children = [...og_children];
+  const indexOf = (node: any) => og_children.indexOf(node);
 
   return {
     get remainingChildren() {
@@ -43,7 +45,9 @@ export function createChildWalker(
           }
 
           throw new InvalidSyntaxError(
-            `<${parentType}> text nodes are not allowed in this type`
+            `<${parentType}> unexpected text node at position [${indexOf(
+              child
+            )}]`
           );
         }
 
@@ -168,6 +172,46 @@ export function createChildWalker(
       }
 
       return single;
+    },
+
+    spliceAssertNext: (
+      type: ElementType | ElementType[],
+      options?: { allowText: boolean }
+    ): AstNode => {
+      const { allowText = false } = options ?? {};
+      const search_types = Array.isArray(type) ? type : [type];
+      const next = props.children[0];
+
+      if (!next) {
+        throw new InvalidSyntaxError(
+          `<${parentType}> expected the next node to be one of:\n${search_types
+            .map((a) => `- <${a}>`)
+            .join("\n")}\nbut found no node`
+        );
+      }
+
+      if (typeof next === "string") {
+        if (allowText) {
+          const text = children.splice(0, 1)[0] as string;
+          return createTextNode({ value: text });
+        }
+
+        throw new InvalidSyntaxError(
+          `<${parentType}> expected the next node to be one of:\n${search_types
+            .map((a) => `- <${a}>`)
+            .join("\n")}\nbut found text: ${next}`
+        );
+      }
+
+      if (!search_types.includes(next.type)) {
+        throw new InvalidSyntaxError(
+          `<${parentType}> expected the next node to be one of:\n${search_types
+            .map((a) => `- <${a}>`)
+            .join("\n")}\nbut found <${next.type}> instead`
+        );
+      }
+
+      return children.splice(0, 1)[0];
     },
 
     spliceAssertSingleOptional: (

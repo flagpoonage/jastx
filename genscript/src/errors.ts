@@ -19,3 +19,20 @@ export class RhsInvalidTypeError extends InvalidSyntaxError {
     );
   }
 }
+
+export class InvalidChildrenError extends InvalidSyntaxError {
+  constructor(
+    sourceType: string,
+    allowedTypes: string[],
+    actualTypes: string | string[]
+  ) {
+    actualTypes = Array.isArray(actualTypes) ? actualTypes : [actualTypes];
+    super(
+      `<${sourceType}> can only contain children of type:\n${allowedTypes
+        .map((a) => `- <${a}>`)
+        .join("\n")}\nbut found:\n\n${actualTypes
+        .map((a) => `- <${a}>`)
+        .join("\n")} instead.`
+    );
+  }
+}

@@ -1,8 +1,7 @@
-import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode } from "../types.js";
-import { stringRenderer } from "../utils.js";
+import { AstNode, TYPE_TYPES } from "../types.js";
+import { createTextNode } from "./text-node.js";
 
 const type = "var:declaration";
 
@@ -22,35 +21,42 @@ export function createVariableDeclaration(
 ): VariableDeclarationNode {
   const walker = createChildWalker(type, props);
 
-  const p_type = walker.spliceAssertSingleOptional("p:type");
-  const p_name = walker.spliceAssertSingleOptional("p:var-name");
+  const p_name = walker.spliceAssertSingleOptional([
+    "ident",
+    "bind:array",
+    "bind:object",
+  ]);
+
+  const p_type = walker.spliceAssertSingleOptional([...TYPE_TYPES]);
 
   if (props.identifier && p_name) {
     throw new InvalidSyntaxError(
-      `<variable-declaration> cannot specify a literal identifier and a <p:var-name> child`
+      `<${type}> cannot specify a literal identifier and a <p:var-name> child`
     );
   }
 
   const name_node =
-    p_name ?? (props.identifier ? stringRenderer(props.identifier) : null);
+    p_name ??
+    (props.identifier ? createTextNode({ value: props.identifier }) : null);
 
   if (!name_node) {
     throw new InvalidSyntaxError(
-      `<variable-declaration> expected a identifier attribute, or a <p:var-name> child`
+      `<${type}> expected a identifier attribute, or a <p:var-name> child`
     );
   }
 
   if (props.type && p_type) {
     throw new InvalidSyntaxError(
-      `<variable-declaration> cannot specify a literal identifier and a <p:var-name> child`
+      `<${type}> cannot specify a literal identifier and a <p:var-name> child`
     );
   }
 
-  const type_node = p_type ?? (props.type ? stringRenderer(props.type) : null);
+  const type_node =
+    p_type ?? (props.type ? createTextNode({ value: props.type }) : null);
 
   if (walker.remainingChildren.length > 1) {
     throw new InvalidSyntaxError(
-      `<variable-declaration> cannot have multiple initializer expressions: ${walker.remainingChildren.map(
+      `<${type}> cannot have multiple initializer expressions: ${walker.remainingChildren.map(
         (a) => (a.type ? `<${a.type}>` : String(a))
       )}`
     );

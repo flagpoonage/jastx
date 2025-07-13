@@ -3,6 +3,16 @@ import {
   createAsExpression,
 } from "./builders/as-expression.js";
 import {
+  ArrayBindingElementProps,
+  ArrayBindingProps,
+  createArrayBinding,
+  createArrayBindingElement,
+  createObjectBinding,
+  createObjectBindingElement,
+  ObjectBindingElementProps,
+  ObjectBindingProps,
+} from "./builders/binding.js";
+import {
   createElementAccessExpression,
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
@@ -60,7 +70,6 @@ import {
   ElementType,
   JSXCreationInterface,
   JSXSCreationInterface,
-  WithChildren,
 } from "./types.js";
 
 export const jsxs = <T>(
@@ -119,6 +128,14 @@ export const jsxs = <T>(
         );
       case "expr:template":
         return createTemplateExpression(options as TemplateExpressionlProps);
+      case "bind:array":
+        return createArrayBinding(options as ArrayBindingProps);
+      case "bind:array-elem":
+        return createArrayBindingElement(options as ArrayBindingElementProps);
+      case "bind:object-elem":
+        return createObjectBindingElement(options as ObjectBindingElementProps);
+      case "bind:object":
+        return createObjectBinding(options as ObjectBindingProps);
     }
 
     if (element.startsWith("p:")) {
@@ -178,6 +195,11 @@ declare global {
       ["expr:prop-access"]: PropertyAccessExpressionProps;
       ["expr:elem-access"]: ElementAccessExpressionProps;
       ["expr:template"]: TemplateExpressionlProps;
+
+      ["bind:array"]: ArrayBindingProps;
+      ["bind:object"]: ObjectBindingProps;
+      ["bind:array-elem"]: ArrayBindingElementProps;
+      ["bind:object-elem"]: ObjectBindingElementProps;
     }
   }
 }
