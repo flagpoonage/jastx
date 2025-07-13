@@ -1,6 +1,7 @@
 import { createTextNode } from "./builders/text-node.js";
 import { InvalidSyntaxError } from "./errors.js";
 import { AstNode, ElementType } from "./types.js";
+import { asArray } from "./utils.js";
 
 interface AssertGroupOptions {
   allowText?: boolean;
@@ -131,19 +132,21 @@ export function createChildWalker(
     },
 
     spliceAssertSingle: (
-      type: ElementType,
+      type: ElementType | ElementType[],
       maxAllowed: number = Infinity
     ): AstNode => {
       let count = 0;
       let single: AstNode | undefined;
+      const search_types = asArray(type);
 
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
+
         if (!child || !("type" in child)) {
           continue;
         }
 
-        if (child.type !== type) {
+        if (!search_types.includes(child.type)) {
           continue;
         }
 
@@ -160,14 +163,18 @@ export function createChildWalker(
 
         if (count > maxAllowed) {
           throw new InvalidSyntaxError(
-            `<${parentType}> is not allowed more than [${maxAllowed}] <${type}> elements`
+            `<${parentType}> is not allowed more than [${maxAllowed}] elements of type:\n${search_types
+              .map((a) => `- <${a}>`)
+              .join("\n")}`
           );
         }
       }
 
       if (!single) {
         throw new InvalidSyntaxError(
-          `<${parentType}> requires at a <${type}> element, but none were found`
+          `<${parentType}> requires at least one element of type:\n${search_types
+            .map((a) => `- <${a}>`)
+            .join("\n")}\n but only none were found`
         );
       }
 

@@ -1,14 +1,12 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, TYPE_TYPES } from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES, TYPE_TYPES } from "../types.js";
 import { createTextNode } from "./text-node.js";
 
 const type = "var:declaration";
 
 export interface VariableDeclarationProps {
   children?: any;
-  identifier?: string;
-  type?: string;
 }
 
 export interface VariableDeclarationNode extends AstNode {
@@ -21,34 +19,17 @@ export function createVariableDeclaration(
 ): VariableDeclarationNode {
   const walker = createChildWalker(type, props);
 
-  const p_name = walker.spliceAssertSingleOptional([
-    "ident",
-    "bind:array",
-    "bind:object",
-  ]);
+  const p_name = walker.spliceAssertSingle(
+    ["ident", "bind:array", "bind:object"],
+    1
+  );
 
-  const p_type = walker.spliceAssertSingleOptional([...TYPE_TYPES]);
+  const p_type = walker.spliceAssertSingleOptional([...TYPE_TYPES], 1);
 
-  if (props.identifier && p_name) {
-    throw new InvalidSyntaxError(
-      `<${type}> cannot specify a literal identifier and a <p:var-name> child`
-    );
-  }
+  const p_init = walker.spliceAssertNext([...EXPRESSION_OR_LITERAL_TYPES]);
 
-  const name_node =
-    p_name ??
-    (props.identifier ? createTextNode({ value: props.identifier }) : null);
-
-  if (!name_node) {
-    throw new InvalidSyntaxError(
-      `<${type}> expected a identifier attribute, or a <p:var-name> child`
-    );
-  }
-
-  if (props.type && p_type) {
-    throw new InvalidSyntaxError(
-      `<${type}> cannot specify a literal identifier and a <p:var-name> child`
-    );
+  if (walker.remainingChildren !== 1) {
+    throw new InvalidSyntaxError(`<${type}> can only have a single initializ`);
   }
 
   const type_node =
