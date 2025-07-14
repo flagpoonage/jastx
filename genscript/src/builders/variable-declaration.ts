@@ -1,7 +1,11 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES, TYPE_TYPES } from "../types.js";
-import { createTextNode } from "./text-node.js";
+import {
+  ANY_TYPE,
+  AstNode,
+  EXPRESSION_OR_LITERAL_TYPES,
+  isTypeType,
+} from "../types.js";
 
 const type = "var:declaration";
 
@@ -19,39 +23,68 @@ export function createVariableDeclaration(
 ): VariableDeclarationNode {
   const walker = createChildWalker(type, props);
 
-  const p_name = walker.spliceAssertSingle(
-    ["ident", "bind:array", "bind:object"],
-    1
-  );
+  const p_name = walker.spliceAssertNext([
+    "ident",
+    "bind:array",
+    "bind:object",
+  ]);
 
-  const p_type = walker.spliceAssertSingleOptional([...TYPE_TYPES], 1);
+  if (walker.remainingChildren.length === 0) {
+    if (p_name.type === "ident") {
+      return {
+        type,
+        props,
+        render: p_name.render,
+      };
+    }
 
-  const p_init = walker.spliceAssertNext([...EXPRESSION_OR_LITERAL_TYPES]);
-
-  if (walker.remainingChildren !== 1) {
-    throw new InvalidSyntaxError(`<${type}> can only have a single initializ`);
-  }
-
-  const type_node =
-    p_type ?? (props.type ? createTextNode({ value: props.type }) : null);
-
-  if (walker.remainingChildren.length > 1) {
+    // If it's not an ident, then it will be rendering something like
+    // const [a,b];
+    // which is not valid, you need an initializer for destructirng.
     throw new InvalidSyntaxError(
-      `<${type}> cannot have multiple initializer expressions: ${walker.remainingChildren.map(
-        (a) => (a.type ? `<${a.type}>` : String(a))
-      )}`
+      `<${type}> a destructuring declaration must have an initializer`
     );
   }
 
-  const init = walker.remainingChildren[0];
+  const p_type = walker.spliceAssertNext(ANY_TYPE);
+
+  if (!isTypeType(p_type.type)) {
+    if (walker.remainingChildren.length > 0) {
+      throw new InvalidSyntaxError(
+        `<${type}> can only have a single initializer`
+      );
+    }
+
+    const p_init = p_type;
+
+    return {
+      type,
+      props,
+      render: () => {
+        return `${p_name.render()}=${p_init.render()}`;
+      },
+    };
+  }
+
+  if (walker.remainingChildren.length === 0) {
+    return {
+      type,
+      props,
+      render: () => `${p_name.render()}:${p_type.render()}`,
+    };
+  }
+
+  const p_init = walker.spliceAssertNext([...EXPRESSION_OR_LITERAL_TYPES]);
+
+  if (walker.remainingChildren.length > 0) {
+    throw new InvalidSyntaxError(
+      `<${type}> can only have a single initializer`
+    );
+  }
 
   return {
     type,
     props,
-    render: () => {
-      return `${name_node.render()}${
-        type_node ? `:${type_node.render()}` : ""
-      }${init ? `=${init.render()}` : ""}`;
-    },
+    render: () => `${p_name.render()}:${p_type.render()}=${p_init.render()}`,
   };
 }

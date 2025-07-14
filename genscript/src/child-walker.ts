@@ -187,7 +187,7 @@ export function createChildWalker(
     ): AstNode => {
       const { allowText = false } = options ?? {};
       const search_types = Array.isArray(type) ? type : [type];
-      const next = props.children[0];
+      const next = children[0];
 
       if (!next) {
         throw new InvalidSyntaxError(

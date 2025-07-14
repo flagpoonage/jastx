@@ -27,9 +27,11 @@ import {
   createBigintLiteral,
   createBooleanLiteral,
   createNumberLiteral,
+  createObjectLiteral,
   createRegexLiteral,
   createStringLiteral,
   NumberLiteralProps,
+  ObjectLiteralProps,
   RegexLiteralProps,
   StringLiteralProps,
 } from "./builders/literals.js";
@@ -114,6 +116,8 @@ export const jsxs = <T>(
         return createRegexLiteral(options as RegexLiteralProps);
       case "l:bigint":
         return createBigintLiteral(options as BigintLiteralProps);
+      case "l:object":
+        return createObjectLiteral(options as ObjectLiteralProps);
       case "t:primitive":
         return createTypePrimitive(options as TypePrimitiveProps);
       case "expr:non-null":
@@ -182,6 +186,7 @@ declare global {
       ["l:number"]: NumberLiteralProps;
       ["l:string"]: StringLiteralProps;
       ["l:bigint"]: BigintLiteralProps;
+      ["l:object"]: ObjectLiteralProps;
 
       ["t:primitive"]: TypePrimitiveProps;
 

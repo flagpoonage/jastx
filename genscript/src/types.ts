@@ -12,7 +12,14 @@ const _properties = ["var-name", "fun-name", "type"] as const;
 export type PassthroughElementTypeName = (typeof _properties)[number];
 export type PassthroughElementType = `p:${PassthroughElementTypeName}`;
 
-const _literals = ["boolean", "number", "string", "regex", "bigint"] as const;
+const _literals = [
+  "boolean",
+  "number",
+  "string",
+  "regex",
+  "bigint",
+  "object",
+] as const;
 
 export type LiteralElementTypeName = (typeof _literals)[number];
 export type LiteralElementType = `l:${LiteralElementTypeName}`;
@@ -72,6 +79,7 @@ export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
 export const LITERAL_TYPES: readonly LiteralElementType[] = [
   ...LITERAL_PRIMITIVE_TYPES,
   "l:regex",
+  "l:object",
 ];
 
 export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
@@ -82,10 +90,16 @@ export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
 
 export const TYPE_TYPES: readonly TypeElementType[] = ["t:primitive"];
 
+export function isTypeType(v: string) {
+  return TYPE_TYPES.includes(v as TypeElementType);
+}
+
 export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
   ...EXPRESSION_TYPES,
   ...LITERAL_TYPES,
 ];
+
+export const ANY_TYPE = [...EXPRESSION_OR_LITERAL_TYPES, ...TYPE_TYPES];
 
 export type AstNode = {
   type: ElementType;

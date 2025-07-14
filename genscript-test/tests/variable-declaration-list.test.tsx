@@ -3,7 +3,9 @@ import { expect, test } from "vitest";
 test("var:declaration-list renders correctly with const", () => {
   const v = (
     <var:declaration-list type="const">
-      <var:declaration type="string" identifier="x">
+      <var:declaration>
+        <ident name="x" />
+        <t:primitive type="string" />
         <l:string value="Hello" />
       </var:declaration>
     </var:declaration-list>
@@ -14,7 +16,9 @@ test("var:declaration-list renders correctly with const", () => {
 test("var:declaration-list renders correctly with let", () => {
   const v = (
     <var:declaration-list type="let">
-      <var:declaration type="string" identifier="x">
+      <var:declaration>
+        <ident name="x" />
+        <t:primitive type="string" />
         <l:string value="Hello" />
       </var:declaration>
     </var:declaration-list>
@@ -25,8 +29,9 @@ test("var:declaration-list renders correctly with let", () => {
 test("var:declaration-list renders correctly with var", () => {
   const v = (
     <var:declaration-list type="var">
-      <var:declaration type="string">
+      <var:declaration>
         <ident name="x" />
+        <t:primitive type="string" />
         <l:string value="Hello" />
       </var:declaration>
     </var:declaration-list>
@@ -37,16 +42,21 @@ test("var:declaration-list renders correctly with var", () => {
 test("var:declaration-list renders correctly with a multiple declarations", () => {
   const v = (
     <var:declaration-list type="const">
-      <var:declaration type="string" identifier="x">
+      <var:declaration>
+        <ident name="x" />
+        <t:primitive type="string" />
         <l:string value="Hello" />
       </var:declaration>
-      <var:declaration type="number" identifier="y">
+      <var:declaration>
+        <ident name="y" />
+        <t:primitive type="number" />
         <expr:as type="number">
           <l:number value={10} />
         </expr:as>
       </var:declaration>
-      <var:declaration identifier="z">
-        <exact-literal value="{}" />
+      <var:declaration>
+        <ident name="z" />
+        <l:object />
       </var:declaration>
     </var:declaration-list>
   );

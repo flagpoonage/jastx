@@ -1,12 +1,5 @@
-import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { InvalidSyntaxError } from "../errors.js";
-import {
-  AstNode,
-  EXPRESSION_OR_LITERAL_TYPES,
-  LITERAL_TYPES,
-} from "../types.js";
-import { stringRenderer } from "../utils.js";
+import { AstNode, LITERAL_TYPES } from "../types.js";
 
 const type = "expr:non-null";
 

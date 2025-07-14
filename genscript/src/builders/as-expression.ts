@@ -1,8 +1,7 @@
-import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
 import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
-import { stringRenderer } from "../utils.js";
+import { createTextNode } from "./text-node.js";
 
 const type = "expr:as";
 
@@ -29,7 +28,8 @@ export function createAsExpression(props: AsExpressionProps): AsExpressionNode {
     );
   }
 
-  const type_node = p_type ?? (props.type ? stringRenderer(props.type) : null);
+  const type_node =
+    p_type ?? (props.type ? createTextNode({ value: props.type }) : null);
 
   if (!type_node) {
     throw new InvalidSyntaxError(

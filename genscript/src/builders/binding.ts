@@ -143,11 +143,7 @@ export function createObjectBindingElement(
 
   const rhs =
     mode === "binding"
-      ? walker.spliceAssertNext([
-          "ident",
-          "bind:array-elem",
-          "bind:object-elem",
-        ])
+      ? walker.spliceAssertNext(["ident", "bind:array", "bind:object"])
       : walker.spliceAssertNext([...EXPRESSION_OR_LITERAL_TYPES, "ident"]);
 
   return {

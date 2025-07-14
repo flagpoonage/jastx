@@ -143,3 +143,26 @@ export function createBigintLiteral(
     render: () => `${props.value}n`,
   };
 }
+
+const object_type = "l:object";
+
+export interface ObjectLiteralProps {
+  children?: any;
+}
+
+export interface ObjectLiteralNode extends AstNode {
+  type: typeof bigint_type;
+  props: ObjectLiteralProps;
+}
+
+export function createObjectLiteral(
+  props: ObjectLiteralProps
+): ObjectLiteralNode {
+  console.warn("TODO: Object literal implementation");
+
+  return {
+    type: bigint_type,
+    props,
+    render: () => `{}`,
+  };
+}
