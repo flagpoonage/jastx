@@ -1,10 +1,6 @@
 import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import {
-  AstNode,
-  EXPRESSION_OR_LITERAL_TYPES,
-  EXPRESSION_TYPES,
-} from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
 
 const type = "expr:parens";
 

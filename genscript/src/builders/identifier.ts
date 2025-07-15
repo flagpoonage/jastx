@@ -1,5 +1,5 @@
-import { InvalidSyntaxError } from "../errors.js";
 import { assertZeroChildren } from "../asserts.js";
+import { InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
 
 const type = "ident";

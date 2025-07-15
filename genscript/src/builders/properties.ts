@@ -1,4 +1,3 @@
-import { assertNChildren, assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import {
   AstNode,

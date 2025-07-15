@@ -1,5 +1,5 @@
 import { assertNChildren } from "../asserts.js";
-import { InvalidSyntaxError, LhsInvalidTypeError } from "../errors.js";
+import { LhsInvalidTypeError } from "../errors.js";
 import { AstNode, EXPRESSION_TYPES, LITERAL_TYPES } from "../types.js";
 
 const type = "expr:elem-access";
