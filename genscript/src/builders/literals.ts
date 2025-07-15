@@ -1,6 +1,7 @@
 import { assertZeroChildren } from "../asserts.js";
+import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode } from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
 
 const boolean_type = "l:boolean";
 
@@ -144,25 +145,28 @@ export function createBigintLiteral(
   };
 }
 
-const object_type = "l:object";
+const array_type = "l:array";
 
-export interface ObjectLiteralProps {
-  children?: any;
+export interface ArrayLiteralProps {
+  children?: AstNode[];
 }
 
-export interface ObjectLiteralNode extends AstNode {
-  type: typeof bigint_type;
-  props: ObjectLiteralProps;
+export interface ArrayLiteralNode extends AstNode {
+  type: typeof array_type;
+  props: ArrayLiteralProps;
 }
 
-export function createObjectLiteral(
-  props: ObjectLiteralProps
-): ObjectLiteralNode {
-  console.warn("TODO: Object literal implementation");
+export function createArrayLiteral(props: ArrayLiteralProps): ArrayLiteralNode {
+  const walker = createChildWalker(array_type, props);
+
+  const element_nodes = walker.spliceAssertGroup([
+    ...EXPRESSION_OR_LITERAL_TYPES,
+    "ident",
+  ]);
 
   return {
-    type: bigint_type,
+    type: array_type,
     props,
-    render: () => `{}`,
+    render: () => `[${element_nodes.map((v) => v.render()).join(",")}]`,
   };
 }

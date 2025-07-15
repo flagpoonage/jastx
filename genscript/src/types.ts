@@ -9,6 +9,7 @@ const _type_primitives = [
 export type TypePrimitiveName = (typeof _type_primitives)[number];
 
 const _properties = ["var-name", "fun-name", "type"] as const;
+
 export type PassthroughElementTypeName = (typeof _properties)[number];
 export type PassthroughElementType = `p:${PassthroughElementTypeName}`;
 
@@ -19,10 +20,16 @@ const _literals = [
   "regex",
   "bigint",
   "object",
+  "array",
 ] as const;
 
 export type LiteralElementTypeName = (typeof _literals)[number];
 export type LiteralElementType = `l:${LiteralElementTypeName}`;
+
+const _literal_object_nodes = ["prop", "getter", "setter"] as const;
+
+export type LiteralObjectNodeTypeName = (typeof _literal_object_nodes)[number];
+export type LiteralObjectNodeType = `l:object-${LiteralObjectNodeTypeName}`;
 
 const _expressions = [
   "as",
@@ -37,7 +44,7 @@ const _expressions = [
 export type ExpressionTypeName = (typeof _expressions)[number];
 export type ExpressionType = `expr:${ExpressionTypeName}`;
 
-const _types = ["primitive"] as const;
+const _types = ["primitive", "ref"] as const;
 
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
@@ -54,8 +61,9 @@ export type ElementType =
   | "bind:object"
   | "bind:object-elem"
   | "exact-literal"
+  | LiteralObjectNodeType
   | ExpressionType
-  | "t:primitive"
+  | TypeElementType
   | LiteralElementType
   | PassthroughElementType;
 
@@ -80,6 +88,7 @@ export const LITERAL_TYPES: readonly LiteralElementType[] = [
   ...LITERAL_PRIMITIVE_TYPES,
   "l:regex",
   "l:object",
+  "l:array",
 ];
 
 export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
@@ -88,7 +97,7 @@ export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
   "p:type",
 ];
 
-export const TYPE_TYPES: readonly TypeElementType[] = ["t:primitive"];
+export const TYPE_TYPES: readonly TypeElementType[] = ["t:primitive", "t:ref"];
 
 export function isTypeType(v: string) {
   return TYPE_TYPES.includes(v as TypeElementType);

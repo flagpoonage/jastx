@@ -22,16 +22,16 @@ import {
 } from "./builders/exact-literal.js";
 import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
 import {
+  ArrayLiteralProps,
   BigintLiteralProps,
   BooleanLiteralProps,
+  createArrayLiteral,
   createBigintLiteral,
   createBooleanLiteral,
   createNumberLiteral,
-  createObjectLiteral,
   createRegexLiteral,
   createStringLiteral,
   NumberLiteralProps,
-  ObjectLiteralProps,
   RegexLiteralProps,
   StringLiteralProps,
 } from "./builders/literals.js";
@@ -39,6 +39,12 @@ import {
   createNonNullExpression,
   NonNullExpressionProps,
 } from "./builders/non-null-expression.js";
+import {
+  createObjectLiteral,
+  createObjectProperty,
+  ObjectLiteralProps,
+  ObjectPropertyProps,
+} from "./builders/object-literal.js";
 import {
   createParensExpression,
   ParensExpressionProps,
@@ -118,6 +124,8 @@ export const jsxs = <T>(
         return createBigintLiteral(options as BigintLiteralProps);
       case "l:object":
         return createObjectLiteral(options as ObjectLiteralProps);
+      case "l:array":
+        return createArrayLiteral(options as ArrayLiteralProps);
       case "t:primitive":
         return createTypePrimitive(options as TypePrimitiveProps);
       case "expr:non-null":
@@ -140,6 +148,9 @@ export const jsxs = <T>(
         return createObjectBindingElement(options as ObjectBindingElementProps);
       case "bind:object":
         return createObjectBinding(options as ObjectBindingProps);
+
+      case "l:object-prop":
+        return createObjectProperty(options as ObjectPropertyProps);
     }
 
     if (element.startsWith("p:")) {
@@ -187,6 +198,9 @@ declare global {
       ["l:string"]: StringLiteralProps;
       ["l:bigint"]: BigintLiteralProps;
       ["l:object"]: ObjectLiteralProps;
+      ["l:array"]: ArrayLiteralProps;
+
+      ["l:object-prop"]: ObjectPropertyProps;
 
       ["t:primitive"]: TypePrimitiveProps;
 

@@ -13,8 +13,9 @@ test("expr:non-null renders correctly with a parens expression", () => {
   const v = (
     <expr:non-null>
       <expr:parens>
-        <expr:as type="string">
+        <expr:as>
           <l:string value="test" />
+          <t:primitive type="string" />
         </expr:as>
       </expr:parens>
     </expr:non-null>
@@ -39,11 +40,13 @@ test("expr:non-null throws an error when it has no children", () => {
 test("expr:non-null throws an error when it has multiple children", () => {
   expect(() => (
     <expr:non-null>
-      <expr:as type="string">
+      <expr:as>
         <l:number value={20} />
+          <t:primitive type="string" />
       </expr:as>
-      <expr:as type="string">
+      <expr:as>
         <l:number value={20} />
+          <t:primitive type="string" />
       </expr:as>
     </expr:non-null>
   )).toThrowError();
@@ -53,7 +56,9 @@ test("expr:non-null throws an error when it contains non-expressions or literals
   expect(() => (
     <expr:non-null>
       <var:declaration-list type="const">
-        <var:declaration identifier="a" type="string" />
+        <var:declaration>
+          <ident name="a" />
+        </var:declaration>
       </var:declaration-list>
     </expr:non-null>
   )).toThrowError();

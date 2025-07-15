@@ -1,44 +1,30 @@
-// import { AstNode, WithChildren } from "../types.js";
-// import { getNodeUsage, groupNodesByUsage, hasNone, hasSome } from "../utils.js";
+import { assertNChildren } from "../asserts.js";
+import { createChildWalker } from "../child-walker.js";
+import { AstNode } from "../types.js";
 
-// export interface VariableStatementProps {}
+const type = "var:statement";
 
-// export interface VariableStatementNode extends AstNode {
-//   type: "variable-statement";
-//   props: VariableStatementProps & {
-//     children: [Variable];
-//   };
-// }
+export interface VariableStatementProps {
+  children?: AstNode[];
+}
 
-// export function createArguments(
-//   props: WithChildren<ArgumentsProps>
-// ): ArgumentsNode {
-//   const children = props.children;
+export interface VariableStatementNode extends AstNode {
+  type: typeof type;
+  props: VariableStatementProps;
+}
 
-//   if (!children || hasNone(children)) {
-//     console.log("NO CHILDREN AVAILABLE FOR ARGUMENTS", children);
-//     return {
-//       type: "arguments",
-//       props,
-//       render: () => ``,
-//     };
-//   }
+export function createVariableStatement(
+  props: VariableStatementProps
+): VariableStatementNode {
+  assertNChildren(type, 1, props);
 
-//   const groups = groupNodesByUsage(children);
+  const walker = createChildWalker(type, props);
 
-//   if (hasSome(groups.block) || hasSome(groups.statement)) {
-//     throw new Error(
-//       `Invalid arguments. Arguments can only be expressions, not blocks or statements`
-//     );
-//   }
+  const property_node = walker.spliceAssertNext(["var:declaration-list"]);
 
-//   const renderable_children = children.filter(
-//     (a) => a.type === "literal" || getNodeUsage(a) === "expression"
-//   );
-
-//   return {
-//     type: "arguments",
-//     props,
-//     render: () => `${renderable_children.map((a) => a.render()).join(", ")}`,
-//   };
-// }
+  return {
+    type: type,
+    props,
+    render: property_node.render,
+  };
+}

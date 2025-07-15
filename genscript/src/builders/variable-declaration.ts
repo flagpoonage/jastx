@@ -74,7 +74,10 @@ export function createVariableDeclaration(
     };
   }
 
-  const p_init = walker.spliceAssertNext([...EXPRESSION_OR_LITERAL_TYPES]);
+  const p_init = walker.spliceAssertNext([
+    ...EXPRESSION_OR_LITERAL_TYPES,
+    "ident",
+  ]);
 
   if (walker.remainingChildren.length > 0) {
     throw new InvalidSyntaxError(

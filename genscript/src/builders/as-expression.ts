@@ -1,7 +1,6 @@
+import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
-import { createTextNode } from "./text-node.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES, TYPE_TYPES } from "../types.js";
 
 const type = "expr:as";
 
@@ -16,26 +15,15 @@ export interface AsExpressionNode extends AstNode {
 }
 
 export function createAsExpression(props: AsExpressionProps): AsExpressionNode {
+  assertNChildren(type, 2, props);
+
   const walker = createChildWalker(type, props);
 
-  const p_type = walker.spliceAssertSingleOptional(["t:primitive", "p:type"]);
-
-  const expr_node = walker.spliceAssertOneof(EXPRESSION_OR_LITERAL_TYPES, 1);
-
-  if (props.type && p_type) {
-    throw new InvalidSyntaxError(
-      `<variable-declaration> cannot specify a literal type and a <p:type> or <type-primitive> child`
-    );
-  }
-
-  const type_node =
-    p_type ?? (props.type ? createTextNode({ value: props.type }) : null);
-
-  if (!type_node) {
-    throw new InvalidSyntaxError(
-      `<as-expression> expects a type attribute, or one of <p:type>/<type-primitive> child`
-    );
-  }
+  const expr_node = walker.spliceAssertNext([
+    ...EXPRESSION_OR_LITERAL_TYPES,
+    "ident",
+  ]);
+  const type_node = walker.spliceAssertNext([...TYPE_TYPES]);
 
   return {
     type,

@@ -12,8 +12,9 @@ test("expr:parens renders correctly with an simple literal", () => {
 test("expr:parens renders correctly with an as expression", () => {
   const v = (
     <expr:parens>
-      <expr:as type="string">
+      <expr:as>
         <l:string value="test" />
+        <t:primitive type="string" />
       </expr:as>
     </expr:parens>
   );
@@ -42,7 +43,9 @@ test("expr:parens throws an error when it contains non-expressions or literals",
   expect(() => (
     <expr:parens>
       <var:declaration-list type="const">
-        <var:declaration identifier="a" type="string" />
+        <var:declaration>
+          <ident name="a" />
+        </var:declaration>
       </var:declaration-list>
     </expr:parens>
   )).toThrowError();
