@@ -55,8 +55,6 @@ export interface ObjectLiteralNode extends AstNode {
 export function createObjectLiteral(
   props: ObjectLiteralProps
 ): ObjectLiteralNode {
-  console.warn("TODO: Object literal implementation");
-
   const walker = createChildWalker(object_type, props);
 
   const property_nodes = walker.spliceAssertGroup([

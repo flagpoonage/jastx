@@ -74,6 +74,10 @@ import {
   VariableDeclarationProps,
 } from "./builders/variable-declaration.js";
 import {
+  createVariableStatement,
+  VariableStatementProps,
+} from "./builders/variable-statement.js";
+import {
   AstNode,
   ElementType,
   JSXCreationInterface,
@@ -108,6 +112,8 @@ export const jsxs = <T>(
         return createVariableDeclarationList(
           options as VariableDeclarationListProps
         );
+      case "var:statement":
+        return createVariableStatement(options as VariableStatementProps);
       case "expr:as":
         return createAsExpression(options as AsExpressionProps);
       case "expr:parens":
@@ -208,6 +214,7 @@ declare global {
       ["exact-literal"]: ExactLiteralProps;
       ["var:declaration"]: VariableDeclarationProps;
       ["var:declaration-list"]: VariableDeclarationListProps;
+      ["var:statement"]: VariableStatementProps;
       ["expr:as"]: AsExpressionProps;
       ["expr:parens"]: ParensExpressionProps;
       ["expr:non-null"]: NonNullExpressionProps;

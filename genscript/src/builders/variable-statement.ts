@@ -5,7 +5,7 @@ import { AstNode } from "../types.js";
 const type = "var:statement";
 
 export interface VariableStatementProps {
-  children?: AstNode[];
+  children: AstNode[] | AstNode;
 }
 
 export interface VariableStatementNode extends AstNode {
