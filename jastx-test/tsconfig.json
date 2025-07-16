@@ -2,7 +2,7 @@
   "include": ["./tests/**/*.tsx"],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "genscript",
+    "jsxImportSource": "jastx",
     "target": "es2024",
     "module": "es2022",
     "moduleResolution": "bundler",
@@ -11,8 +11,8 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "genscript": ["../genscript"],
-      "genscript/*": ["../genscript/dist/*"]
+      "jastx": ["../jastx"],
+      "jastx/*": ["../jastx/dist/*"]
     },
     "typeRoots": ["../node_modules/@types"]
   },

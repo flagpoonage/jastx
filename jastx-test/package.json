@@ -1,5 +1,5 @@
 {
-  "name": "genscript-test",
+  "name": "jastx-test",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -11,7 +11,7 @@
     "test": "npx vitest --mode production"
   },
   "devDependencies": {
-    "genscript": "file:///../genscript",
+    "jastx": "file:///../jastx",
     "typescript": "^5.8.3"
   },
   "dependencies": {
