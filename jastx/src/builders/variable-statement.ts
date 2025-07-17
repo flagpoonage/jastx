@@ -6,6 +6,7 @@ const type = "var:statement";
 
 export interface VariableStatementProps {
   children: AstNode[] | AstNode;
+  exported?: boolean;
 }
 
 export interface VariableStatementNode extends AstNode {
@@ -25,6 +26,6 @@ export function createVariableStatement(
   return {
     type: type,
     props,
-    render: property_node.render,
+    render: () => `${props.exported ? "export " : ""}${property_node.render()}`,
   };
 }
