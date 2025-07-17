@@ -13,6 +13,10 @@ import {
   ObjectBindingProps,
 } from "./builders/binding.js";
 import {
+  CallExpressionProps,
+  createCallExpression,
+} from "./builders/call-expression.js";
+import {
   createElementAccessExpression,
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
@@ -146,6 +150,8 @@ export const jsxs = <T>(
         );
       case "expr:template":
         return createTemplateExpression(options as TemplateExpressionlProps);
+      case "expr:call":
+        return createCallExpression(options as CallExpressionProps);
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
       case "bind:array-elem":
@@ -221,6 +227,7 @@ declare global {
       ["expr:prop-access"]: PropertyAccessExpressionProps;
       ["expr:elem-access"]: ElementAccessExpressionProps;
       ["expr:template"]: TemplateExpressionlProps;
+      ["expr:call"]: CallExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;

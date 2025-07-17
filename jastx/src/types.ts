@@ -39,6 +39,7 @@ const _expressions = [
   "prop-access",
   "elem-access",
   "template",
+  "call",
 ] as const;
 
 export type ExpressionTypeName = (typeof _expressions)[number];
@@ -75,6 +76,7 @@ export const EXPRESSION_TYPES: readonly ExpressionType[] = [
   "expr:prop-access",
   "expr:elem-access",
   "expr:template",
+  "expr:call",
 ];
 
 export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
