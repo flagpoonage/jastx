@@ -70,6 +70,10 @@ import {
   TypeConditionalProps,
 } from "./builders/type-conditional.js";
 import {
+  createTypeIndexed,
+  TypeIndexedProps,
+} from "./builders/type-indexed.js";
+import {
   createTypePrimitive,
   TypePrimitiveProps,
 } from "./builders/type-primitive.js";
@@ -151,6 +155,8 @@ export const jsxs = <T>(
         return createTypeReference(options as TypeReferenceProps);
       case "t:cond":
         return createTypeConditional(options as TypeConditionalProps);
+      case "t:indexed":
+        return createTypeIndexed(options as TypeIndexedProps);
 
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
@@ -231,6 +237,7 @@ declare global {
       ["t:primitive"]: TypePrimitiveProps;
       ["t:ref"]: TypeReferenceProps;
       ["t:cond"]: TypeConditionalProps;
+      ["t:indexed"]: TypeIndexedProps;
 
       ["ident"]: IdentifierProps;
       ["exact-literal"]: ExactLiteralProps;

@@ -46,7 +46,7 @@ const _expressions = [
 export type ExpressionTypeName = (typeof _expressions)[number];
 export type ExpressionType = `expr:${ExpressionTypeName}`;
 
-const _types = ["primitive", "ref", "cond"] as const;
+const _types = ["primitive", "ref", "cond", "indexed"] as const;
 
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
@@ -104,6 +104,7 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:primitive",
   "t:ref",
   "t:cond",
+  "t:indexed",
 ];
 
 export function isTypeType(v: string) {
