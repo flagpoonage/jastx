@@ -70,6 +70,10 @@ import {
   TypePrimitiveProps,
 } from "./builders/type-primitive.js";
 import {
+  createTypeReference,
+  TypeReferenceProps,
+} from "./builders/type-reference.js";
+import {
   createVariableDeclarationList,
   VariableDeclarationListProps,
 } from "./builders/variable-declaration-list.js";
@@ -136,8 +140,12 @@ export const jsxs = <T>(
         return createObjectLiteral(options as ObjectLiteralProps);
       case "l:array":
         return createArrayLiteral(options as ArrayLiteralProps);
+
       case "t:primitive":
         return createTypePrimitive(options as TypePrimitiveProps);
+      case "t:ref":
+        return createTypeReference(options as TypeReferenceProps);
+
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
       case "expr:prop-access":
@@ -215,6 +223,7 @@ declare global {
       ["l:object-prop"]: ObjectPropertyProps;
 
       ["t:primitive"]: TypePrimitiveProps;
+      ["t:ref"]: TypeReferenceProps;
 
       ["ident"]: IdentifierProps;
       ["exact-literal"]: ExactLiteralProps;
