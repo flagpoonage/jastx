@@ -70,3 +70,14 @@ test("expr:call renders correctly with parameters", () => {
   );
   expect(v.render()).toBe('x("test",y[1])');
 });
+
+test("expr:call renders correctly with type arguments", () => {
+  const v = (
+    <expr:call>
+      <ident name="x" />
+      <t:primitive type="boolean" />
+      <l:boolean value={true} />
+    </expr:call>
+  );
+  expect(v.render()).toBe("x<boolean>(true)");
+});

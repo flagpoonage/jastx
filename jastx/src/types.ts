@@ -4,6 +4,7 @@ const _type_primitives = [
   "boolean",
   "any",
   "unknown",
+  "never",
 ] as const;
 
 export type TypePrimitiveName = (typeof _type_primitives)[number];
@@ -45,7 +46,7 @@ const _expressions = [
 export type ExpressionTypeName = (typeof _expressions)[number];
 export type ExpressionType = `expr:${ExpressionTypeName}`;
 
-const _types = ["primitive", "ref"] as const;
+const _types = ["primitive", "ref", "cond"] as const;
 
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
@@ -99,7 +100,11 @@ export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
   "p:type",
 ];
 
-export const TYPE_TYPES: readonly TypeElementType[] = ["t:primitive", "t:ref"];
+export const TYPE_TYPES: readonly TypeElementType[] = [
+  "t:primitive",
+  "t:ref",
+  "t:cond",
+];
 
 export function isTypeType(v: string) {
   return TYPE_TYPES.includes(v as TypeElementType);

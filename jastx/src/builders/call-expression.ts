@@ -1,6 +1,6 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES, TYPE_TYPES } from "../types.js";
 
 const type = "expr:call";
 
@@ -32,14 +32,32 @@ export function createCallExpression(
     )
   );
 
+  const type_args = walker.spliceAssertGroup([...TYPE_TYPES]);
+
   const args = walker.spliceAssertGroup([...EXPRESSION_OR_LITERAL_TYPES]);
+
+  if (walker.remainingChildren.length > 0) {
+    throw new InvalidSyntaxError(
+      `<${type}> has invalid children:\n${walker.remainingChildren
+        .map((a) => {
+          if (a === "string") {
+            return `- <text {${a}}>`;
+          }
+
+          return `- <${a}>`;
+        })
+        .join("\n")}`
+    );
+  }
 
   return {
     type,
     props,
     render: () =>
-      `${callee.render()}${props.optionalChain ? "?." : ""}(${args
-        .map((x) => x.render())
-        .join(",")})`,
+      `${callee.render()}${props.optionalChain ? "?." : ""}${
+        type_args.length > 0
+          ? `<${type_args.map((a) => a.render()).join(",")}>`
+          : ""
+      }(${args.map((x) => x.render()).join(",")})`,
   };
 }
