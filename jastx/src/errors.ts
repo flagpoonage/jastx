@@ -1,3 +1,5 @@
+import { AstNode } from "./types.js";
+
 export class InvalidSyntaxError extends Error {}
 
 export class LhsInvalidTypeError extends InvalidSyntaxError {
@@ -33,6 +35,19 @@ export class InvalidChildrenError extends InvalidSyntaxError {
         .join("\n")}\nbut found:\n\n${actualTypes
         .map((a) => `- <${a}>`)
         .join("\n")} instead.`
+    );
+  }
+}
+
+export class InvalidExportedMembersError extends InvalidSyntaxError {
+  constructor(
+    sourceType: string,
+    elements: (AstNode & { props: { exported: true } })[]
+  ) {
+    super(
+      `<${sourceType}> can not contain exported members, found the following:\n${elements
+        .map((a) => `- ${a.render()}`)
+        .join("\n")}`
     );
   }
 }

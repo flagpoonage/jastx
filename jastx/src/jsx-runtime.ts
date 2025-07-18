@@ -12,6 +12,7 @@ import {
   ObjectBindingElementProps,
   ObjectBindingProps,
 } from "./builders/binding.js";
+import { BlockProps, createBlock } from "./builders/blocks.js";
 import {
   CallExpressionProps,
   createCallExpression,
@@ -120,6 +121,9 @@ export const jsxs = <T>(
     switch (element) {
       case "ident":
         return createIdentifier(options as IdentifierProps);
+      case "block":
+        return createBlock(options as BlockProps);
+
       case "exact-literal":
         return createExactLiteral(options as ExactLiteralProps);
       case "var:declaration":
@@ -240,6 +244,8 @@ declare global {
       ["t:indexed"]: TypeIndexedProps;
 
       ["ident"]: IdentifierProps;
+      ["block"]: BlockProps;
+
       ["exact-literal"]: ExactLiteralProps;
       ["var:declaration"]: VariableDeclarationProps;
       ["var:declaration-list"]: VariableDeclarationListProps;
