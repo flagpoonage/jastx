@@ -66,6 +66,10 @@ import {
   TemplateExpressionlProps,
 } from "./builders/template-expression.js";
 import {
+  createTypeConditional,
+  TypeConditionalProps,
+} from "./builders/type-conditional.js";
+import {
   createTypePrimitive,
   TypePrimitiveProps,
 } from "./builders/type-primitive.js";
@@ -145,6 +149,8 @@ export const jsxs = <T>(
         return createTypePrimitive(options as TypePrimitiveProps);
       case "t:ref":
         return createTypeReference(options as TypeReferenceProps);
+      case "t:cond":
+        return createTypeConditional(options as TypeConditionalProps);
 
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
@@ -224,6 +230,7 @@ declare global {
 
       ["t:primitive"]: TypePrimitiveProps;
       ["t:ref"]: TypeReferenceProps;
+      ["t:cond"]: TypeConditionalProps;
 
       ["ident"]: IdentifierProps;
       ["exact-literal"]: ExactLiteralProps;
