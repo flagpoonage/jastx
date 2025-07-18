@@ -60,15 +60,20 @@ test.skip("t:ref renders with tuple type generics", () => {
   // );
   // expect(v.render()).toBe("X<[string, number]>");
 });
-test.skip("t:ref renders with indexed types", () => {
-  // TODO: Indexed type is basically a like
-  // T[number];
-  //
-  // const v = (
-  //   <t:ref>
-  //   </t:ref>
-  // );
-  // expect(v.render()).toBe("X<T[number]>");
+
+test("t:ref renders with indexed types", () => {
+  const v = (
+    <t:ref>
+      <ident name="X" />
+      <t:indexed>
+        <t:ref>
+          <ident name="T" />
+        </t:ref>
+        <t:primitive type="number" />
+      </t:indexed>
+    </t:ref>
+  );
+  expect(v.render()).toBe("X<T[number]>");
 });
 
 test("t:ref throws an error with no children", () => {
