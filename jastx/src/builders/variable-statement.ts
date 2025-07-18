@@ -14,6 +14,10 @@ export interface VariableStatementNode extends AstNode {
   props: VariableStatementProps;
 }
 
+export function isVariableStatement(v: AstNode): v is VariableStatementNode {
+  return v.type === "var:statement";
+}
+
 export function createVariableStatement(
   props: VariableStatementProps
 ): VariableStatementNode {

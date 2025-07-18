@@ -54,6 +54,7 @@ export type TypeElementType = `t:${TypeElementTypeName}`;
 export type ElementType =
   | "ident"
   | "text"
+  | "block"
   | "var:statement"
   | "var:declaration"
   | "var:declaration-list"
@@ -107,6 +108,10 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:indexed",
 ];
 
+export const BLOCK_STATEMENTS_AND_DECLARATIONS: readonly ElementType[] = [
+  "var:statement",
+];
+
 export function isTypeType(v: string) {
   return TYPE_TYPES.includes(v as TypeElementType);
 }
@@ -121,6 +126,7 @@ export const ANY_TYPE = [...EXPRESSION_OR_LITERAL_TYPES, ...TYPE_TYPES];
 export type AstNode = {
   type: ElementType;
   docs?: AstNode;
+  props: any; // TODO: Make this more accurate
   render: () => string;
 };
 
