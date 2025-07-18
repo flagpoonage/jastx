@@ -20,6 +20,21 @@ export function createChildWalker(
     get remainingChildren() {
       return children;
     },
+
+    get remainingChildTypes() {
+      return Array.from(
+        new Set(
+          children.map((a) => {
+            if (typeof a === "string") {
+              return `<text [${a}]>`;
+            }
+
+            return a.type;
+          })
+        )
+      );
+    },
+
     spliceAssertGroup: (
       type: ElementType | ElementType[],
       options?: AssertGroupOptions

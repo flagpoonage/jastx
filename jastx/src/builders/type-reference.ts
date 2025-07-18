@@ -1,10 +1,11 @@
-import { assertZeroChildren } from "../asserts.js";
-import { AstNode } from "../types.js";
+import { createChildWalker } from "../child-walker.js";
+import { InvalidChildrenError } from "../errors.js";
+import { AstNode, LITERAL_PRIMITIVE_TYPES, TYPE_TYPES } from "../types.js";
 
 const type = "t:ref";
 
 export interface TypeReferenceProps {
-  name: string;
+  children: any;
 }
 
 export interface TypeReferenceNode extends AstNode {
@@ -15,11 +16,31 @@ export interface TypeReferenceNode extends AstNode {
 export function createTypeReference(
   props: TypeReferenceProps
 ): TypeReferenceNode {
-  assertZeroChildren(type, props);
+  const walker = createChildWalker(type, props);
+
+  const ident = walker.spliceAssertNext("ident");
+
+  const type_args = walker.spliceAssertGroup([
+    ...TYPE_TYPES,
+    ...LITERAL_PRIMITIVE_TYPES,
+  ]);
+
+  if (walker.remainingChildren.length > 0) {
+    throw new InvalidChildrenError(
+      type,
+      [...TYPE_TYPES],
+      walker.remainingChildTypes
+    );
+  }
 
   return {
     type,
     props,
-    render: () => props.name,
+    render: () =>
+      `${ident.render()}${
+        type_args.length > 0
+          ? `<${type_args.map((a) => a.render()).join(",")}>`
+          : ""
+      }`,
   };
 }
