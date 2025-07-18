@@ -81,3 +81,19 @@ test("expr:call renders correctly with type arguments", () => {
   );
   expect(v.render()).toBe("x<boolean>(true)");
 });
+
+test("expr:call renders correctly with more complex type arguments", () => {
+  const v = (
+    <expr:call>
+      <ident name="x" />
+      <t:indexed>
+        <t:ref>
+          <ident name="T" />
+        </t:ref>
+        <t:primitive type="number" />
+      </t:indexed>
+      <l:boolean value={true} />
+    </expr:call>
+  );
+  expect(v.render()).toBe("x<T[number]>(true)");
+});
