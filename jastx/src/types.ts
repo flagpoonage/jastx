@@ -43,7 +43,7 @@ const _expressions = [
   "call",
   "function",
   "statement",
-  "unary",
+  "not",
 ] as const;
 
 export type ExpressionTypeName = (typeof _expressions)[number];
@@ -94,6 +94,7 @@ export const EXPRESSION_TYPES: readonly ExpressionType[] = [
   "expr:template",
   "expr:call",
   "expr:function",
+  "expr:not",
 ];
 
 export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
