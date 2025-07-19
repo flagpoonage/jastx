@@ -43,6 +43,7 @@ const _expressions = [
   "call",
   "function",
   "statement",
+  "unary",
 ] as const;
 
 export type ExpressionTypeName = (typeof _expressions)[number];
