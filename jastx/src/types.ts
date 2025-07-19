@@ -41,6 +41,7 @@ const _expressions = [
   "elem-access",
   "template",
   "call",
+  "function",
 ] as const;
 
 export type ExpressionTypeName = (typeof _expressions)[number];
@@ -63,6 +64,7 @@ export type ElementType =
   | "text"
   | "block"
   | "arrow-function"
+  | "function-declaration"
   | "param"
   | "var:statement"
   | "var:declaration"
@@ -88,6 +90,7 @@ export const EXPRESSION_TYPES: readonly ExpressionType[] = [
   "expr:elem-access",
   "expr:template",
   "expr:call",
+  "expr:function",
 ];
 
 export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
@@ -121,6 +124,7 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
 
 export const BLOCK_STATEMENTS_AND_DECLARATIONS: readonly ElementType[] = [
   "var:statement",
+  "function-declaration",
 ];
 
 export function isTypeType(v: string) {
