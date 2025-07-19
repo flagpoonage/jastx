@@ -5,6 +5,7 @@ import {
   AstNode,
   EXPRESSION_OR_LITERAL_TYPES,
   isTypeType,
+  VALUE_TYPES,
 } from "../types.js";
 
 const type = "var:declaration";
@@ -74,10 +75,7 @@ export function createVariableDeclaration(
     };
   }
 
-  const p_init = walker.spliceAssertNext([
-    ...EXPRESSION_OR_LITERAL_TYPES,
-    "ident",
-  ]);
+  const p_init = walker.spliceAssertNext([...VALUE_TYPES]);
 
   if (walker.remainingChildren.length > 0) {
     throw new InvalidSyntaxError(
