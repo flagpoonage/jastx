@@ -1,4 +1,3 @@
-import { InvalidExportedMembersError } from "jastx";
 import { expect, test } from "vitest";
 
 test("block renders correctly with variable statements", () => {
