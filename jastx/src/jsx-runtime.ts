@@ -30,15 +30,22 @@ import {
   ExactLiteralProps,
 } from "./builders/exact-literal.js";
 import {
+  createExpressionStatement,
+  ExpressionStatementProps,
+} from "./builders/expression-statement.js";
+import {
   createFunctionDeclaration,
   FunctionDeclarationProps,
 } from "./builders/function-declaration.js";
 import {
   createFunctionExpression,
-  FunctionExpressionNode,
   FunctionExpressionProps,
 } from "./builders/function-expression.js";
 import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
+import {
+  createIfStatement,
+  IfStatementProps,
+} from "./builders/if-statement.js";
 import {
   ArrayLiteralProps,
   BigintLiteralProps,
@@ -151,6 +158,8 @@ export const jsxs = <T>(
         return createArrowFunction(options as ArrowFunctionProps);
       case "function-declaration":
         return createFunctionDeclaration(options as FunctionDeclarationProps);
+      case "if-statement":
+        return createIfStatement(options as IfStatementProps);
 
       case "exact-literal":
         return createExactLiteral(options as ExactLiteralProps);
@@ -210,6 +219,8 @@ export const jsxs = <T>(
         return createCallExpression(options as CallExpressionProps);
       case "expr:function":
         return createFunctionExpression(options as FunctionExpressionProps);
+      case "expr:statement":
+        return createExpressionStatement(options as ExpressionStatementProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -285,6 +296,7 @@ declare global {
       ["param"]: ParameterProps;
       ["arrow-function"]: ArrowFunctionProps;
       ["function-declaration"]: FunctionDeclarationProps;
+      ["if-statement"]: IfStatementProps;
 
       ["exact-literal"]: ExactLiteralProps;
       ["var:declaration"]: VariableDeclarationProps;
@@ -298,6 +310,7 @@ declare global {
       ["expr:template"]: TemplateExpressionlProps;
       ["expr:call"]: CallExpressionProps;
       ["expr:function"]: FunctionExpressionProps;
+      ["expr:statement"]: ExpressionStatementProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;
