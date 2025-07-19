@@ -19,10 +19,14 @@ export function createAsExpression(props: AsExpressionProps): AsExpressionNode {
 
   const walker = createChildWalker(type, props);
 
+  // as-expression can't use value types because it can't directly use an arrow-function
+  // () => { return void 0; } as unknown as invalid syntax, it needs to be
+  // (() => { return void 0; }) as unknown
   const expr_node = walker.spliceAssertNext([
     ...EXPRESSION_OR_LITERAL_TYPES,
     "ident",
   ]);
+
   const type_node = walker.spliceAssertNext([...TYPE_TYPES]);
 
   return {

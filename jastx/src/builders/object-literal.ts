@@ -1,6 +1,6 @@
 import { assertMaxChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES, VALUE_TYPES } from "../types.js";
 
 const prop_type = "l:object-prop";
 
@@ -29,10 +29,7 @@ export function createObjectProperty(
     };
   }
 
-  const expr_node = walker.spliceAssertNext([
-    ...EXPRESSION_OR_LITERAL_TYPES,
-    "ident",
-  ]);
+  const expr_node = walker.spliceAssertNext([...VALUE_TYPES]);
 
   return {
     type: prop_type,

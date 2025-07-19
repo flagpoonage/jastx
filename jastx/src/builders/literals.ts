@@ -1,7 +1,7 @@
 import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import { AstNode, VALUE_TYPES } from "../types.js";
 
 const boolean_type = "l:boolean";
 
@@ -159,10 +159,7 @@ export interface ArrayLiteralNode extends AstNode {
 export function createArrayLiteral(props: ArrayLiteralProps): ArrayLiteralNode {
   const walker = createChildWalker(array_type, props);
 
-  const element_nodes = walker.spliceAssertGroup([
-    ...EXPRESSION_OR_LITERAL_TYPES,
-    "ident",
-  ]);
+  const element_nodes = walker.spliceAssertGroup([...VALUE_TYPES]);
 
   return {
     type: array_type,

@@ -1,7 +1,12 @@
 import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError, InvalidSyntaxError } from "../errors.js";
-import { AstNode, ElementType, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import {
+  AstNode,
+  ElementType,
+  EXPRESSION_OR_LITERAL_TYPES,
+  VALUE_TYPES,
+} from "../types.js";
 
 const array_type = "bind:array";
 
@@ -107,10 +112,7 @@ export function createArrayBindingElement(
 
   const lhs = walker.spliceAssertOneof(["ident", "bind:array", "bind:object"]);
 
-  const rhs = walker.spliceAssertOneof([
-    ...EXPRESSION_OR_LITERAL_TYPES,
-    "ident",
-  ]);
+  const rhs = walker.spliceAssertOneof([...VALUE_TYPES]);
 
   return {
     type: array_elem_type,
@@ -144,7 +146,7 @@ export function createObjectBindingElement(
   const rhs =
     mode === "binding"
       ? walker.spliceAssertNext(["ident", "bind:array", "bind:object"])
-      : walker.spliceAssertNext([...EXPRESSION_OR_LITERAL_TYPES, "ident"]);
+      : walker.spliceAssertNext([...VALUE_TYPES]);
 
   return {
     type: object_elem_type,

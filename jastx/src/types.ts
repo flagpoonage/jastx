@@ -46,7 +46,14 @@ const _expressions = [
 export type ExpressionTypeName = (typeof _expressions)[number];
 export type ExpressionType = `expr:${ExpressionTypeName}`;
 
-const _types = ["primitive", "ref", "cond", "indexed"] as const;
+const _types = [
+  "primitive",
+  "ref",
+  "cond",
+  "indexed",
+  "param",
+  "predicate",
+] as const;
 
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
@@ -55,6 +62,8 @@ export type ElementType =
   | "ident"
   | "text"
   | "block"
+  | "arrow-function"
+  | "param"
   | "var:statement"
   | "var:declaration"
   | "var:declaration-list"
@@ -106,6 +115,8 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:ref",
   "t:cond",
   "t:indexed",
+  // t:param is only used in functions so it shouldnt be included here generally.
+  // t:predicate is only used as a function return type, so is not included here generally.
 ];
 
 export const BLOCK_STATEMENTS_AND_DECLARATIONS: readonly ElementType[] = [
@@ -120,6 +131,12 @@ export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
   ...EXPRESSION_TYPES,
   ...LITERAL_TYPES,
 ];
+
+export const VALUE_TYPES = [
+  ...EXPRESSION_OR_LITERAL_TYPES,
+  "ident",
+  "arrow-function",
+] as const;
 
 export const ANY_TYPE = [...EXPRESSION_OR_LITERAL_TYPES, ...TYPE_TYPES];
 

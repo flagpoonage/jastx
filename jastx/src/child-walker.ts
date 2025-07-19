@@ -236,6 +236,34 @@ export function createChildWalker(
       return children.splice(0, 1)[0];
     },
 
+    spliceAssertNextOptional: (
+      type: ElementType | ElementType[],
+      options?: { allowText: boolean }
+    ): AstNode | null => {
+      const { allowText = false } = options ?? {};
+      const search_types = Array.isArray(type) ? type : [type];
+      const next = children[0];
+
+      if (!next) {
+        return null;
+      }
+
+      if (typeof next === "string") {
+        if (allowText) {
+          const text = children.splice(0, 1)[0] as string;
+          return createTextNode({ value: text });
+        }
+
+        return null;
+      }
+
+      if (!search_types.includes(next.type)) {
+        return null;
+      }
+
+      return children.splice(0, 1)[0];
+    },
+
     spliceAssertSingleOptional: (
       type: ElementType | ElementType[],
       maxAllowed: number = Infinity
