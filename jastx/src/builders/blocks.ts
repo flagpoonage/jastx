@@ -4,12 +4,13 @@ import {
   InvalidExportedMembersError,
 } from "../errors.js";
 import { AstNode, BLOCK_STATEMENTS_AND_DECLARATIONS } from "../types.js";
+import { isFunctionDeclaration } from "./function-declaration.js";
 import { isVariableStatement } from "./variable-statement.js";
 
 const type = "block";
 
 export interface BlockProps {
-  children: any;
+  children?: any;
 }
 
 export interface BlockNode extends AstNode {
@@ -33,7 +34,9 @@ export function createBlock(props: BlockProps): BlockNode {
   }
 
   const modified_statements = statements.filter(
-    (a) => isVariableStatement(a) && a.props.exported
+    (a) =>
+      (isVariableStatement(a) && a.props.exported) ||
+      (isFunctionDeclaration(a) && a.props.exported)
   );
 
   if (modified_statements.length > 0) {
@@ -43,6 +46,9 @@ export function createBlock(props: BlockProps): BlockNode {
   return {
     type: type,
     props,
-    render: () => `{${statements.map((a) => a.render()).join(";")};}`,
+    render: () =>
+      `{${statements.map((a) => a.render()).join(";")}${
+        statements.length > 0 ? ";" : ""
+      }}`,
   };
 }

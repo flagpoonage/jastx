@@ -29,6 +29,15 @@ import {
   createExactLiteral,
   ExactLiteralProps,
 } from "./builders/exact-literal.js";
+import {
+  createFunctionDeclaration,
+  FunctionDeclarationProps,
+} from "./builders/function-declaration.js";
+import {
+  createFunctionExpression,
+  FunctionExpressionNode,
+  FunctionExpressionProps,
+} from "./builders/function-expression.js";
 import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
 import {
   ArrayLiteralProps,
@@ -140,6 +149,8 @@ export const jsxs = <T>(
         return createParameter(options as ParameterProps);
       case "arrow-function":
         return createArrowFunction(options as ArrowFunctionProps);
+      case "function-declaration":
+        return createFunctionDeclaration(options as FunctionDeclarationProps);
 
       case "exact-literal":
         return createExactLiteral(options as ExactLiteralProps);
@@ -197,6 +208,9 @@ export const jsxs = <T>(
         return createTemplateExpression(options as TemplateExpressionlProps);
       case "expr:call":
         return createCallExpression(options as CallExpressionProps);
+      case "expr:function":
+        return createFunctionExpression(options as FunctionExpressionProps);
+
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
       case "bind:array-elem":
@@ -270,6 +284,7 @@ declare global {
       ["block"]: BlockProps;
       ["param"]: ParameterProps;
       ["arrow-function"]: ArrowFunctionProps;
+      ["function-declaration"]: FunctionDeclarationProps;
 
       ["exact-literal"]: ExactLiteralProps;
       ["var:declaration"]: VariableDeclarationProps;
@@ -282,6 +297,7 @@ declare global {
       ["expr:elem-access"]: ElementAccessExpressionProps;
       ["expr:template"]: TemplateExpressionlProps;
       ["expr:call"]: CallExpressionProps;
+      ["expr:function"]: FunctionExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;
