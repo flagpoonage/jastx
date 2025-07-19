@@ -51,3 +51,5 @@ export class InvalidExportedMembersError extends InvalidSyntaxError {
     );
   }
 }
+
+export class AmbiguousParserError extends Error {}

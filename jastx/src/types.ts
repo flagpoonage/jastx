@@ -42,6 +42,7 @@ const _expressions = [
   "template",
   "call",
   "function",
+  "statement",
 ] as const;
 
 export type ExpressionTypeName = (typeof _expressions)[number];
@@ -65,6 +66,7 @@ export type ElementType =
   | "block"
   | "arrow-function"
   | "function-declaration"
+  | "if-statement"
   | "param"
   | "var:statement"
   | "var:declaration"
@@ -125,7 +127,17 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
 export const BLOCK_STATEMENTS_AND_DECLARATIONS: readonly ElementType[] = [
   "var:statement",
   "function-declaration",
+  "if-statement",
+  "expr:statement",
 ];
+
+export function omitFrom(
+  t: ElementType[] | readonly ElementType[],
+  types: ElementType | ElementType[]
+) {
+  const omit_types = Array.isArray(types) ? types : [types];
+  return t.filter((v) => !omit_types.includes(v));
+}
 
 export function isTypeType(v: string) {
   return TYPE_TYPES.includes(v as TypeElementType);
