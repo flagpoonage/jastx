@@ -11,6 +11,7 @@ export interface FunctionExpressionProps {
    * it will throw an error if provided without a body
    */
   generator?: boolean;
+  async?: boolean;
 }
 
 export interface FunctionExpressionNode extends AstNode {
@@ -68,7 +69,7 @@ export function createFunctionExpression(
     type,
     props,
     render: () =>
-      `function${props.generator ? "*" : ""} ${
+      `${props.async ? "async " : ""}function${props.generator ? "*" : ""} ${
         ident ? ident.render() : ""
       }${render_parameters()}${type_node ? `:${type_node.render()}` : ""}${
         block ? block.render() : ""

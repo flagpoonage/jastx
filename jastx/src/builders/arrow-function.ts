@@ -6,6 +6,7 @@ const type = "arrow-function";
 
 export interface ArrowFunctionProps {
   children: any;
+  async?: boolean;
 }
 
 export interface ArrowFunctionNode extends AstNode {
@@ -26,14 +27,15 @@ export function createArrowFunction(
     "t:predicate",
   ]);
 
+  const can_avoid_parens =
+    parameters.length === 1 &&
+    parameters[0].props.children.length === 1 &&
+    parameters[0].props.children[0].type === "ident" &&
+    type_parameters.length === 0 &&
+    !type_node;
+
   const render_parameters = () => {
-    if (
-      parameters.length === 1 &&
-      parameters[0].props.children.length === 1 &&
-      parameters[0].props.children[0].type === "ident" &&
-      type_parameters.length === 0 &&
-      !type_node
-    ) {
+    if (can_avoid_parens) {
       // In the case of a single identifier parameter with no type or default information
       // this can be rendered without the enclosing parenthesis like: a => a.toString().
       // This also requires no type parameters, because <T>a => a.toString() is not valid,
@@ -76,7 +78,9 @@ export function createArrowFunction(
     type,
     props,
     render: () =>
-      `${render_parameters()}${
+      `${
+        props.async ? (can_avoid_parens ? "async " : "async") : ""
+      }${render_parameters()}${
         type_node ? `:${type_node.render()}` : ""
       }=>${implict_return_or_block.render()}`,
   };

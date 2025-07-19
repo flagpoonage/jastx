@@ -16,6 +16,7 @@ export interface FunctionDeclarationProps {
    * do not. We need to specify this here.
    */
   exported?: "named" | "default";
+  async?: boolean;
 }
 
 export interface FunctionDeclarationNode extends AstNode {
@@ -90,10 +91,10 @@ export function createFunctionDeclaration(
     type,
     props,
     render: () =>
-      `${render_export_modifiers()}function${props.generator ? "*" : ""} ${
-        ident ? ident.render() : ""
-      }${render_parameters()}${type_node ? `:${type_node.render()}` : ""}${
-        block ? block.render() : ""
-      }`,
+      `${props.async ? "async " : ""}${render_export_modifiers()}function${
+        props.generator ? "*" : ""
+      } ${ident ? ident.render() : ""}${render_parameters()}${
+        type_node ? `:${type_node.render()}` : ""
+      }${block ? block.render() : ""}`,
   };
 }

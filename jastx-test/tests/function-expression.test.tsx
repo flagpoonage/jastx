@@ -11,6 +11,17 @@ test("expr:function renders correctly", () => {
   expect(v1.render()).toBe("function test(){}");
 });
 
+test("expr:function renders correctly", () => {
+  const v2 = (
+    <expr:function async={true}>
+      <ident name="test" />
+      <block />
+    </expr:function>
+  );
+
+  expect(v2.render()).toBe("async function test(){}");
+});
+
 test("expr:function renders with parameters", () => {
   const v1 = (
     <expr:function>

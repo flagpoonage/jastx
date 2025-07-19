@@ -11,6 +11,17 @@ test("function-declaration renders correctly", () => {
   expect(v1.render()).toBe("function test(){}");
 });
 
+test("function-declaration renders correctly", () => {
+  const v1 = (
+    <function-declaration async={true}>
+      <ident name="test" />
+      <block />
+    </function-declaration>
+  );
+
+  expect(v1.render()).toBe("async function test(){}");
+});
+
 test("function-declaration renders correctly without a body", () => {
   // This is only for overloads, it's a bit shaky about how it's actually valid
   // we would need to compare siblings to see if this actually overloads another

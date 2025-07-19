@@ -19,6 +19,25 @@ test("arrow-function renders correctly with implicit return", () => {
   expect(v2.render()).toBe(`()=>()=>20`);
 });
 
+test("arrow-function renders correctly with asymc implicit return", () => {
+  const v1 = (
+    <arrow-function async={true}>
+      <l:number value={20} />
+    </arrow-function>
+  );
+
+  expect(v1.render()).toBe(`async()=>20`);
+  const v2 = (
+    <arrow-function async={true}>
+      <arrow-function>
+        <l:number value={20} />
+      </arrow-function>
+    </arrow-function>
+  );
+
+  expect(v2.render()).toBe(`async()=>()=>20`);
+});
+
 test("arrow-function renders correctly with block element", () => {
   const v1 = (
     <arrow-function>
@@ -96,6 +115,19 @@ test("arrow-function renders without parenthesis for single identifier parameter
   );
 
   expect(v1.render()).toBe(`x=>x()`);
+
+  const v2 = (
+    <arrow-function async={true}>
+      <param>
+        <ident name="x" />
+      </param>
+      <expr:call>
+        <ident name="x" />
+      </expr:call>
+    </arrow-function>
+  );
+
+  expect(v2.render()).toBe(`async x=>x()`);
 });
 
 test("arrow-function renders correctly with single typed parameter", () => {
