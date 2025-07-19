@@ -1,6 +1,6 @@
 import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES, VALUE_TYPES } from "../types.js";
 
 const type = "expr:parens";
 
@@ -21,7 +21,7 @@ export function createParensExpression(
 
   assertNChildren(type, 1, props);
 
-  const expr_node = walker.spliceAssertOneof(EXPRESSION_OR_LITERAL_TYPES, 1);
+  const expr_node = walker.spliceAssertOneof(VALUE_TYPES, 1);
 
   return {
     type,

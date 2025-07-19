@@ -1,6 +1,6 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import { AstNode, EXPRESSION_OR_LITERAL_TYPES, VALUE_TYPES } from "../types.js";
 
 const type = "expr:template";
 
@@ -18,7 +18,7 @@ export function createTemplateExpression(
 ): TemplateExpressionlNode {
   const walker = createChildWalker(type, props);
 
-  const children = walker.spliceAssertGroup([...EXPRESSION_OR_LITERAL_TYPES], {
+  const children = walker.spliceAssertGroup([...VALUE_TYPES], {
     allowText: true,
   });
 

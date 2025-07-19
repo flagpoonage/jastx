@@ -1,4 +1,8 @@
 import {
+  ArrowFunctionProps,
+  createArrowFunction,
+} from "./builders/arrow-function.js";
+import {
   AsExpressionProps,
   createAsExpression,
 } from "./builders/as-expression.js";
@@ -50,6 +54,7 @@ import {
   ObjectLiteralProps,
   ObjectPropertyProps,
 } from "./builders/object-literal.js";
+import { createParameter, ParameterProps } from "./builders/parameter.js";
 import {
   createParensExpression,
   ParensExpressionProps,
@@ -74,6 +79,14 @@ import {
   createTypeIndexed,
   TypeIndexedProps,
 } from "./builders/type-indexed.js";
+import {
+  createTypeParameter,
+  TypeParameterProps,
+} from "./builders/type-parameter.js";
+import {
+  createTypePredicate,
+  TypePredicateProps,
+} from "./builders/type-predicate.js";
 import {
   createTypePrimitive,
   TypePrimitiveProps,
@@ -123,6 +136,10 @@ export const jsxs = <T>(
         return createIdentifier(options as IdentifierProps);
       case "block":
         return createBlock(options as BlockProps);
+      case "param":
+        return createParameter(options as ParameterProps);
+      case "arrow-function":
+        return createArrowFunction(options as ArrowFunctionProps);
 
       case "exact-literal":
         return createExactLiteral(options as ExactLiteralProps);
@@ -161,6 +178,10 @@ export const jsxs = <T>(
         return createTypeConditional(options as TypeConditionalProps);
       case "t:indexed":
         return createTypeIndexed(options as TypeIndexedProps);
+      case "t:param":
+        return createTypeParameter(options as TypeParameterProps);
+      case "t:predicate":
+        return createTypePredicate(options as TypePredicateProps);
 
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
@@ -242,9 +263,13 @@ declare global {
       ["t:ref"]: TypeReferenceProps;
       ["t:cond"]: TypeConditionalProps;
       ["t:indexed"]: TypeIndexedProps;
+      ["t:param"]: TypeParameterProps;
+      ["t:predicate"]: TypePredicateProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
+      ["param"]: ParameterProps;
+      ["arrow-function"]: ArrowFunctionProps;
 
       ["exact-literal"]: ExactLiteralProps;
       ["var:declaration"]: VariableDeclarationProps;

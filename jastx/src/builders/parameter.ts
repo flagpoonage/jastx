@@ -1,27 +1,19 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import {
-  ANY_TYPE,
-  AstNode,
-  EXPRESSION_OR_LITERAL_TYPES,
-  isTypeType,
-  VALUE_TYPES,
-} from "../types.js";
+import { ANY_TYPE, AstNode, isTypeType, VALUE_TYPES } from "../types.js";
 
-const type = "var:declaration";
+const type = "param";
 
-export interface VariableDeclarationProps {
+export interface ParameterProps {
   children?: any;
 }
 
-export interface VariableDeclarationNode extends AstNode {
+export interface ParameterNode extends AstNode {
   type: typeof type;
-  props: VariableDeclarationProps;
+  props: ParameterProps;
 }
 
-export function createVariableDeclaration(
-  props: VariableDeclarationProps
-): VariableDeclarationNode {
+export function createParameter(props: ParameterProps): ParameterNode {
   const walker = createChildWalker(type, props);
 
   const p_name = walker.spliceAssertNext([
@@ -31,20 +23,11 @@ export function createVariableDeclaration(
   ]);
 
   if (walker.remainingChildren.length === 0) {
-    if (p_name.type === "ident") {
-      return {
-        type,
-        props,
-        render: p_name.render,
-      };
-    }
-
-    // If it's not an ident, then it will be rendering something like
-    // const [a,b];
-    // which is not valid, you need an initializer for destructirng.
-    throw new InvalidSyntaxError(
-      `<${type}> a destructuring declaration must have an initializer`
-    );
+    return {
+      type,
+      props,
+      render: p_name.render,
+    };
   }
 
   const p_type = walker.spliceAssertNext(ANY_TYPE);
