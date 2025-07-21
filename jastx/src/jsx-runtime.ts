@@ -112,6 +112,16 @@ import {
   TypeReferenceProps,
 } from "./builders/type-reference.js";
 import {
+  AwaitExpressionProps,
+  createAwaitExpression,
+  createNotExpression,
+  createTypeofExpression,
+  createYieldExpression,
+  NotExpressionProps,
+  TypeofExpressionProps,
+  YieldExpressionProps,
+} from "./builders/unary-expression.js";
+import {
   createVariableDeclarationList,
   VariableDeclarationListProps,
 } from "./builders/variable-declaration-list.js";
@@ -221,6 +231,14 @@ export const jsxs = <T>(
         return createFunctionExpression(options as FunctionExpressionProps);
       case "expr:statement":
         return createExpressionStatement(options as ExpressionStatementProps);
+      case "expr:not":
+        return createNotExpression(options as NotExpressionProps);
+      case "expr:await":
+        return createAwaitExpression(options as AwaitExpressionProps);
+      case "expr:typeof":
+        return createTypeofExpression(options as TypeofExpressionProps);
+      case "expr:yield_":
+        return createYieldExpression(options as YieldExpressionProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -311,6 +329,10 @@ declare global {
       ["expr:call"]: CallExpressionProps;
       ["expr:function"]: FunctionExpressionProps;
       ["expr:statement"]: ExpressionStatementProps;
+      ["expr:not"]: NotExpressionProps;
+      ["expr:await"]: AwaitExpressionProps;
+      ["expr:typeof"]: TypeofExpressionProps;
+      ["expr:yield_"]: YieldExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;

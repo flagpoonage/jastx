@@ -1,6 +1,12 @@
 import { assertNChildren } from "../asserts.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_TYPES } from "../types.js";
+import {
+  AstNode,
+  EXPRESSION_OR_LITERAL_TYPES,
+  isBinaryExpressionType,
+  isUnaryExpressionType,
+  omitFrom,
+} from "../types.js";
 
 const type = "expr:prop-access";
 
@@ -28,7 +34,10 @@ export function createPropertyAccessExpression(
     );
   }
 
-  const lhs_types = [...EXPRESSION_TYPES, "ident", "l:string", "l:boolean"];
+  const lhs_types = omitFrom(
+    [...EXPRESSION_OR_LITERAL_TYPES, "ident"],
+    "l:number"
+  );
 
   if (!lhs_types.includes(lhs.type)) {
     throw new InvalidSyntaxError(
@@ -38,10 +47,15 @@ export function createPropertyAccessExpression(
     );
   }
 
+  const requires_parens =
+    isBinaryExpressionType(lhs.type) || isUnaryExpressionType(lhs.type);
+
   return {
     type,
     props,
     render: () =>
-      `${lhs.render()}${props.optionalChain ? "?" : ""}.${rhs.render()}`,
+      `${requires_parens ? `(${lhs.render()})` : lhs.render()}${
+        props.optionalChain ? "?" : ""
+      }.${rhs.render()}`,
   };
 }

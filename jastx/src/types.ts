@@ -32,21 +32,45 @@ const _literal_object_nodes = ["prop", "getter", "setter"] as const;
 export type LiteralObjectNodeTypeName = (typeof _literal_object_nodes)[number];
 export type LiteralObjectNodeType = `l:object-${LiteralObjectNodeTypeName}`;
 
-const _expressions = [
-  "as",
-  "binary",
-  "non-null",
+const _standalone_exressions = [
+  "template",
+  "function",
+  "statement",
   "parens",
   "prop-access",
   "elem-access",
-  "template",
-  "call",
-  "function",
-  "statement",
 ] as const;
 
-export type ExpressionTypeName = (typeof _expressions)[number];
-export type ExpressionType = `expr:${ExpressionTypeName}`;
+const _binary_expressions = ["as", "binary"] as const;
+
+const _unary_expressions = [
+  "not",
+  "await",
+  "typeof",
+  "call",
+  "non-null",
+  "yield_",
+] as const;
+
+export type UnaryExpressionTypeName = (typeof _unary_expressions)[number];
+export type UnaryExpressionType = `expr:${UnaryExpressionTypeName}`;
+
+export type BinaryExpressionTypeName = (typeof _binary_expressions)[number];
+export type BinaryExpressionType = `expr:${BinaryExpressionTypeName}`;
+
+export type StandaloneExpressionTypeName =
+  (typeof _standalone_exressions)[number];
+export type StandaloneExpressionType = `expr:${StandaloneExpressionTypeName}`;
+
+export type ExpressionTypeName =
+  | UnaryExpressionTypeName
+  | BinaryExpressionTypeName
+  | StandaloneExpressionTypeName;
+
+export type ExpressionType =
+  | UnaryExpressionType
+  | BinaryExpressionType
+  | StandaloneExpressionType;
 
 const _types = [
   "primitive",
@@ -83,17 +107,41 @@ export type ElementType =
   | LiteralElementType
   | PassthroughElementType;
 
-export const EXPRESSION_TYPES: readonly ExpressionType[] = [
-  "expr:as",
-  "expr:parens",
-  "expr:binary",
-  "expr:non-null",
-  "expr:prop-access",
+export const STANDLONE_EXPRESSION_TYPES: readonly StandaloneExpressionType[] = [
   "expr:elem-access",
-  "expr:template",
-  "expr:call",
   "expr:function",
+  "expr:parens",
+  "expr:prop-access",
+  "expr:template",
 ];
+
+export function isStandaloneExpressionType(
+  v: string
+): v is StandaloneExpressionType {
+  return STANDLONE_EXPRESSION_TYPES.includes(v as StandaloneExpressionType);
+}
+
+export const BINARY_EXPRESSION_TYPES: readonly BinaryExpressionType[] = [
+  "expr:as",
+  "expr:binary",
+];
+
+export function isBinaryExpressionType(v: string): v is BinaryExpressionType {
+  return BINARY_EXPRESSION_TYPES.includes(v as BinaryExpressionType);
+}
+
+export const UNARY_EXPRESSION_TYPES: readonly UnaryExpressionType[] = [
+  "expr:not",
+  "expr:await",
+  "expr:call",
+  "expr:typeof",
+  "expr:non-null",
+  "expr:yield_",
+];
+
+export function isUnaryExpressionType(v: string): v is UnaryExpressionType {
+  return UNARY_EXPRESSION_TYPES.includes(v as UnaryExpressionType);
+}
 
 export const LITERAL_PRIMITIVE_TYPES: readonly LiteralElementType[] = [
   "l:number",
@@ -144,7 +192,9 @@ export function isTypeType(v: string) {
 }
 
 export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
-  ...EXPRESSION_TYPES,
+  ...BINARY_EXPRESSION_TYPES,
+  ...UNARY_EXPRESSION_TYPES,
+  ...STANDLONE_EXPRESSION_TYPES,
   ...LITERAL_TYPES,
 ];
 

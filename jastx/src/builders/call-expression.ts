@@ -1,6 +1,11 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES, TYPE_TYPES } from "../types.js";
+import {
+  AstNode,
+  EXPRESSION_OR_LITERAL_TYPES,
+  isUnaryExpressionType,
+  TYPE_TYPES,
+} from "../types.js";
 
 const type = "expr:call";
 
@@ -26,11 +31,10 @@ export function createCallExpression(
   // Can't specify a number literal as the call, because that creates invalid syntax like 1.toString();
   // The tokenizer isn't able to parse that, because 1. starts parsing a decimal rather than a property
   // access. Number literals need to be wrapped in parenthesis expresssions. (1).toString();
-  const callee = walker.spliceAssertNext(
-    (["ident", ...EXPRESSION_OR_LITERAL_TYPES] as const).filter(
-      (v) => v !== "l:number"
-    )
-  );
+  const callee = walker.spliceAssertNext([
+    "ident",
+    ...EXPRESSION_OR_LITERAL_TYPES,
+  ] as const);
 
   const type_args = walker.spliceAssertGroup([...TYPE_TYPES]);
 
@@ -50,11 +54,18 @@ export function createCallExpression(
     );
   }
 
+  const requires_parens =
+    isUnaryExpressionType(callee.type) ||
+    callee.type === "l:number" ||
+    callee.type === "arrow-function";
+
   return {
     type,
     props,
     render: () =>
-      `${callee.render()}${props.optionalChain ? "?." : ""}${
+      `${requires_parens ? `(${callee.render()})` : callee.render()}${
+        props.optionalChain ? "?." : ""
+      }${
         type_args.length > 0
           ? `<${type_args.map((a) => a.render()).join(",")}>`
           : ""
