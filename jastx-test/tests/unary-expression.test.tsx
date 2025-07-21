@@ -22,6 +22,16 @@ test("expr:not renders double negation when nested", () => {
   expect(v.render()).toBe("!!x");
 });
 
+test("expr:not renders shorthand dobule negation", () => {
+  const v = (
+    <expr:not double={true}>
+      <ident name="x" />
+    </expr:not>
+  );
+
+  expect(v.render()).toBe("!!x");
+});
+
 test("expr:not renders arrow-function expression in parenthesis", () => {
   const v = (
     <expr:not>

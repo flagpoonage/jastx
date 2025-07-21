@@ -5,6 +5,7 @@ import { AstNode, VALUE_TYPES } from "../types.js";
 const not_type = "expr:not";
 export interface NotExpressionProps {
   children: any;
+  double?: boolean;
 }
 
 export interface NotExpressionNode extends AstNode {
@@ -16,6 +17,7 @@ export function createNotExpression(
   props: NotExpressionProps
 ): NotExpressionNode {
   assertNChildren(not_type, 1, props);
+  const double = props.double || false;
 
   const walker = createChildWalker(not_type, props);
   const expression = walker.spliceAssertNext([...VALUE_TYPES]);
@@ -25,7 +27,9 @@ export function createNotExpression(
     type: not_type,
     props,
     render: () =>
-      `!${requires_parens ? `(${expression.render()})` : expression.render()}`,
+      `${double ? "!!" : "!"}${
+        requires_parens ? `(${expression.render()})` : expression.render()
+      }`,
   };
 }
 
