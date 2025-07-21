@@ -112,6 +112,8 @@ import {
   TypeReferenceProps,
 } from "./builders/type-reference.js";
 import {
+  AwaitExpressionProps,
+  createAwaitExpression,
   createNotExpression,
   NotExpressionProps,
 } from "./builders/unary-expression.js";
@@ -227,6 +229,8 @@ export const jsxs = <T>(
         return createExpressionStatement(options as ExpressionStatementProps);
       case "expr:not":
         return createNotExpression(options as NotExpressionProps);
+      case "expr:await":
+        return createAwaitExpression(options as AwaitExpressionProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -318,6 +322,7 @@ declare global {
       ["expr:function"]: FunctionExpressionProps;
       ["expr:statement"]: ExpressionStatementProps;
       ["expr:not"]: NotExpressionProps;
+      ["expr:await"]: AwaitExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;

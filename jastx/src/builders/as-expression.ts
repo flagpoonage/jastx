@@ -27,13 +27,17 @@ export function createAsExpression(props: AsExpressionProps): AsExpressionNode {
     "ident",
   ]);
 
+  const requires_parens = expr_node.type === "arrow-function";
+
   const type_node = walker.spliceAssertNext([...TYPE_TYPES]);
 
   return {
     type,
     props,
     render: () => {
-      return `${expr_node.render()} as ${type_node.render()}`;
+      return `${
+        requires_parens ? `(${expr_node.render()})` : expr_node.render()
+      } as ${type_node.render()}`;
     },
   };
 }
