@@ -115,7 +115,11 @@ import {
   AwaitExpressionProps,
   createAwaitExpression,
   createNotExpression,
+  createTypeofExpression,
+  createYieldExpression,
   NotExpressionProps,
+  TypeofExpressionProps,
+  YieldExpressionProps,
 } from "./builders/unary-expression.js";
 import {
   createVariableDeclarationList,
@@ -231,6 +235,10 @@ export const jsxs = <T>(
         return createNotExpression(options as NotExpressionProps);
       case "expr:await":
         return createAwaitExpression(options as AwaitExpressionProps);
+      case "expr:typeof":
+        return createTypeofExpression(options as TypeofExpressionProps);
+      case "expr:yield_":
+        return createYieldExpression(options as YieldExpressionProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -323,6 +331,8 @@ declare global {
       ["expr:statement"]: ExpressionStatementProps;
       ["expr:not"]: NotExpressionProps;
       ["expr:await"]: AwaitExpressionProps;
+      ["expr:typeof"]: TypeofExpressionProps;
+      ["expr:yield_"]: YieldExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;

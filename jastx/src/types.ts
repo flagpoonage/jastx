@@ -32,19 +32,6 @@ const _literal_object_nodes = ["prop", "getter", "setter"] as const;
 export type LiteralObjectNodeTypeName = (typeof _literal_object_nodes)[number];
 export type LiteralObjectNodeType = `l:object-${LiteralObjectNodeTypeName}`;
 
-const _expressions = [
-  "as",
-  "binary",
-  "non-null",
-  "parens",
-  "prop-access",
-  "elem-access",
-  "template",
-  "call",
-  "function",
-  "statement",
-] as const;
-
 const _standalone_exressions = [
   "template",
   "function",
@@ -62,6 +49,7 @@ const _unary_expressions = [
   "typeof",
   "call",
   "non-null",
+  "yield_",
 ] as const;
 
 export type UnaryExpressionTypeName = (typeof _unary_expressions)[number];
@@ -148,6 +136,7 @@ export const UNARY_EXPRESSION_TYPES: readonly UnaryExpressionType[] = [
   "expr:call",
   "expr:typeof",
   "expr:non-null",
+  "expr:yield_",
 ];
 
 export function isUnaryExpressionType(v: string): v is UnaryExpressionType {

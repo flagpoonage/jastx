@@ -66,4 +66,39 @@ test("expr:await renders parenthesis where required", () => {
   );
 
   expect(v.render()).toBe("await (()=>x)");
+  const v2 = (
+    <expr:await>
+      <expr:yield_>
+        <arrow-function>
+          <ident name="x" />
+        </arrow-function>
+      </expr:yield_>
+    </expr:await>
+  );
+
+  expect(v2.render()).toBe("await (yield (()=>x))");
+});
+
+test("expr:typeof renders correctly", () => {
+  const v = (
+    <expr:typeof>
+      <expr:call>
+        <ident name="x" />
+      </expr:call>
+    </expr:typeof>
+  );
+
+  expect(v.render()).toBe("typeof x()");
+});
+
+test("expr:typeof renders parenthesis where required", () => {
+  const v = (
+    <expr:typeof>
+      <arrow-function>
+        <ident name="x" />
+      </arrow-function>
+    </expr:typeof>
+  );
+
+  expect(v.render()).toBe("typeof (()=>x)");
 });
