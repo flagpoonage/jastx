@@ -39,6 +39,7 @@ const _standalone_exressions = [
   "parens",
   "prop-access",
   "elem-access",
+  "cond",
 ] as const;
 
 const _binary_expressions = ["as", "binary"] as const;
@@ -113,6 +114,7 @@ export const STANDLONE_EXPRESSION_TYPES: readonly StandaloneExpressionType[] = [
   "expr:parens",
   "expr:prop-access",
   "expr:template",
+  "expr:cond",
 ];
 
 export function isStandaloneExpressionType(

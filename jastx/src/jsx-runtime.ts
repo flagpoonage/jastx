@@ -22,6 +22,10 @@ import {
   createCallExpression,
 } from "./builders/call-expression.js";
 import {
+  ConditionExpressionProps,
+  createConditionExpression,
+} from "./builders/conditional-expression.js";
+import {
   createElementAccessExpression,
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
@@ -239,6 +243,8 @@ export const jsxs = <T>(
         return createTypeofExpression(options as TypeofExpressionProps);
       case "expr:yield_":
         return createYieldExpression(options as YieldExpressionProps);
+      case "expr:cond":
+        return createConditionExpression(options as ConditionExpressionProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -333,6 +339,7 @@ declare global {
       ["expr:await"]: AwaitExpressionProps;
       ["expr:typeof"]: TypeofExpressionProps;
       ["expr:yield_"]: YieldExpressionProps;
+      ["expr:cond"]: ConditionExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;
