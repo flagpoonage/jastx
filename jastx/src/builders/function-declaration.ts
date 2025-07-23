@@ -43,6 +43,13 @@ export function createFunctionDeclaration(
       : walker.spliceAssertNext("ident");
 
   const parameters = walker.spliceAssertGroup("param");
+
+  if (parameters.slice(0, -1).some((a) => a.props.modifier === "rest")) {
+    throw new InvalidSyntaxError(
+      `<${type}> may only have a rest parameter as the last parameter`
+    );
+  }
+
   const type_parameters = walker.spliceAssertGroup("t:param");
 
   let type_node = walker.spliceAssertNextOptional([

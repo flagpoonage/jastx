@@ -6,6 +6,9 @@ const type = "param";
 
 export interface ParameterProps {
   children?: any;
+  // These are mutually exclusive, rest parameters cannot be
+  // optional, and optional parameters can not be spread.
+  modifier?: "rest" | "optional";
 }
 
 export interface ParameterNode extends AstNode {
@@ -14,6 +17,7 @@ export interface ParameterNode extends AstNode {
 }
 
 export function createParameter(props: ParameterProps): ParameterNode {
+  const modifier = props.modifier;
   const walker = createChildWalker(type, props);
 
   const p_name = walker.spliceAssertNext([
@@ -22,11 +26,23 @@ export function createParameter(props: ParameterProps): ParameterNode {
     "bind:object",
   ]);
 
+  if (
+    modifier === "optional" &&
+    ["bind:array", "bind:object"].includes(p_name.type)
+  ) {
+    throw new InvalidSyntaxError(
+      `<${type}> cannot contain a <bind:array>, or <bind:object> if it is also optional`
+    );
+  }
+
   if (walker.remainingChildren.length === 0) {
     return {
       type,
       props,
-      render: p_name.render,
+      render: () =>
+        `${modifier === "rest" ? "..." : ""}${p_name.render()}${
+          modifier === "optional" ? "?" : ""
+        }`,
     };
   }
 
@@ -39,13 +55,21 @@ export function createParameter(props: ParameterProps): ParameterNode {
       );
     }
 
+    if (modifier === "optional") {
+      throw new InvalidSyntaxError(
+        `<${type}> cannot be optional if it has a default initializer`
+      );
+    }
+
     const p_init = p_type;
 
     return {
       type,
       props,
       render: () => {
-        return `${p_name.render()}=${p_init.render()}`;
+        return `${
+          modifier === "rest" ? "..." : ""
+        }${p_name.render()}=${p_init.render()}`;
       },
     };
   }
@@ -54,11 +78,20 @@ export function createParameter(props: ParameterProps): ParameterNode {
     return {
       type,
       props,
-      render: () => `${p_name.render()}:${p_type.render()}`,
+      render: () =>
+        `${modifier === "rest" ? "..." : ""}${p_name.render()}${
+          modifier === "optional" ? "?" : ""
+        }:${p_type.render()}`,
     };
   }
 
   const p_init = walker.spliceAssertNext([...VALUE_TYPES]);
+
+  if (modifier === "optional") {
+    throw new InvalidSyntaxError(
+      `<${type}> cannot be optional if it has a default initializer`
+    );
+  }
 
   if (walker.remainingChildren.length > 0) {
     throw new InvalidSyntaxError(
@@ -69,6 +102,9 @@ export function createParameter(props: ParameterProps): ParameterNode {
   return {
     type,
     props,
-    render: () => `${p_name.render()}:${p_type.render()}=${p_init.render()}`,
+    render: () =>
+      `${
+        modifier === "rest" ? "..." : ""
+      }${p_name.render()}:${p_type.render()}=${p_init.render()}`,
   };
 }

@@ -38,3 +38,13 @@ test("param renders correctly with array binding", () => {
   );
   expect(v.render()).toBe("[a,b=10]:string");
 });
+
+test("param allows optional parameters", () => {
+  const v = (
+    <param modifier="optional">
+      <ident name="test" />
+      <t:primitive type="string" />
+    </param>
+  );
+  expect(v.render()).toBe("test?:string");
+});
