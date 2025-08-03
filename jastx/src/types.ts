@@ -80,6 +80,13 @@ const _types = [
   "indexed",
   "param",
   "predicate",
+  "literal",
+
+  // Signatures
+  "method",
+  "construct",
+  "property",
+  "index",
 ] as const;
 
 export type TypeElementTypeName = (typeof _types)[number];
@@ -170,9 +177,10 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:ref",
   "t:cond",
   "t:indexed",
+  "t:literal",
   // t:param is only used in functions so it shouldnt be included here generally.
   // t:predicate is only used as a function return type, so is not included here generally.
-];
+] as const;
 
 export const BLOCK_STATEMENTS_AND_DECLARATIONS: readonly ElementType[] = [
   "var:statement",

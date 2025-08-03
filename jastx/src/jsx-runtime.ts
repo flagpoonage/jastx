@@ -116,6 +116,10 @@ import {
   TypeReferenceProps,
 } from "./builders/type-reference.js";
 import {
+  createMethodSignature,
+  MethodSignatureProps,
+} from "./builders/type-signatures.js";
+import {
   AwaitExpressionProps,
   createAwaitExpression,
   createNotExpression,
@@ -216,6 +220,8 @@ export const jsxs = <T>(
         return createTypeParameter(options as TypeParameterProps);
       case "t:predicate":
         return createTypePredicate(options as TypePredicateProps);
+      case "t:method":
+        return createMethodSignature(options as MethodSignatureProps);
 
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
@@ -314,6 +320,7 @@ declare global {
       ["t:indexed"]: TypeIndexedProps;
       ["t:param"]: TypeParameterProps;
       ["t:predicate"]: TypePredicateProps;
+      ["t:method"]: MethodSignatureProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
