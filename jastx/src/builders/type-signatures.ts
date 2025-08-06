@@ -78,6 +78,7 @@ const property_signature_type = "t:property";
 export interface PropertySignatureProps {
   children?: any;
   optional?: boolean;
+  computed?: boolean;
 }
 
 export interface PropertySignatureNode extends AstNode {
@@ -101,8 +102,98 @@ export function createPropertySignature(
     type: property_signature_type,
     props,
     render: () =>
-      `${ident.type === "ident" ? ident.render() : `[${ident.render()}]`}${
-        props.optional ? "?" : ""
-      }${type_node.render()}`,
+      `${
+        ident.type === "ident" && !props.computed
+          ? ident.render()
+          : `[${ident.render()}]`
+      }${props.optional ? "?" : ""}:${type_node.render()}`,
+  };
+}
+
+const construct_signature_type = "t:construct";
+
+export interface ConstructSignatureProps {
+  children: any;
+}
+
+export interface ConstructSignatureNode extends AstNode {
+  type: typeof construct_signature_type;
+  props: ConstructSignatureProps;
+}
+
+export function createConstructSignature(
+  props: ConstructSignatureProps
+): ConstructSignatureNode {
+  const walker = createChildWalker(property_signature_type, props);
+
+  const parameters = walker.spliceAssertGroup("param");
+
+  if (parameters.slice(0, -1).some((a) => a.props.modifier === "rest")) {
+    throw new InvalidSyntaxError(
+      `<${method_signature_type}> may only have a rest parameter as the last parameter`
+    );
+  }
+
+  const type_parameters = walker.spliceAssertGroup("t:param");
+
+  if (walker.remainingChildren.length > 1) {
+    throw new InvalidSyntaxError(
+      `<${method_signature_type}> must only specify a single return type. But found\n: ${walker.remainingChildren
+        .map((a) => `- ${a}`)
+        .join("\n")}`
+    );
+  }
+
+  const type_node = walker.spliceAssertNext([...TYPE_TYPES, "t:predicate"]);
+
+  return {
+    type: construct_signature_type,
+    props,
+    render: () => {
+      const t_params =
+        type_parameters.length > 0
+          ? `<${type_parameters.map((a) => a.render()).join(",")}>`
+          : "";
+
+      return `new${t_params}(${parameters
+        .map((a) => a.render())
+        .join(",")}):${type_node.render()}`;
+    },
+  };
+}
+
+const index_signature_type = "t:index";
+
+export interface IndexSignatureProps {
+  children: any;
+}
+
+export interface IndexSignatureNode extends AstNode {
+  type: typeof index_signature_type;
+  props: IndexSignatureProps;
+}
+
+export function createIndexSignature(
+  props: IndexSignatureProps
+): IndexSignatureNode {
+  const walker = createChildWalker(property_signature_type, props);
+
+  const ident = walker.spliceAssertNext("ident");
+  // TODO: t:template support
+  const index_type_node = walker.spliceAssertNext("t:primitive");
+
+  if (!["number", "string", "symbol"].includes(index_type_node.props.type)) {
+    throw new InvalidSyntaxError(
+      `<${index_signature_type}> must have a number, string, or symbol type primitive (TODO: Template literal types), but found: ${index_type_node.props.type}`
+    );
+  }
+
+  const sig_type_node = walker.spliceAssertNext([...TYPE_TYPES, "t:predicate"]);
+
+  return {
+    type: index_signature_type,
+    props,
+    render: () =>
+      `[${ident.render()}:${index_type_node.render()}]:${sig_type_node.render()}`,
   };
 }

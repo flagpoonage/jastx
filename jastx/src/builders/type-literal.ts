@@ -1,7 +1,6 @@
-import { assertMaxChildren, assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError } from "../errors.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES, VALUE_TYPES } from "../types.js";
+import { AstNode } from "../types.js";
 
 const type_literal_type = "t:literal";
 
@@ -27,7 +26,7 @@ export function createTypeLiteral(props: TypeLiteralProps): TypeLiteralNode {
   if (walker.remainingChildren.length > 0) {
     throw new InvalidChildrenError(
       type_literal_type,
-      ["t:property", "t:index"],
+      ["t:property", "t:index", "t:construct", "t:method"],
       walker.remainingChildTypes
     );
   }
@@ -35,6 +34,6 @@ export function createTypeLiteral(props: TypeLiteralProps): TypeLiteralNode {
   return {
     type: type_literal_type,
     props,
-    render: () => `{${property_nodes.map((a) => a.render()).join(";")}}`,
+    render: () => `{${property_nodes.map((a) => `${a.render()};`).join("")}}`,
   };
 }

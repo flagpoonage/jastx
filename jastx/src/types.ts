@@ -2,6 +2,8 @@ const _type_primitives = [
   "string",
   "number",
   "boolean",
+  "symbol",
+  "void",
   "any",
   "unknown",
   "never",
