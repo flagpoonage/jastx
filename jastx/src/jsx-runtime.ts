@@ -100,6 +100,10 @@ import {
   TypeIndexedProps,
 } from "./builders/type-indexed.js";
 import {
+  createTypeLiteral,
+  TypeLiteralProps,
+} from "./builders/type-literal.js";
+import {
   createTypeParameter,
   TypeParameterProps,
 } from "./builders/type-parameter.js";
@@ -115,6 +119,16 @@ import {
   createTypeReference,
   TypeReferenceProps,
 } from "./builders/type-reference.js";
+import {
+  ConstructSignatureProps,
+  createConstructSignature,
+  createIndexSignature,
+  createMethodSignature,
+  createPropertySignature,
+  IndexSignatureProps,
+  MethodSignatureProps,
+  PropertySignatureProps,
+} from "./builders/type-signatures.js";
 import {
   AwaitExpressionProps,
   createAwaitExpression,
@@ -216,6 +230,16 @@ export const jsxs = <T>(
         return createTypeParameter(options as TypeParameterProps);
       case "t:predicate":
         return createTypePredicate(options as TypePredicateProps);
+      case "t:method":
+        return createMethodSignature(options as MethodSignatureProps);
+      case "t:property":
+        return createPropertySignature(options as PropertySignatureProps);
+      case "t:construct":
+        return createConstructSignature(options as ConstructSignatureProps);
+      case "t:index":
+        return createIndexSignature(options as IndexSignatureProps);
+      case "t:literal":
+        return createTypeLiteral(options as TypeLiteralProps);
 
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
@@ -314,6 +338,11 @@ declare global {
       ["t:indexed"]: TypeIndexedProps;
       ["t:param"]: TypeParameterProps;
       ["t:predicate"]: TypePredicateProps;
+      ["t:method"]: MethodSignatureProps;
+      ["t:property"]: PropertySignatureProps;
+      ["t:construct"]: ConstructSignatureProps;
+      ["t:index"]: IndexSignatureProps;
+      ["t:literal"]: TypeLiteralProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
