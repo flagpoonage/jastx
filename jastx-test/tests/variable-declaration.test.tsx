@@ -1,31 +1,31 @@
 import { expect, test } from "vitest";
 
-test("var:declaration renders correctly with just a name", () => {
+test("dclr:var renders correctly with just a name", () => {
   const v = (
-    <var:declaration>
+    <dclr:var>
       <ident name="test" />
-    </var:declaration>
+    </dclr:var>
   );
   expect(v.render()).toBe("test");
 });
 
-test("var:declaration throws with no children", () => {
-  expect(() => <var:declaration />).toThrowError();
+test("dclr:var throws with no children", () => {
+  expect(() => <dclr:var />).toThrowError();
 });
 
-test("var:declaration renders correctly with type", () => {
+test("dclr:var renders correctly with type", () => {
   const v = (
-    <var:declaration>
+    <dclr:var>
       <ident name="test" />
       <t:primitive type="string" />
-    </var:declaration>
+    </dclr:var>
   );
   expect(v.render()).toBe("test:string");
 });
 
-test("var:declaration renders correctly with array binding", () => {
+test("dclr:var renders correctly with array binding", () => {
   const v = (
-    <var:declaration>
+    <dclr:var>
       <bind:array>
         <ident name="a" />
         <bind:array-elem>
@@ -34,7 +34,7 @@ test("var:declaration renders correctly with array binding", () => {
         </bind:array-elem>
       </bind:array>
       <t:primitive type="string" />
-    </var:declaration>
+    </dclr:var>
   );
   expect(v.render()).toBe("[a,b=10]:string");
 });

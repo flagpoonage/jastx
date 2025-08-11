@@ -8,7 +8,7 @@ import {
   VALUE_TYPES,
 } from "../types.js";
 
-const type = "var:declaration";
+const type = "dclr:var";
 
 export interface VariableDeclarationProps {
   children?: any;

@@ -2,7 +2,7 @@ import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { AstNode } from "../types.js";
 
-const type = "var:statement";
+const type = "stmt:var";
 
 export interface VariableStatementProps {
   children: AstNode[] | AstNode;
@@ -15,7 +15,7 @@ export interface VariableStatementNode extends AstNode {
 }
 
 export function isVariableStatement(v: AstNode): v is VariableStatementNode {
-  return v.type === "var:statement";
+  return v.type === "stmt:var";
 }
 
 export function createVariableStatement(
@@ -25,7 +25,7 @@ export function createVariableStatement(
 
   const walker = createChildWalker(type, props);
 
-  const property_node = walker.spliceAssertNext(["var:declaration-list"]);
+  const property_node = walker.spliceAssertNext(["dclr:var-list"]);
 
   return {
     type: type,

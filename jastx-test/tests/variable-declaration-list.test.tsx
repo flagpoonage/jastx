@@ -1,73 +1,73 @@
 import { expect, test } from "vitest";
 
-test("var:declaration-list renders correctly with const", () => {
+test("dclr:var-list renders correctly with const", () => {
   const v = (
-    <var:declaration-list type="const">
-      <var:declaration>
+    <dclr:var-list type="const">
+      <dclr:var>
         <ident name="x" />
         <t:primitive type="string" />
         <l:string value="Hello" />
-      </var:declaration>
-    </var:declaration-list>
+      </dclr:var>
+    </dclr:var-list>
   );
   expect(v.render()).toBe('const x:string="Hello"');
 });
 
-test("var:declaration-list renders correctly with let", () => {
+test("dclr:var-list renders correctly with let", () => {
   const v = (
-    <var:declaration-list type="let">
-      <var:declaration>
+    <dclr:var-list type="let">
+      <dclr:var>
         <ident name="x" />
         <t:primitive type="string" />
         <l:string value="Hello" />
-      </var:declaration>
-    </var:declaration-list>
+      </dclr:var>
+    </dclr:var-list>
   );
   expect(v.render()).toBe('let x:string="Hello"');
 });
 
-test("var:declaration-list renders correctly with var", () => {
+test("dclr:var-list renders correctly with var", () => {
   const v = (
-    <var:declaration-list type="var">
-      <var:declaration>
+    <dclr:var-list type="var">
+      <dclr:var>
         <ident name="x" />
         <t:primitive type="string" />
         <l:string value="Hello" />
-      </var:declaration>
-    </var:declaration-list>
+      </dclr:var>
+    </dclr:var-list>
   );
   expect(v.render()).toBe('var x:string="Hello"');
 });
 
-test("var:declaration-list renders correctly with a multiple declarations", () => {
+test("dclr:var-list renders correctly with a multiple declarations", () => {
   const v = (
-    <var:declaration-list type="const">
-      <var:declaration>
+    <dclr:var-list type="const">
+      <dclr:var>
         <ident name="x" />
         <t:primitive type="string" />
         <l:string value="Hello" />
-      </var:declaration>
-      <var:declaration>
+      </dclr:var>
+      <dclr:var>
         <ident name="y" />
         <t:primitive type="number" />
         <expr:as>
           <l:number value={10} />
           <t:primitive type="number" />
         </expr:as>
-      </var:declaration>
-      <var:declaration>
+      </dclr:var>
+      <dclr:var>
         <ident name="z" />
         <l:object />
-      </var:declaration>
-    </var:declaration-list>
+      </dclr:var>
+    </dclr:var-list>
   );
   expect(v.render()).toBe('const x:string="Hello",y:number=10 as number,z={}');
 });
 
-test("var:declaration-list renders correctly with non-identifier bindings", () => {
+test("dclr:var-list renders correctly with non-identifier bindings", () => {
   const v = (
-    <var:declaration-list type="const">
-      <var:declaration>
+    <dclr:var-list type="const">
+      <dclr:var>
         <bind:object>
           <ident name="zz" />
           <bind:object-elem mode="initializer">
@@ -85,8 +85,8 @@ test("var:declaration-list renders correctly with non-identifier bindings", () =
             <l:number value={30} />
           </l:object-prop>
         </l:object>
-      </var:declaration>
-      <var:declaration>
+      </dclr:var>
+      <dclr:var>
         <bind:array>
           <ident name="a1" />
           <bind:array-elem>
@@ -98,8 +98,8 @@ test("var:declaration-list renders correctly with non-identifier bindings", () =
           <l:string value="test" />
           <l:number value={30} />
         </l:array>
-      </var:declaration>
-    </var:declaration-list>
+      </dclr:var>
+    </dclr:var-list>
   );
   expect(v.render()).toBe(
     'const {zz,qq=10}={zz:"test",qq:30},[a1,a2=10]=["test",30]'

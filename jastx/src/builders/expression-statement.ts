@@ -3,7 +3,7 @@ import { createChildWalker } from "../child-walker.js";
 import { AmbiguousParserError } from "../errors.js";
 import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
 
-const type = "expr:statement";
+const type = "stmt:expr";
 
 export interface ExpressionStatementProps {
   children: any;
