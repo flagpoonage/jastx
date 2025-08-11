@@ -80,6 +80,10 @@ import {
   PropertyAccessExpressionProps,
 } from "./builders/property-access-expression.js";
 import {
+  createReturnStatement,
+  ReturnStatementProps,
+} from "./builders/return-statement.js";
+import {
   createTemplateExpression,
   TemplateExpressionlProps,
 } from "./builders/template-expression.js";
@@ -270,6 +274,8 @@ export const jsxs = <T>(
         return createVariableStatement(options as VariableStatementProps);
       case "stmt:expr":
         return createExpressionStatement(options as ExpressionStatementProps);
+      case "stmt:return":
+        return createReturnStatement(options as ReturnStatementProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -287,7 +293,6 @@ export const jsxs = <T>(
       throw new Error(`Unknown error while rendering <${element}>`);
     }
   }
-
   throw new Error(`Unable to create AST node for [${element}]`);
 };
 
@@ -341,6 +346,7 @@ declare global {
       ["stmt:if"]: IfStatementProps;
       ["stmt:expr"]: ExpressionStatementProps;
       ["stmt:var"]: VariableStatementProps;
+      ["stmt:return"]: ReturnStatementProps;
 
       ["dclr:var"]: VariableDeclarationProps;
       ["dclr:var-list"]: VariableDeclarationListProps;
