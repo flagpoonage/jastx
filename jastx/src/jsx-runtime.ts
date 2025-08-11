@@ -88,6 +88,12 @@ import {
   TemplateExpressionlProps,
 } from "./builders/template-expression.js";
 import {
+  CatchClauseProps,
+  createCatchClause,
+  createTryStatement,
+  TryStatementProps,
+} from "./builders/try-statement.js";
+import {
   createTypeConditional,
   TypeConditionalProps,
 } from "./builders/type-conditional.js";
@@ -181,6 +187,8 @@ export const jsxs = <T>(
         return createParameter(options as ParameterProps);
       case "arrow-function":
         return createArrowFunction(options as ArrowFunctionProps);
+      case "catch-clause":
+        return createCatchClause(options as CatchClauseProps);
 
       // Declarations
       case "dclr:function":
@@ -276,6 +284,8 @@ export const jsxs = <T>(
         return createExpressionStatement(options as ExpressionStatementProps);
       case "stmt:return":
         return createReturnStatement(options as ReturnStatementProps);
+      case "stmt:try":
+        return createTryStatement(options as TryStatementProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -341,12 +351,15 @@ declare global {
       ["block"]: BlockProps;
       ["param"]: ParameterProps;
       ["arrow-function"]: ArrowFunctionProps;
+      ["catch-clause"]: CatchClauseProps;
+
       ["dclr:function"]: FunctionDeclarationProps;
 
       ["stmt:if"]: IfStatementProps;
       ["stmt:expr"]: ExpressionStatementProps;
       ["stmt:var"]: VariableStatementProps;
       ["stmt:return"]: ReturnStatementProps;
+      ["stmt:try"]: TryStatementProps;
 
       ["dclr:var"]: VariableDeclarationProps;
       ["dclr:var-list"]: VariableDeclarationListProps;

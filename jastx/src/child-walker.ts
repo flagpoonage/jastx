@@ -16,7 +16,7 @@ export function createChildWalker(
   const children = [...og_children];
   const indexOf = (node: any) => og_children.indexOf(node);
 
-  return {
+  const walker = {
     get remainingChildren() {
       return children;
     },
@@ -196,6 +196,60 @@ export function createChildWalker(
       return single;
     },
 
+    spliceAssertExactPath: (
+      path: (ElementType | "text" | (ElementType | "text" | null)[])[],
+      options?: { noTrailing?: boolean }
+    ): (AstNode | null)[] => {
+      const collected: (AstNode | null)[] = [];
+      const { noTrailing = false } = options ?? {};
+
+      for (let i = 0; i < path.length; i++) {
+        const search_type = path[i];
+
+        if (!Array.isArray(search_type)) {
+          if (search_type === "text") {
+            collected.push(walker.spliceAssertNext([], { allowText: true }));
+          } else {
+            collected.push(walker.spliceAssertNext([search_type]));
+          }
+        } else {
+          const types = new Set(search_type);
+          const allow_text = types.has("text");
+          types.delete("text");
+
+          const optional = types.has(null);
+          types.delete(null);
+
+          if (optional) {
+            const node = walker.spliceAssertNextOptional(
+              Array.from(types as Set<ElementType>),
+              { allowText: allow_text }
+            );
+
+            collected.push(node ?? null);
+          } else {
+            collected.push(
+              walker.spliceAssertNext(Array.from(types as Set<ElementType>), {
+                allowText: allow_text,
+              })
+            );
+          }
+        }
+      }
+
+      if (noTrailing && walker.remainingChildren.length > 0) {
+        throw new InvalidSyntaxError(
+          `<${parentType}> expected no children after path [${path
+            .map((a) => (Array.isArray(a) ? `[${a.join(",")}]` : a))
+            .join(",")}] but found:\n${walker.remainingChildTypes
+            .map((a) => `- <${a}>`)
+            .join("\n")}`
+        );
+      }
+
+      return collected;
+    },
+
     spliceAssertNext: (
       type: ElementType | ElementType[],
       options?: { allowText: boolean }
@@ -303,4 +357,6 @@ export function createChildWalker(
       return single;
     },
   };
+
+  return walker;
 }

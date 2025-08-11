@@ -1,5 +1,13 @@
 import { InvalidSyntaxError } from "./errors.js";
 
+// Only use this in the context of values that you know exist
+// but typescript isn't quite sure.
+export function assertValue<T>(v: T | null | undefined): asserts v is T {
+  if (v === undefined || v === null) {
+    throw new Error(`IMPL BUG: Expected value but none was found`);
+  }
+}
+
 export function assertZeroChildren(name: string, props: any) {
   return assertNChildren(name, 0, props);
 }
