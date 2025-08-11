@@ -1,53 +1,53 @@
 import { expect, test } from "vitest";
 
-test("function-declaration renders correctly", () => {
+test("dclr:function renders correctly", () => {
   const v1 = (
-    <function-declaration>
+    <dclr:function>
       <ident name="test" />
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("function test(){}");
 });
 
-test("function-declaration renders correctly", () => {
+test("dclr:function renders correctly", () => {
   const v1 = (
-    <function-declaration async={true}>
+    <dclr:function async={true}>
       <ident name="test" />
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("async function test(){}");
 });
 
-test("function-declaration renders correctly without a body", () => {
+test("dclr:function renders correctly without a body", () => {
   // This is only for overloads, it's a bit shaky about how it's actually valid
   // we would need to compare siblings to see if this actually overloads another
   // function because overloads need to be declared next to each other.
   //
   // We could possibly break with typescript's AST here and declarably force something
   // like
-  // <function-declaration>
-  //   <function-declaration-overload>
+  // <dclr:function>
+  //   <dclr:function-overload>
   //      ...type params, params and return values
-  //   </function-declaration-overload>
+  //   </dclr:function-overload>
   //   <ident name="test" />
   //   ...rest
   //
   const v1 = (
-    <function-declaration>
+    <dclr:function>
       <ident name="test" />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("function test()");
 });
 
-test("function-declaration renders with parameters", () => {
+test("dclr:function renders with parameters", () => {
   const v1 = (
-    <function-declaration>
+    <dclr:function>
       <ident name="test" />
       <param>
         <ident name="a" />
@@ -62,15 +62,15 @@ test("function-declaration renders with parameters", () => {
         <l:string value="hello" />
       </param>
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe('function test(a,b:string,c:string="hello"){}');
 });
 
-test("function-declaration renders with type parameters", () => {
+test("dclr:function renders with type parameters", () => {
   const v1 = (
-    <function-declaration>
+    <dclr:function>
       <ident name="test" />
       <t:param>
         <ident name="A" />
@@ -98,15 +98,15 @@ test("function-declaration renders with type parameters", () => {
         <l:string value="hello" />
       </param>
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe('function test<A,B,C>(a,b:B,c:C="hello"){}');
 });
 
-test("function-declaration renders with type predicate", () => {
+test("dclr:function renders with type predicate", () => {
   const v1 = (
-    <function-declaration>
+    <dclr:function>
       <ident name="test" />
       <t:param>
         <ident name="A" />
@@ -138,7 +138,7 @@ test("function-declaration renders with type predicate", () => {
         <t:primitive type="string" />
       </t:predicate>
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe(
@@ -146,67 +146,67 @@ test("function-declaration renders with type predicate", () => {
   );
 });
 
-test("function-declaration renders with generator token", () => {
+test("dclr:function renders with generator token", () => {
   const v1 = (
-    <function-declaration generator={true}>
+    <dclr:function generator={true}>
       <ident name="test" />
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("function* test(){}");
 });
 
-test("function-declaration renders with named export", () => {
+test("dclr:function renders with named export", () => {
   const v1 = (
-    <function-declaration exported="named">
+    <dclr:function exported="named">
       <ident name="test" />
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("export function test(){}");
 });
 
-test("function-declaration renders with default export", () => {
+test("dclr:function renders with default export", () => {
   const v1 = (
-    <function-declaration exported="default">
+    <dclr:function exported="default">
       <ident name="test" />
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("export default function test(){}");
 });
 
-test("function-declaration renders with default export and no name", () => {
+test("dclr:function renders with default export and no name", () => {
   const v1 = (
-    <function-declaration exported="default">
+    <dclr:function exported="default">
       <block />
-    </function-declaration>
+    </dclr:function>
   );
 
   expect(v1.render()).toBe("export default function (){}");
 });
 
-test("function-declaration throws an error if no name is provided and it is not a default export", () => {
+test("dclr:function throws an error if no name is provided and it is not a default export", () => {
   expect(() => (
-    <function-declaration exported="named">
+    <dclr:function exported="named">
       <block />
-    </function-declaration>
+    </dclr:function>
   )).toThrow();
 
   expect(() => (
-    <function-declaration>
+    <dclr:function>
       <block />
-    </function-declaration>
+    </dclr:function>
   )).toThrow();
 });
 
-test("function-declaration throws an error if generator is specified without a body", () => {
+test("dclr:function throws an error if generator is specified without a body", () => {
   expect(() => (
-    <function-declaration generator={true}>
+    <dclr:function generator={true}>
       <ident name="test" />
-    </function-declaration>
+    </dclr:function>
   )).toThrow();
 });

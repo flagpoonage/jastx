@@ -11,11 +11,6 @@ const _type_primitives = [
 
 export type TypePrimitiveName = (typeof _type_primitives)[number];
 
-const _properties = ["var-name", "fun-name", "type"] as const;
-
-export type PassthroughElementTypeName = (typeof _properties)[number];
-export type PassthroughElementType = `p:${PassthroughElementTypeName}`;
-
 const _literals = [
   "boolean",
   "number",
@@ -37,7 +32,6 @@ export type LiteralObjectNodeType = `l:object-${LiteralObjectNodeTypeName}`;
 const _standalone_exressions = [
   "template",
   "function",
-  "statement",
   "parens",
   "prop-access",
   "elem-access",
@@ -94,28 +88,32 @@ const _types = [
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
 
+const _statements = ["expr", "var", "if", "return"] as const;
+
+export type StatementElementTypeName = (typeof _statements)[number];
+export type StatementElementType = `stmt:${StatementElementTypeName}`;
+
+const _declarations = ["function", "var", "var-list"] as const;
+
+export type DeclarationElementTypeName = (typeof _declarations)[number];
+export type DeclarationElementType = `dclr:${DeclarationElementTypeName}`;
+
 export type ElementType =
   | "ident"
   | "text"
   | "block"
   | "arrow-function"
-  | "function-declaration"
-  | "if-statement"
   | "param"
-  | "var:statement"
-  | "var:declaration"
-  | "var:declaration-list"
-  | "var:declaration-name"
   | "bind:array"
   | "bind:array-elem"
   | "bind:object"
   | "bind:object-elem"
-  | "exact-literal"
   | LiteralObjectNodeType
   | ExpressionType
   | TypeElementType
   | LiteralElementType
-  | PassthroughElementType;
+  | StatementElementType
+  | DeclarationElementType;
 
 export const STANDLONE_EXPRESSION_TYPES: readonly StandaloneExpressionType[] = [
   "expr:elem-access",
@@ -168,12 +166,6 @@ export const LITERAL_TYPES: readonly LiteralElementType[] = [
   "l:array",
 ];
 
-export const PASSTHROUGH_TYPES: readonly PassthroughElementType[] = [
-  "p:fun-name",
-  "p:var-name",
-  "p:type",
-];
-
 export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:primitive",
   "t:ref",
@@ -184,11 +176,18 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   // t:predicate is only used as a function return type, so is not included here generally.
 ] as const;
 
-export const BLOCK_STATEMENTS_AND_DECLARATIONS: readonly ElementType[] = [
-  "var:statement",
-  "function-declaration",
-  "if-statement",
-  "expr:statement",
+export const STATEMENT_TYPES: readonly StatementElementType[] = [
+  "stmt:expr",
+  "stmt:if",
+  "stmt:var",
+  "stmt:return",
+] as const;
+
+export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
+  "dclr:function",
+  "dclr:var",
+  // var-list is pretty much only allowed inside dclr:var
+  // "dclr:var-list",
 ];
 
 export function omitFrom(

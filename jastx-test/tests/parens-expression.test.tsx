@@ -42,11 +42,11 @@ test("expr:parens throws an error when it has multiple children", () => {
 test("expr:parens throws an error when it contains non-expressions or literals", () => {
   expect(() => (
     <expr:parens>
-      <var:declaration-list type="const">
-        <var:declaration>
+      <dclr:var-list type="const">
+        <dclr:var>
           <ident name="a" />
-        </var:declaration>
-      </var:declaration-list>
+        </dclr:var>
+      </dclr:var-list>
     </expr:parens>
   )).toThrowError();
 });

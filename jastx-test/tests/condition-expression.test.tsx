@@ -83,9 +83,9 @@ test("throws an error with statements", () => {
     <expr:cond>
       <ident name="x" />
       <ident name="x" />
-      <expr:statement>
+      <stmt:expr>
         <ident name="z" />
-      </expr:statement>
+      </stmt:expr>
     </expr:cond>
   )).toThrow();
 });

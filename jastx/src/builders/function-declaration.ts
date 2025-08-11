@@ -2,7 +2,7 @@ import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
 import { AstNode, TYPE_TYPES } from "../types.js";
 
-const type = "function-declaration";
+const type = "dclr:function";
 
 export interface FunctionDeclarationProps {
   children: any;

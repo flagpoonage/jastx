@@ -1,129 +1,129 @@
 import { expect, test } from "vitest";
 
-test("if-statement renders correctly with a single expression", () => {
+test("stmt:if renders correctly with a single expression", () => {
   const v = (
-    <if-statement>
+    <stmt:if>
       <ident name="v" />
-      <expr:statement>
+      <stmt:expr>
         <expr:call>
           <ident name="v" />
         </expr:call>
-      </expr:statement>
-    </if-statement>
+      </stmt:expr>
+    </stmt:if>
   );
 
   expect(v.render()).toBe("if(v)v()");
 });
 
-test("if-statement renders correctly with a block", () => {
+test("stmt:if renders correctly with a block", () => {
   const v = (
-    <if-statement>
+    <stmt:if>
       <ident name="v" />
       <block>
-        <expr:statement>
+        <stmt:expr>
           <expr:call>
             <ident name="v" />
           </expr:call>
-        </expr:statement>
+        </stmt:expr>
       </block>
-    </if-statement>
+    </stmt:if>
   );
 
   expect(v.render()).toBe("if(v){v();}");
 });
 
-test("if-statement renders correctly with an else single statement", () => {
+test("stmt:if renders correctly with an else single statement", () => {
   const v = (
-    <if-statement>
+    <stmt:if>
       <ident name="v" />
-      <expr:statement>
+      <stmt:expr>
         <expr:call>
           <ident name="v" />
         </expr:call>
-      </expr:statement>
-      <expr:statement>
+      </stmt:expr>
+      <stmt:expr>
         <expr:call>
           <ident name="x" />
         </expr:call>
-      </expr:statement>
-    </if-statement>
+      </stmt:expr>
+    </stmt:if>
   );
 
   expect(v.render()).toBe("if(v)v();else x()");
 });
 
-test("if-statement renders correctly with an else block", () => {
+test("stmt:if renders correctly with an else block", () => {
   const v = (
-    <if-statement>
+    <stmt:if>
       <ident name="v" />
-      <expr:statement>
+      <stmt:expr>
         <expr:call>
           <ident name="v" />
         </expr:call>
-      </expr:statement>
+      </stmt:expr>
       <block>
-        <expr:statement>
+        <stmt:expr>
           <expr:call>
             <ident name="x" />
           </expr:call>
-        </expr:statement>
+        </stmt:expr>
       </block>
-    </if-statement>
+    </stmt:if>
   );
 
   expect(v.render()).toBe("if(v)v();else{x();}");
   const v2 = (
-    <if-statement>
+    <stmt:if>
       <ident name="v" />
       <block>
-        <expr:statement>
+        <stmt:expr>
           <expr:call>
             <ident name="v" />
           </expr:call>
-        </expr:statement>
+        </stmt:expr>
       </block>
       <block>
-        <expr:statement>
+        <stmt:expr>
           <expr:call>
             <ident name="x" />
           </expr:call>
-        </expr:statement>
+        </stmt:expr>
       </block>
-    </if-statement>
+    </stmt:if>
   );
 
   expect(v2.render()).toBe("if(v){v();}else{x();}");
 });
 
-test("if-statement renders correctly with nested if statements", () => {
+test("stmt:if renders correctly with nested if statements", () => {
   const v = (
-    <if-statement>
+    <stmt:if>
       <ident name="v" />
       <block>
-        <expr:statement>
+        <stmt:expr>
           <expr:call>
             <ident name="x" />
           </expr:call>
-        </expr:statement>
+        </stmt:expr>
       </block>
-      <if-statement>
+      <stmt:if>
         <ident name="a" />
         <block>
-          <expr:statement>
+          <stmt:expr>
             <expr:call>
               <ident name="a" />
             </expr:call>
-          </expr:statement>
+          </stmt:expr>
         </block>
         <block>
-          <expr:statement>
+          <stmt:expr>
             <expr:call>
               <ident name="v" />
             </expr:call>
-          </expr:statement>
+          </stmt:expr>
         </block>
-      </if-statement>
-    </if-statement>
+      </stmt:if>
+    </stmt:if>
   );
 
   expect(v.render()).toBe("if(v){x();}else if(a){a();}else{v();}");

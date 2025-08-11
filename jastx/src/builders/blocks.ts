@@ -3,7 +3,7 @@ import {
   InvalidChildrenError,
   InvalidExportedMembersError,
 } from "../errors.js";
-import { AstNode, BLOCK_STATEMENTS_AND_DECLARATIONS } from "../types.js";
+import { AstNode, DECLARATION_TYPES, STATEMENT_TYPES } from "../types.js";
 import { isFunctionDeclaration } from "./function-declaration.js";
 import { isVariableStatement } from "./variable-statement.js";
 
@@ -18,7 +18,7 @@ export interface BlockNode extends AstNode {
   props: BlockProps;
 }
 
-const allowed_types = [...BLOCK_STATEMENTS_AND_DECLARATIONS];
+const allowed_types = [...STATEMENT_TYPES, ...DECLARATION_TYPES];
 
 export function createBlock(props: BlockProps): BlockNode {
   const walker = createChildWalker(type, props);

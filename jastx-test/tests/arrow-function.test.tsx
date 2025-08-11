@@ -43,13 +43,13 @@ test("arrow-function renders correctly with block element", () => {
     <arrow-function>
       <block>
         {/** TODO: Simpler exmaples when you have more statement types */}
-        <var:statement>
-          <var:declaration-list type="let">
-            <var:declaration>
+        <stmt:var>
+          <dclr:var-list type="let">
+            <dclr:var>
               <ident name="c" />
-            </var:declaration>
-          </var:declaration-list>
-        </var:statement>
+            </dclr:var>
+          </dclr:var-list>
+        </stmt:var>
       </block>
     </arrow-function>
   );
@@ -72,13 +72,13 @@ test("arrow-function throws an error with implict returns and a block", () => {
       <l:number value={20} />
       <block>
         {/** TODO: Simpler exmaples when you have more statement types */}
-        <var:statement>
-          <var:declaration-list type="let">
-            <var:declaration>
+        <stmt:var>
+          <dclr:var-list type="let">
+            <dclr:var>
               <ident name="c" />
-            </var:declaration>
-          </var:declaration-list>
-        </var:statement>
+            </dclr:var>
+          </dclr:var-list>
+        </stmt:var>
       </block>
     </arrow-function>
   )).toThrow();
@@ -89,13 +89,13 @@ test("arrow-function throws an error with if values follow the block", () => {
     <arrow-function>
       <block>
         {/** TODO: Simpler exmaples when you have more statement types */}
-        <var:statement>
-          <var:declaration-list type="let">
-            <var:declaration>
+        <stmt:var>
+          <dclr:var-list type="let">
+            <dclr:var>
               <ident name="c" />
-            </var:declaration>
-          </var:declaration-list>
-        </var:statement>
+            </dclr:var>
+          </dclr:var-list>
+        </stmt:var>
       </block>
       <l:number value={20} />
     </arrow-function>

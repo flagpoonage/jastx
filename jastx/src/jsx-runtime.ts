@@ -30,10 +30,6 @@ import {
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
 import {
-  createExactLiteral,
-  ExactLiteralProps,
-} from "./builders/exact-literal.js";
-import {
   createExpressionStatement,
   ExpressionStatementProps,
 } from "./builders/expression-statement.js";
@@ -80,13 +76,13 @@ import {
   ParensExpressionProps,
 } from "./builders/parens-expressions.js";
 import {
-  createPropertyElement,
-  PropertyPassthroughProps,
-} from "./builders/properties.js";
-import {
   createPropertyAccessExpression,
   PropertyAccessExpressionProps,
 } from "./builders/property-access-expression.js";
+import {
+  createReturnStatement,
+  ReturnStatementProps,
+} from "./builders/return-statement.js";
 import {
   createTemplateExpression,
   TemplateExpressionlProps,
@@ -176,6 +172,7 @@ export const jsxs = <T>(
 
   try {
     switch (element) {
+      // Standalone elements
       case "ident":
         return createIdentifier(options as IdentifierProps);
       case "block":
@@ -184,25 +181,19 @@ export const jsxs = <T>(
         return createParameter(options as ParameterProps);
       case "arrow-function":
         return createArrowFunction(options as ArrowFunctionProps);
-      case "function-declaration":
-        return createFunctionDeclaration(options as FunctionDeclarationProps);
-      case "if-statement":
-        return createIfStatement(options as IfStatementProps);
 
-      case "exact-literal":
-        return createExactLiteral(options as ExactLiteralProps);
-      case "var:declaration":
+      // Declarations
+      case "dclr:function":
+        return createFunctionDeclaration(options as FunctionDeclarationProps);
+
+      case "dclr:var":
         return createVariableDeclaration(options as VariableDeclarationProps);
-      case "var:declaration-list":
+      case "dclr:var-list":
         return createVariableDeclarationList(
           options as VariableDeclarationListProps
         );
-      case "var:statement":
-        return createVariableStatement(options as VariableStatementProps);
-      case "expr:as":
-        return createAsExpression(options as AsExpressionProps);
-      case "expr:parens":
-        return createParensExpression(options as ParensExpressionProps);
+
+      // Literal values
       case "l:boolean":
         return createBooleanLiteral(options as BooleanLiteralProps);
       case "l:number":
@@ -215,9 +206,12 @@ export const jsxs = <T>(
         return createBigintLiteral(options as BigintLiteralProps);
       case "l:object":
         return createObjectLiteral(options as ObjectLiteralProps);
+      case "l:object-prop":
+        return createObjectProperty(options as ObjectPropertyProps);
       case "l:array":
         return createArrayLiteral(options as ArrayLiteralProps);
 
+      // Typescript syntax
       case "t:primitive":
         return createTypePrimitive(options as TypePrimitiveProps);
       case "t:ref":
@@ -241,6 +235,11 @@ export const jsxs = <T>(
       case "t:literal":
         return createTypeLiteral(options as TypeLiteralProps);
 
+      // Expressions
+      case "expr:as":
+        return createAsExpression(options as AsExpressionProps);
+      case "expr:parens":
+        return createParensExpression(options as ParensExpressionProps);
       case "expr:non-null":
         return createNonNullExpression(options as NonNullExpressionProps);
       case "expr:prop-access":
@@ -257,8 +256,6 @@ export const jsxs = <T>(
         return createCallExpression(options as CallExpressionProps);
       case "expr:function":
         return createFunctionExpression(options as FunctionExpressionProps);
-      case "expr:statement":
-        return createExpressionStatement(options as ExpressionStatementProps);
       case "expr:not":
         return createNotExpression(options as NotExpressionProps);
       case "expr:await":
@@ -270,6 +267,16 @@ export const jsxs = <T>(
       case "expr:cond":
         return createConditionExpression(options as ConditionExpressionProps);
 
+      // Statements
+      case "stmt:if":
+        return createIfStatement(options as IfStatementProps);
+      case "stmt:var":
+        return createVariableStatement(options as VariableStatementProps);
+      case "stmt:expr":
+        return createExpressionStatement(options as ExpressionStatementProps);
+      case "stmt:return":
+        return createReturnStatement(options as ReturnStatementProps);
+
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
       case "bind:array-elem":
@@ -278,15 +285,6 @@ export const jsxs = <T>(
         return createObjectBindingElement(options as ObjectBindingElementProps);
       case "bind:object":
         return createObjectBinding(options as ObjectBindingProps);
-
-      case "l:object-prop":
-        return createObjectProperty(options as ObjectPropertyProps);
-    }
-
-    if (element.startsWith("p:")) {
-      return createPropertyElement[element](
-        options as PropertyPassthroughProps
-      );
     }
   } catch (ex) {
     if (ex instanceof Error) {
@@ -295,7 +293,6 @@ export const jsxs = <T>(
       throw new Error(`Unknown error while rendering <${element}>`);
     }
   }
-
   throw new Error(`Unable to create AST node for [${element}]`);
 };
 
@@ -319,10 +316,6 @@ declare global {
     type Element = AstNode;
 
     interface IntrinsicElements {
-      ["p:var-name"]: PropertyPassthroughProps;
-      ["p:fun-name"]: PropertyPassthroughProps;
-      ["p:type"]: PropertyPassthroughProps;
-
       ["l:boolean"]: BooleanLiteralProps;
       ["l:number"]: NumberLiteralProps;
       ["l:string"]: StringLiteralProps;
@@ -348,13 +341,15 @@ declare global {
       ["block"]: BlockProps;
       ["param"]: ParameterProps;
       ["arrow-function"]: ArrowFunctionProps;
-      ["function-declaration"]: FunctionDeclarationProps;
-      ["if-statement"]: IfStatementProps;
+      ["dclr:function"]: FunctionDeclarationProps;
 
-      ["exact-literal"]: ExactLiteralProps;
-      ["var:declaration"]: VariableDeclarationProps;
-      ["var:declaration-list"]: VariableDeclarationListProps;
-      ["var:statement"]: VariableStatementProps;
+      ["stmt:if"]: IfStatementProps;
+      ["stmt:expr"]: ExpressionStatementProps;
+      ["stmt:var"]: VariableStatementProps;
+      ["stmt:return"]: ReturnStatementProps;
+
+      ["dclr:var"]: VariableDeclarationProps;
+      ["dclr:var-list"]: VariableDeclarationListProps;
       ["expr:as"]: AsExpressionProps;
       ["expr:parens"]: ParensExpressionProps;
       ["expr:non-null"]: NonNullExpressionProps;
@@ -363,7 +358,6 @@ declare global {
       ["expr:template"]: TemplateExpressionlProps;
       ["expr:call"]: CallExpressionProps;
       ["expr:function"]: FunctionExpressionProps;
-      ["expr:statement"]: ExpressionStatementProps;
       ["expr:not"]: NotExpressionProps;
       ["expr:await"]: AwaitExpressionProps;
       ["expr:typeof"]: TypeofExpressionProps;

@@ -42,11 +42,11 @@ test("expr:non-null throws an error when it has multiple children", () => {
     <expr:non-null>
       <expr:as>
         <l:number value={20} />
-          <t:primitive type="string" />
+        <t:primitive type="string" />
       </expr:as>
       <expr:as>
         <l:number value={20} />
-          <t:primitive type="string" />
+        <t:primitive type="string" />
       </expr:as>
     </expr:non-null>
   )).toThrowError();
@@ -55,11 +55,11 @@ test("expr:non-null throws an error when it has multiple children", () => {
 test("expr:non-null throws an error when it contains non-expressions or literals", () => {
   expect(() => (
     <expr:non-null>
-      <var:declaration-list type="const">
-        <var:declaration>
+      <dclr:var-list type="const">
+        <dclr:var>
           <ident name="a" />
-        </var:declaration>
-      </var:declaration-list>
+        </dclr:var>
+      </dclr:var-list>
     </expr:non-null>
   )).toThrowError();
 });

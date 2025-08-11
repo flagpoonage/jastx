@@ -2,7 +2,7 @@ import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
 
-const type = "var:declaration-list";
+const type = "dclr:var-list";
 
 export interface VariableDeclarationListProps {
   children: any;
@@ -19,7 +19,7 @@ export function createVariableDeclarationList(
 ): VariableDeclarationListNode {
   const walker = createChildWalker(type, props);
 
-  const variable_declarations = walker.spliceAssertGroup("var:declaration", {
+  const variable_declarations = walker.spliceAssertGroup("dclr:var", {
     size: [1, undefined],
   });
 
