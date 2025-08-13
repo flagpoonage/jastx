@@ -2,36 +2,35 @@ import { assertNChildren, assertValue } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { AstNode, EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
 
-const type = "stmt:for-of";
+const type = "stmt:for-in";
 
-export interface ForOfStatementProps {
+export interface ForInStatementProps {
   children: AstNode[] | AstNode;
-  await?: boolean;
   variableType?: "const" | "let" | "var";
 }
 
-export interface ForOfStatementNode extends AstNode {
+export interface ForInStatementNode extends AstNode {
   type: typeof type;
-  props: ForOfStatementProps;
+  props: ForInStatementProps;
 }
 
-export function isForOfStatement(v: AstNode): v is ForOfStatementNode {
-  return v.type === "stmt:for-of";
+export function isForInStatement(v: AstNode): v is ForInStatementNode {
+  return v.type === "stmt:for-in";
 }
 
-export function createForOfStatement(
-  props: ForOfStatementProps
-): ForOfStatementNode {
+export function createForInStatement(
+  props: ForInStatementProps
+): ForInStatementNode {
   assertNChildren(type, 3, props);
 
-  const { await: _await = false, variableType = "const" } = props;
+  const { variableType = "const" } = props;
 
   const walker = createChildWalker(type, props);
 
   const [ident, iterable, block] = walker.spliceAssertExactPath(
     [
       "ident",
-      ["ident", "l:string", "l:object", "l:array", ...EXPRESSION_TYPES],
+      ["ident", "l:object", "l:array", "arrow-function", ...EXPRESSION_TYPES],
       ["block", ...STATEMENT_TYPES],
     ],
     { noTrailing: true }
@@ -45,8 +44,6 @@ export function createForOfStatement(
     type: type,
     props,
     render: () =>
-      `for${
-        _await ? ` await` : ""
-      }(${variableType} ${ident.render()} of ${iterable.render()})${block.render()}`,
+      `for(${variableType} ${ident.render()} in ${iterable.render()})${block.render()}`,
   };
 }
