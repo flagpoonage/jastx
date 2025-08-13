@@ -26,6 +26,10 @@ import {
   createConditionExpression,
 } from "./builders/conditional-expression.js";
 import {
+  createDoWhileStatement,
+  DoWhileStatementProps,
+} from "./builders/do-while-statement.js";
+import {
   createElementAccessExpression,
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
@@ -166,6 +170,10 @@ import {
   VariableStatementProps,
 } from "./builders/variable-statement.js";
 import {
+  createWhileStatement,
+  WhileStatementProps,
+} from "./builders/while-statement.js";
+import {
   AstNode,
   ElementType,
   JSXCreationInterface,
@@ -304,6 +312,10 @@ export const jsxs = <T>(
         return createForInStatement(options as ForOfStatementProps);
       case "stmt:for":
         return createForStatement(options as ForStatementProps);
+      case "stmt:while":
+        return createWhileStatement(options as WhileStatementProps);
+      case "stmt:do-while":
+        return createDoWhileStatement(options as DoWhileStatementProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -381,6 +393,8 @@ declare global {
       ["stmt:for-of"]: ForOfStatementProps;
       ["stmt:for-in"]: ForInStatementProps;
       ["stmt:for"]: ForStatementProps;
+      ["stmt:while"]: WhileStatementProps;
+      ["stmt:do-while"]: DoWhileStatementProps;
 
       ["dclr:var"]: VariableDeclarationProps;
       ["dclr:var-list"]: VariableDeclarationListProps;
