@@ -88,7 +88,7 @@ const _types = [
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
 
-const _statements = ["expr", "var", "if", "return", "try"] as const;
+const _statements = ["expr", "var", "if", "return", "try", "for-of"] as const;
 
 export type StatementElementTypeName = (typeof _statements)[number];
 export type StatementElementType = `stmt:${StatementElementTypeName}`;
@@ -183,6 +183,7 @@ export const STATEMENT_TYPES: readonly StatementElementType[] = [
   "stmt:var",
   "stmt:return",
   "stmt:try",
+  "stmt:for-of",
 ] as const;
 
 export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
@@ -204,10 +205,14 @@ export function isTypeType(v: string) {
   return TYPE_TYPES.includes(v as TypeElementType);
 }
 
-export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
+export const EXPRESSION_TYPES = [
   ...BINARY_EXPRESSION_TYPES,
   ...UNARY_EXPRESSION_TYPES,
   ...STANDLONE_EXPRESSION_TYPES,
+];
+
+export const EXPRESSION_OR_LITERAL_TYPES: readonly ElementType[] = [
+  ...EXPRESSION_TYPES,
   ...LITERAL_TYPES,
 ];
 
