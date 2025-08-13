@@ -4,7 +4,7 @@ import { AstNode, EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
 
 const type = "stmt:for";
 
-export interface ForOfStatementProps {
+export interface ForStatementProps {
   children: AstNode[] | AstNode;
   /**
    * Specifies in the amibgguos case of a missing child,
@@ -32,18 +32,16 @@ export interface ForOfStatementProps {
   noCondition?: boolean;
 }
 
-export interface ForOfStatementNode extends AstNode {
+export interface ForStatementNode extends AstNode {
   type: typeof type;
-  props: ForOfStatementProps;
+  props: ForStatementProps;
 }
 
-export function isForOfStatement(v: AstNode): v is ForOfStatementNode {
+export function isForStatement(v: AstNode): v is ForStatementNode {
   return v.type === "stmt:for";
 }
 
-export function createForOfStatement(
-  props: ForOfStatementProps
-): ForOfStatementNode {
+export function createForStatement(props: ForStatementProps): ForStatementNode {
   assertMaxChildren(type, 4, props);
 
   const { noCondition = false } = props;
