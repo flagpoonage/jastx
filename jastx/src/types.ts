@@ -88,7 +88,15 @@ const _types = [
 export type TypeElementTypeName = (typeof _types)[number];
 export type TypeElementType = `t:${TypeElementTypeName}`;
 
-const _statements = ["expr", "var", "if", "return", "try", "for-of"] as const;
+const _statements = [
+  "expr",
+  "var",
+  "if",
+  "return",
+  "try",
+  "for-of",
+  "for-in",
+] as const;
 
 export type StatementElementTypeName = (typeof _statements)[number];
 export type StatementElementType = `stmt:${StatementElementTypeName}`;
@@ -184,6 +192,7 @@ export const STATEMENT_TYPES: readonly StatementElementType[] = [
   "stmt:return",
   "stmt:try",
   "stmt:for-of",
+  "stmt:for-in",
 ] as const;
 
 export const DECLARATION_TYPES: readonly DeclarationElementType[] = [

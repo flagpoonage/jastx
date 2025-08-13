@@ -34,8 +34,12 @@ import {
   ExpressionStatementProps,
 } from "./builders/expression-statement.js";
 import {
+  createForInStatement,
+  ForInStatementProps,
+} from "./builders/for-in-statement.js";
+import {
   createForOfStatement,
-  ForOfProps,
+  ForOfStatementProps,
 } from "./builders/for-of-statement.js";
 import {
   createFunctionDeclaration,
@@ -291,7 +295,9 @@ export const jsxs = <T>(
       case "stmt:try":
         return createTryStatement(options as TryStatementProps);
       case "stmt:for-of":
-        return createForOfStatement(options as ForOfProps);
+        return createForOfStatement(options as ForOfStatementProps);
+      case "stmt:for-in":
+        return createForInStatement(options as ForOfStatementProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -366,7 +372,8 @@ declare global {
       ["stmt:var"]: VariableStatementProps;
       ["stmt:return"]: ReturnStatementProps;
       ["stmt:try"]: TryStatementProps;
-      ["stmt:for-of"]: ForOfProps;
+      ["stmt:for-of"]: ForOfStatementProps;
+      ["stmt:for-in"]: ForInStatementProps;
 
       ["dclr:var"]: VariableDeclarationProps;
       ["dclr:var-list"]: VariableDeclarationListProps;
