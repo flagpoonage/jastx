@@ -96,6 +96,7 @@ const _statements = [
   "try",
   "for-of",
   "for-in",
+  "for",
 ] as const;
 
 export type StatementElementTypeName = (typeof _statements)[number];
@@ -193,6 +194,7 @@ export const STATEMENT_TYPES: readonly StatementElementType[] = [
   "stmt:try",
   "stmt:for-of",
   "stmt:for-in",
+  "stmt:for",
 ] as const;
 
 export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
