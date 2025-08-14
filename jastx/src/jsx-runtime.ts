@@ -161,6 +161,7 @@ import {
   MethodSignatureProps,
   PropertySignatureProps,
 } from "./builders/type-signatures.js";
+import { createTypeTuple, TypeTupleProps } from "./builders/type-tuple.js";
 import {
   AwaitExpressionProps,
   createAwaitExpression,
@@ -284,6 +285,8 @@ export const jsxs = <T>(
         return createIndexSignature(options as IndexSignatureProps);
       case "t:literal":
         return createTypeLiteral(options as TypeLiteralProps);
+      case "t:tuple":
+        return createTypeTuple(options as TypeTupleProps);
 
       // Expressions
       case "expr:as":
@@ -400,6 +403,7 @@ declare global {
       ["t:construct"]: ConstructSignatureProps;
       ["t:index"]: IndexSignatureProps;
       ["t:literal"]: TypeLiteralProps;
+      ["t:tuple"]: TypeTupleProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
