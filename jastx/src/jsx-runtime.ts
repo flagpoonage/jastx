@@ -147,6 +147,7 @@ import {
   createTypePrimitive,
   TypePrimitiveProps,
 } from "./builders/type-primitive.js";
+import { createTypeQuery, TypeQueryProps } from "./builders/type-query.js";
 import {
   createTypeReference,
   TypeReferenceProps,
@@ -287,6 +288,8 @@ export const jsxs = <T>(
         return createTypeLiteral(options as TypeLiteralProps);
       case "t:tuple":
         return createTypeTuple(options as TypeTupleProps);
+      case "t:query":
+        return createTypeQuery(options as TypeQueryProps);
 
       // Expressions
       case "expr:as":
@@ -404,6 +407,7 @@ declare global {
       ["t:index"]: IndexSignatureProps;
       ["t:literal"]: TypeLiteralProps;
       ["t:tuple"]: TypeTupleProps;
+      ["t:query"]: TypeQueryProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;

@@ -28,8 +28,11 @@ test("<t:tuple> renders correctly as readonly", () => {
       </t:ref>
       <l:number value={10} />
       <l:string value="test" />
+      <t:query>
+        <ident name="x" />
+      </t:query>
     </t:tuple>
   );
 
-  expect(v1.render()).toBe('readonly [X,10,"test"]');
+  expect(v1.render()).toBe('readonly [X,10,"test",typeof x]');
 });

@@ -77,13 +77,14 @@ const _types = [
   "param",
   "predicate",
   "literal",
+  "tuple",
+  "query",
 
   // Signatures
   "method",
   "construct",
   "property",
   "index",
-  "tuple",
 ] as const;
 
 export type TypeElementTypeName = (typeof _types)[number];
@@ -189,6 +190,7 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:indexed",
   "t:literal",
   "t:tuple",
+  "t:query",
   // t:param is only used in functions so it shouldnt be included here generally.
   // t:predicate is only used as a function return type, so is not included here generally.
 ] as const;
