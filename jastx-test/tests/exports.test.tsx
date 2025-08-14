@@ -136,3 +136,17 @@ test("<dclr:export> renders correctly with a namespace export alias", () => {
   );
   expect(v1.render()).toBe('export * as X from "./test"');
 });
+
+test("<dclr:export> renders without a source if named-exports are used", () => {
+  const v1 = (
+    <dclr:export>
+      <named-exports>
+        <ident name="a" />
+        <export-specifier typeOnly>
+          <ident name="b" />
+        </export-specifier>
+      </named-exports>
+    </dclr:export>
+  );
+  expect(v1.render()).toBe("export {a,type b}");
+});

@@ -1,6 +1,6 @@
 import { assertMaxChildren, assertNChildren, assertValue } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { InvalidChildrenError } from "../errors.js";
+import { InvalidChildrenError, InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
 
 const spec_type = "export-specifier";
@@ -132,17 +132,21 @@ export function createExportDeclaration(
 
   const [values, source] = walker.spliceAssertExactPath([
     ["named-exports", "namespace-export", null],
-    "l:string",
+    ["l:string", null],
   ]);
 
-  assertValue(source);
+  if ((!values || values.type !== "named-exports") && !source) {
+    throw new InvalidSyntaxError(
+      `<${type}> expects a source <l:string>, unless the value node is a <named-exports> node`
+    );
+  }
 
   return {
     type,
     props,
     render: () =>
-      `export${typeOnly ? " type " : " "}${
-        values ? values.render() : "*"
-      } from ${source.render()}`,
+      `export${typeOnly ? " type " : " "}${values ? values.render() : "*"}${
+        source ? ` from ${source.render()}` : ""
+      }`,
   };
 }
