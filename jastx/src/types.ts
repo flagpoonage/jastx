@@ -104,7 +104,7 @@ const _statements = [
 export type StatementElementTypeName = (typeof _statements)[number];
 export type StatementElementType = `stmt:${StatementElementTypeName}`;
 
-const _declarations = ["function", "var", "var-list"] as const;
+const _declarations = ["function", "var", "var-list", "export"] as const;
 
 export type DeclarationElementTypeName = (typeof _declarations)[number];
 export type DeclarationElementType = `dclr:${DeclarationElementTypeName}`;
@@ -116,6 +116,9 @@ export type ElementType =
   | "arrow-function"
   | "param"
   | "catch-clause"
+  | "export-specifier"
+  | "named-exports"
+  | "namespace-export"
   | "bind:array"
   | "bind:array-elem"
   | "bind:object"
@@ -205,7 +208,14 @@ export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
   "dclr:function",
   "dclr:var",
   // var-list is pretty much only allowed inside dclr:var
-  // "dclr:var-list",
+  // "dclr:var-list"
+  // export declarataions are only allowed in the top level
+  // "dclr:export",
+];
+
+export const TOP_LEVEL_DECLARATION_TYPES: readonly DeclarationElementType[] = [
+  ...DECLARATION_TYPES,
+  "dclr:export",
 ];
 
 export function omitFrom(
