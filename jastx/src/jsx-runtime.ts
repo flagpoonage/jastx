@@ -7,6 +7,10 @@ import {
   createAsExpression,
 } from "./builders/as-expression.js";
 import {
+  BinaryExpressionProps,
+  createBinaryExpression,
+} from "./builders/binary-expression.js";
+import {
   ArrayBindingElementProps,
   ArrayBindingProps,
   createArrayBinding,
@@ -312,6 +316,8 @@ export const jsxs = <T>(
         return createYieldExpression(options as YieldExpressionProps);
       case "expr:cond":
         return createConditionExpression(options as ConditionExpressionProps);
+      case "expr:binary":
+        return createBinaryExpression(options as BinaryExpressionProps);
 
       // Statements
       case "stmt:if":
@@ -433,6 +439,7 @@ declare global {
       ["expr:typeof"]: TypeofExpressionProps;
       ["expr:yield_"]: YieldExpressionProps;
       ["expr:cond"]: ConditionExpressionProps;
+      ["expr:binary"]: BinaryExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;
