@@ -34,6 +34,16 @@ import {
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
 import {
+  createExportDeclaration,
+  createExportSpecifier,
+  createNamedExports,
+  createNamespaceExport,
+  ExportDeclarationProps,
+  ExportSpecifierProps,
+  NamedExportsProps,
+  NamespaceExportProps,
+} from "./builders/exports.js";
+import {
   createExpressionStatement,
   ExpressionStatementProps,
 } from "./builders/expression-statement.js";
@@ -209,6 +219,12 @@ export const jsxs = <T>(
         return createArrowFunction(options as ArrowFunctionProps);
       case "catch-clause":
         return createCatchClause(options as CatchClauseProps);
+      case "named-exports":
+        return createNamedExports(options as NamedExportsProps);
+      case "namespace-export":
+        return createNamespaceExport(options as NamespaceExportProps);
+      case "export-specifier":
+        return createExportSpecifier(options as ExportSpecifierProps);
 
       // Declarations
       case "dclr:function":
@@ -220,6 +236,8 @@ export const jsxs = <T>(
         return createVariableDeclarationList(
           options as VariableDeclarationListProps
         );
+      case "dclr:export":
+        return createExportDeclaration(options as ExportDeclarationProps);
 
       // Literal values
       case "l:boolean":
@@ -382,8 +400,14 @@ declare global {
       ["param"]: ParameterProps;
       ["arrow-function"]: ArrowFunctionProps;
       ["catch-clause"]: CatchClauseProps;
+      ["named-exports"]: NamedExportsProps;
+      ["namespace-export"]: NamespaceExportProps;
+      ["export-specifier"]: ExportSpecifierProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
+      ["dclr:var"]: VariableDeclarationProps;
+      ["dclr:var-list"]: VariableDeclarationListProps;
+      ["dclr:export"]: ExportDeclarationProps;
 
       ["stmt:if"]: IfStatementProps;
       ["stmt:expr"]: ExpressionStatementProps;
@@ -396,8 +420,6 @@ declare global {
       ["stmt:while"]: WhileStatementProps;
       ["stmt:do-while"]: DoWhileStatementProps;
 
-      ["dclr:var"]: VariableDeclarationProps;
-      ["dclr:var-list"]: VariableDeclarationListProps;
       ["expr:as"]: AsExpressionProps;
       ["expr:parens"]: ParensExpressionProps;
       ["expr:non-null"]: NonNullExpressionProps;

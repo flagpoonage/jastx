@@ -37,14 +37,19 @@ test("t:ref renders with literal primitive generics", () => {
   expect(v.render()).toBe('X<"test",10,true>');
 });
 
-test.skip("t:ref renders with literal type generics", () => {
-  // TODO: Type literal is basically a type object like
-  // { name: string };
-  // const v = (
-  //   <t:ref>
-  //   </t:ref>
-  // );
-  // expect(v.render()).toBe("X<{ name: string }>");
+test("t:ref renders with literal type generics", () => {
+  const v = (
+    <t:ref>
+      <ident name="X" />
+      <t:literal>
+        <t:property>
+          <ident name="name" />
+          <t:primitive type="string" />
+        </t:property>
+      </t:literal>
+    </t:ref>
+  );
+  expect(v.render()).toBe("X<{name:string;}>");
 });
 
 test.skip("t:ref renders with tuple type generics", () => {
