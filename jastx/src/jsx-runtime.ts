@@ -75,6 +75,12 @@ import {
   createFunctionExpression,
   FunctionExpressionProps,
 } from "./builders/function-expression.js";
+import {
+  createHeritageClause,
+  createHeritageIdentifier,
+  HeritageClauseProps,
+  HeritageIdentifierProps,
+} from "./builders/heritage-clause.js";
 import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
 import {
   createIfStatement,
@@ -139,6 +145,10 @@ import {
   createTypeIndexed,
   TypeIndexedProps,
 } from "./builders/type-indexed.js";
+import {
+  createTypeInterface,
+  TypeInterfaceProps,
+} from "./builders/type-interface.js";
 import {
   createTypeLiteral,
   TypeLiteralProps,
@@ -241,6 +251,10 @@ export const jsxs = <T>(
         return createExportSpecifier(options as ExportSpecifierProps);
       case "export-default":
         return createExportDefault(options as ExportDefaultProps);
+      case "heritage-clause":
+        return createHeritageClause(options as HeritageClauseProps);
+      case "heritage-ident":
+        return createHeritageIdentifier(options as HeritageIdentifierProps);
 
       // Declarations
       case "dclr:function":
@@ -302,6 +316,8 @@ export const jsxs = <T>(
         return createTypeQuery(options as TypeQueryProps);
       case "t:function":
         return createTypeFunction(options as TypeFunctionProps);
+      case "t:interface_":
+        return createTypeInterface(options as TypeInterfaceProps);
 
       // Expressions
       case "expr:as":
@@ -421,6 +437,7 @@ declare global {
       ["t:tuple"]: TypeTupleProps;
       ["t:query"]: TypeQueryProps;
       ["t:function"]: TypeFunctionProps;
+      ["t:interface_"]: TypeInterfaceProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
@@ -431,6 +448,8 @@ declare global {
       ["namespace-export"]: NamespaceExportProps;
       ["export-specifier"]: ExportSpecifierProps;
       ["export-default"]: ExportDefaultProps;
+      ["heritage-clause"]: HeritageClauseProps;
+      ["heritage-ident"]: HeritageIdentifierProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;
