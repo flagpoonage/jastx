@@ -132,6 +132,10 @@ import {
   TypeConditionalProps,
 } from "./builders/type-conditional.js";
 import {
+  createTypeFunction,
+  TypeFunctionProps,
+} from "./builders/type-function.js";
+import {
   createTypeIndexed,
   TypeIndexedProps,
 } from "./builders/type-indexed.js";
@@ -296,6 +300,8 @@ export const jsxs = <T>(
         return createTypeTuple(options as TypeTupleProps);
       case "t:query":
         return createTypeQuery(options as TypeQueryProps);
+      case "t:function":
+        return createTypeFunction(options as TypeFunctionProps);
 
       // Expressions
       case "expr:as":
@@ -414,6 +420,7 @@ declare global {
       ["t:literal"]: TypeLiteralProps;
       ["t:tuple"]: TypeTupleProps;
       ["t:query"]: TypeQueryProps;
+      ["t:function"]: TypeFunctionProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;

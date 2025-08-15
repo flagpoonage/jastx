@@ -79,6 +79,7 @@ const _types = [
   "literal",
   "tuple",
   "query",
+  "function",
 
   // Signatures
   "method",
@@ -192,6 +193,8 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:literal",
   "t:tuple",
   "t:query",
+  "t:function",
+  "t:predicate",
   // t:param is only used in functions so it shouldnt be included here generally.
   // t:predicate is only used as a function return type, so is not included here generally.
 ] as const;
