@@ -159,7 +159,7 @@ test("dclr:function renders with generator token", () => {
 
 test("dclr:function renders with named export", () => {
   const v1 = (
-    <dclr:function exported="named">
+    <dclr:function exported>
       <ident name="test" />
       <block />
     </dclr:function>
@@ -168,30 +168,9 @@ test("dclr:function renders with named export", () => {
   expect(v1.render()).toBe("export function test(){}");
 });
 
-test("dclr:function renders with default export", () => {
-  const v1 = (
-    <dclr:function exported="default">
-      <ident name="test" />
-      <block />
-    </dclr:function>
-  );
-
-  expect(v1.render()).toBe("export default function test(){}");
-});
-
-test("dclr:function renders with default export and no name", () => {
-  const v1 = (
-    <dclr:function exported="default">
-      <block />
-    </dclr:function>
-  );
-
-  expect(v1.render()).toBe("export default function (){}");
-});
-
-test("dclr:function throws an error if no name is provided and it is not a default export", () => {
+test("dclr:function throws an error if no name is provided", () => {
   expect(() => (
-    <dclr:function exported="named">
+    <dclr:function exported>
       <block />
     </dclr:function>
   )).toThrow();
