@@ -38,6 +38,10 @@ import {
   ElementAccessExpressionProps,
 } from "./builders/element-access-expression.js";
 import {
+  createExportDefault,
+  ExportDefaultProps,
+} from "./builders/export-default.js";
+import {
   createExportDeclaration,
   createExportSpecifier,
   createNamedExports,
@@ -231,6 +235,8 @@ export const jsxs = <T>(
         return createNamespaceExport(options as NamespaceExportProps);
       case "export-specifier":
         return createExportSpecifier(options as ExportSpecifierProps);
+      case "export-default":
+        return createExportDefault(options as ExportDefaultProps);
 
       // Declarations
       case "dclr:function":
@@ -417,6 +423,7 @@ declare global {
       ["named-exports"]: NamedExportsProps;
       ["namespace-export"]: NamespaceExportProps;
       ["export-specifier"]: ExportSpecifierProps;
+      ["export-default"]: ExportDefaultProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;

@@ -121,6 +121,7 @@ export type ElementType =
   | "export-specifier"
   | "named-exports"
   | "namespace-export"
+  | "export-default"
   | "bind:array"
   | "bind:array-elem"
   | "bind:object"
