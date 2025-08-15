@@ -46,7 +46,7 @@ const _unary_expressions = [
   "typeof",
   "call",
   "non-null",
-  "yield_",
+  "yield_", // Reserved word
 ] as const;
 
 export type UnaryExpressionTypeName = (typeof _unary_expressions)[number];
@@ -80,6 +80,7 @@ const _types = [
   "tuple",
   "query",
   "function",
+  "interface_", // Reserved word
 
   // Signatures
   "method",
@@ -123,6 +124,8 @@ export type ElementType =
   | "named-exports"
   | "namespace-export"
   | "export-default"
+  | "heritage-clause"
+  | "heritage-ident"
   | "bind:array"
   | "bind:array-elem"
   | "bind:object"
