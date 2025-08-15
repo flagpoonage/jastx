@@ -11,11 +11,7 @@ export interface FunctionDeclarationProps {
    * it will throw an error if provided without a body
    */
   generator?: boolean;
-  /**
-   * Non-default exports require a name, whereas default exports
-   * do not. We need to specify this here.
-   */
-  exported?: "named" | "default";
+  exported?: boolean;
   async?: boolean;
 }
 
@@ -36,11 +32,7 @@ export function createFunctionDeclaration(
   const walker = createChildWalker(type, props);
   const export_type = props.exported ?? "none";
 
-  const ident =
-    // Default exports do not require a name
-    props.exported === "default"
-      ? walker.spliceAssertNextOptional("ident")
-      : walker.spliceAssertNext("ident");
+  const ident = walker.spliceAssertNext("ident");
 
   const parameters = walker.spliceAssertGroup("param");
 
@@ -87,21 +79,16 @@ export function createFunctionDeclaration(
     }
   }
 
-  const render_export_modifiers = () =>
-    export_type === "default"
-      ? "export default "
-      : export_type === "named"
-      ? "export "
-      : "";
-
   return {
     type,
     props,
     render: () =>
-      `${props.async ? "async " : ""}${render_export_modifiers()}function${
-        props.generator ? "*" : ""
-      } ${ident ? ident.render() : ""}${render_parameters()}${
-        type_node ? `:${type_node.render()}` : ""
-      }${block ? block.render() : ""}`,
+      `${props.exported ? "export " : ""}${
+        props.async ? "async " : ""
+      }function${props.generator ? "*" : ""} ${
+        ident ? ident.render() : ""
+      }${render_parameters()}${type_node ? `:${type_node.render()}` : ""}${
+        block ? block.render() : ""
+      }`,
   };
 }
