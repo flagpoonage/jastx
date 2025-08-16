@@ -146,6 +146,7 @@ import {
   createTypeIndexed,
   TypeIndexedProps,
 } from "./builders/type-indexed.js";
+import { createTypeInfer, TypeInferProps } from "./builders/type-infer.js";
 import {
   createTypeInterface,
   TypeInterfaceProps,
@@ -321,6 +322,8 @@ export const jsxs = <T>(
         return createTypeInterface(options as TypeInterfaceProps);
       case "t:alias":
         return createTypeAlias(options as TypeAliasProps);
+      case "t:infer":
+        return createTypeInfer(options as TypeInferProps);
 
       // Expressions
       case "expr:as":
@@ -442,6 +445,7 @@ declare global {
       ["t:function"]: TypeFunctionProps;
       ["t:interface_"]: TypeInterfaceProps;
       ["t:alias"]: TypeAliasProps;
+      ["t:infer"]: TypeInferProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
