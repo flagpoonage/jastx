@@ -1,69 +1,90 @@
-// import { createChildWalker } from "../child-walker.js";
-// import { InvalidSyntaxError } from "../errors.js";
-// import { AstNode, TYPE_TYPES } from "../types.js";
+import { createChildWalker } from "../child-walker.js";
+import { InvalidChildrenError, InvalidSyntaxError } from "../errors.js";
+import { AstNode } from "../types.js";
 
-// const type = "dclr:class";
+const type = "dclr:class";
 
-// export interface ClassDeclarationProps {
-//   children: any;
-//   exported?: boolean;
-// }
+export interface ClassDeclarationProps {
+  children: any;
+  exported?: boolean;
+}
 
-// export interface ClassDeclarationNode extends AstNode {
-//   type: typeof type;
-//   props: ClassDeclarationProps;
-// }
+export interface ClassDeclarationNode extends AstNode {
+  type: typeof type;
+  props: ClassDeclarationProps;
+}
 
-// export function isClassDeclaration(
-//   node: AstNode
-// ): node is ClassDeclarationNode {
-//   return node.type === type;
-// }
+export function isClassDeclaration(
+  node: AstNode
+): node is ClassDeclarationNode {
+  return node.type === type;
+}
 
-// export function createClassDeclaration(
-//   props: ClassDeclarationProps
-// ): ClassDeclarationNode {
-//   const walker = createChildWalker(type, props);
+export function createClassDeclaration(
+  props: ClassDeclarationProps
+): ClassDeclarationNode {
+  const { exported = false } = props;
 
-//   const ident = walker.spliceAssertNext("ident");
+  const walker = createChildWalker(type, props);
 
-//   const type_parameters = walker.spliceAssertGroup("t:param");
+  const ident = walker.spliceAssertNext("ident");
 
-//   const heritage_clause = walker.spliceAssertNextOptional("heritage-clause");
+  const type_parameters = walker.spliceAssertGroup("t:param");
 
-//   const fields = walker.spl
+  const heritage_a = walker.spliceAssertNextOptional("heritage-clause");
+  const heritage_b = walker.spliceAssertNextOptional("heritage-clause");
 
+  if (
+    heritage_a &&
+    heritage_b &&
+    heritage_a.props.kind === heritage_b.props.kind
+  ) {
+    throw new InvalidSyntaxError(
+      `<${type}> cannot have two heritage clauses which are both "extends" or both "implements". It can one of each, only one, or neither`
+    );
+  }
 
-//   const block = walker.spliceAssertNextOptional("block");
+  const ext_node =
+    heritage_a &&
+    (!heritage_a.props.kind || heritage_a.props.kind === "extends")
+      ? heritage_a
+      : heritage_b &&
+        (!heritage_b.props.kind || heritage_b.props.kind === "extends")
+      ? heritage_b
+      : null;
 
-//   if (!block && props.generator) {
-//     throw new InvalidSyntaxError(
-//       `<${type}> cannot declare a generator function without a body. A body can be ommitted in the case that this is an overload declaration, but an overload declaration does not specify the generator syntax`
-//     );
-//   }
+  const imp_node =
+    heritage_a && heritage_a.props.kind === "implements"
+      ? heritage_a
+      : heritage_b && heritage_b.props.kind === "implements"
+      ? heritage_b
+      : null;
 
-//   if (walker.remainingChildren.length > 0) {
-//     if (block) {
-//       throw new InvalidSyntaxError(
-//         `<${type}> must only specify a <block>. Found a <block> and then another value:\n- ${walker.remainingChildren[0].render()}`
-//       );
-//     } else {
-//       throw new InvalidSyntaxError(
-//         `<${type}> can only specify a <block> as the body. This can be ommitted completely for overloads, but no other type can be used`
-//       );
-//     }
-//   }
+  const properties = walker.spliceAssertGroup([
+    "field",
+    "method",
+    "get-accessor",
+    "set-accessor",
+  ]);
 
-//   return {
-//     type,
-//     props,
-//     render: () =>
-//       `${props.exported ? "export " : ""}${
-//         props.async ? "async " : ""
-//       }function${props.generator ? "*" : ""} ${
-//         ident ? ident.render() : ""
-//       }${render_parameters()}${type_node ? `:${type_node.render()}` : ""}${
-//         block ? block.render() : ""
-//       }`,
-//   };
-// }
+  if (walker.remainingChildren.length > 0) {
+    throw new InvalidChildrenError(
+      type,
+      ["field", "method", "get-accessor", "set-accessor"],
+      walker.remainingChildTypes
+    );
+  }
+
+  return {
+    type,
+    props,
+    render: () =>
+      `${exported ? "export " : ""}class ${ident.render()}${
+        type_parameters.length > 0
+          ? `<${type_parameters.map((a) => a.render()).join(",")}>`
+          : ""
+      }${ext_node ? ` ${ext_node.render()}` : ""}${
+        imp_node ? ` ${imp_node.render()}` : ""
+      }{${properties.map((a) => a.render()).join(";")}}`,
+  };
+}

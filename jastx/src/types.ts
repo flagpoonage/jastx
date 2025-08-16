@@ -31,6 +31,7 @@ const _standalone_exressions = [
   "prop-access",
   "elem-access",
   "cond",
+  "class",
 ] as const;
 
 const _binary_expressions = ["as", "binary"] as const;
@@ -105,7 +106,14 @@ const _statements = [
 export type StatementElementTypeName = (typeof _statements)[number];
 export type StatementElementType = `stmt:${StatementElementTypeName}`;
 
-const _declarations = ["function", "var", "var-list", "export", "property"] as const;
+const _declarations = [
+  "function",
+  "var",
+  "var-list",
+  "export",
+  "property",
+  "class",
+] as const;
 
 export type DeclarationElementTypeName = (typeof _declarations)[number];
 export type DeclarationElementType = `dclr:${DeclarationElementTypeName}`;
@@ -130,8 +138,8 @@ export type ElementType =
   | "get-accessor"
   | "set-accessor"
   | "method"
-  | 'property'
-  | 'field'
+  | "property"
+  | "field"
   | ExpressionType
   | TypeElementType
   | LiteralElementType
@@ -144,7 +152,8 @@ export const STANDLONE_EXPRESSION_TYPES: readonly StandaloneExpressionType[] = [
   "expr:parens",
   "expr:prop-access",
   "expr:template",
-  "expr:cond"
+  "expr:cond",
+  "expr:class",
 ];
 
 export function isStandaloneExpressionType(
@@ -200,10 +209,10 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:function",
   "t:predicate",
   // Infer is only allowed inside conditional extends clauses, but its technically "allowed"
-  // to be contained in a variety of placed _within_ that clause, so we're going to allow it 
+  // to be contained in a variety of placed _within_ that clause, so we're going to allow it
   // here. The blocking needs to happen in higher level objects, such as a type alias, an
   // interface declaration, or the type conditional
-  "t:infer"
+  "t:infer",
   // t:param is only used in functions so it shouldnt be included here generally.
   // t:predicate is only used as a function return type, so is not included here generally.
 ] as const;
@@ -224,6 +233,7 @@ export const STATEMENT_TYPES: readonly StatementElementType[] = [
 export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
   "dclr:function",
   "dclr:var",
+  "dclr:class",
   // var-list is pretty much only allowed inside dclr:var
   // "dclr:var-list"
   // export declarataions are only allowed in the top level
@@ -270,7 +280,7 @@ export type AstNode = {
   type: ElementType;
   docs?: AstNode;
   props: any; // TODO: Make this more accurate
-  info?: Record<string, any>
+  info?: Record<string, any>;
   render: () => string;
 };
 
@@ -290,4 +300,4 @@ export type WithChildren<T> = T & {
   children?: AstNode[] | any;
 };
 
-export type ModifierType = 'public' | 'private' | 'protected';
+export type ModifierType = "public" | "private" | "protected";

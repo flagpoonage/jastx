@@ -26,6 +26,14 @@ import {
   createCallExpression,
 } from "./builders/call-expression.js";
 import {
+  ClassDeclarationProps,
+  createClassDeclaration,
+} from "./builders/class-declaration.js";
+import {
+  ClassExpressionProps,
+  createClassExpression,
+} from "./builders/class-expression.js";
+import {
   ConditionExpressionProps,
   createConditionExpression,
 } from "./builders/conditional-expression.js";
@@ -76,7 +84,10 @@ import {
   createFunctionExpression,
   FunctionExpressionProps,
 } from "./builders/function-expression.js";
-import { createGetAccessor, GetAccessorProps } from "./builders/get-accessor.js";
+import {
+  createGetAccessor,
+  GetAccessorProps,
+} from "./builders/get-accessor.js";
 import {
   createHeritageClause,
   createHeritageIdentifier,
@@ -111,7 +122,7 @@ import {
   createObjectLiteral,
   createProperty,
   ObjectLiteralProps,
-  PropertyProps
+  PropertyProps,
 } from "./builders/object-literal.js";
 import { createParameter, ParameterProps } from "./builders/parameter.js";
 import {
@@ -126,7 +137,10 @@ import {
   createReturnStatement,
   ReturnStatementProps,
 } from "./builders/return-statement.js";
-import { createSetAccessor, SetAccessorProps } from "./builders/set-accessor.js";
+import {
+  createSetAccessor,
+  SetAccessorProps,
+} from "./builders/set-accessor.js";
 import {
   createTemplateExpression,
   TemplateExpressionlProps,
@@ -284,6 +298,8 @@ export const jsxs = <T>(
         );
       case "dclr:export":
         return createExportDeclaration(options as ExportDeclarationProps);
+      case "dclr:class":
+        return createClassDeclaration(options as ClassDeclarationProps);
 
       // Literal values
       case "l:boolean":
@@ -370,6 +386,8 @@ export const jsxs = <T>(
         return createConditionExpression(options as ConditionExpressionProps);
       case "expr:binary":
         return createBinaryExpression(options as BinaryExpressionProps);
+      case "expr:class":
+        return createClassExpression(options as ClassExpressionProps);
 
       // Statements
       case "stmt:if":
@@ -478,6 +496,7 @@ declare global {
       ["dclr:var"]: VariableDeclarationProps;
       ["dclr:var-list"]: VariableDeclarationListProps;
       ["dclr:export"]: ExportDeclarationProps;
+      ["dclr:class"]: ClassDeclarationProps;
 
       ["stmt:if"]: IfStatementProps;
       ["stmt:expr"]: ExpressionStatementProps;
@@ -504,6 +523,7 @@ declare global {
       ["expr:yield_"]: YieldExpressionProps;
       ["expr:cond"]: ConditionExpressionProps;
       ["expr:binary"]: BinaryExpressionProps;
+      ["expr:class"]: ClassExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;
