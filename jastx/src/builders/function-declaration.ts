@@ -30,7 +30,6 @@ export function createFunctionDeclaration(
   props: FunctionDeclarationProps
 ): FunctionDeclarationNode {
   const walker = createChildWalker(type, props);
-  const export_type = props.exported ?? "none";
 
   const ident = walker.spliceAssertNext("ident");
 
