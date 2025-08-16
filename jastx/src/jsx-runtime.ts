@@ -55,6 +55,7 @@ import {
   createExpressionStatement,
   ExpressionStatementProps,
 } from "./builders/expression-statement.js";
+import { createField, FieldProps } from "./builders/field.js";
 import {
   createForInStatement,
   ForInStatementProps,
@@ -268,6 +269,8 @@ export const jsxs = <T>(
         return createSetAccessor(options as SetAccessorProps);
       case "method":
         return createMethod(options as MethodProps);
+      case "field":
+        return createField(options as FieldProps);
 
       // Declarations
       case "dclr:function":
@@ -469,6 +472,7 @@ declare global {
       ["get-accessor"]: GetAccessorProps;
       ["set-accessor"]: SetAccessorProps;
       ["method"]: MethodProps;
+      ["field"]: FieldProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;
