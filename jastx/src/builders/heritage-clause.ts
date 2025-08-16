@@ -6,7 +6,6 @@ const ident_type = "heritage-ident";
 
 export interface HeritageIdentifierProps {
   children: any;
-  type?: string;
 }
 
 // This is called an ExpressionWithTypeArguments node in TS, which is dumb
@@ -45,7 +44,7 @@ const type = "heritage-clause";
 
 export interface HeritageClauseProps {
   children: any;
-  type?: string;
+  kind?: 'implements' | 'extends'
 }
 
 export interface HeritageClauseNode extends AstNode {
@@ -72,7 +71,7 @@ export function createHeritageClause(
     type,
     props,
     render: () => {
-      return `extends ${idents.map((a) => a.render()).join(",")}`;
+      return `${props.kind === 'implements' ? 'implements' : 'extends'} ${idents.map((a) => a.render()).join(",")}`;
     },
   };
 }

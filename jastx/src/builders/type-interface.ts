@@ -1,8 +1,8 @@
 import { createChildWalker } from "../child-walker.js";
-import { InvalidChildrenError } from "../errors.js";
+import { InvalidChildrenError, InvalidSyntaxError } from "../errors.js";
 import { AstNode } from "../types.js";
 
-const type_literal_type = "t:interface_";
+const type = "t:interface_";
 
 export interface TypeInterfaceProps {
   children: any;
@@ -10,20 +10,26 @@ export interface TypeInterfaceProps {
 }
 
 export interface TypeInterfaceNode extends AstNode {
-  type: typeof type_literal_type;
+  type: typeof type;
   props: TypeInterfaceProps;
 }
 
 export function createTypeInterface(
   props: TypeInterfaceProps
 ): TypeInterfaceNode {
-  const walker = createChildWalker(type_literal_type, props);
+  const walker = createChildWalker(type, props);
 
   const ident = walker.spliceAssertNext("ident");
 
   const type_params = walker.spliceAssertGroup("t:param");
 
   const heritage_clause = walker.spliceAssertNextOptional("heritage-clause");
+
+  if (heritage_clause?.props.kind === 'implements') {
+    throw new InvalidSyntaxError(
+      `<${type}> can only have an "extends" clause, but found "implements" heritage clause`
+    );
+  }
 
   const property_nodes = walker.spliceAssertGroup([
     "t:property",
@@ -34,7 +40,7 @@ export function createTypeInterface(
 
   if (walker.remainingChildren.length > 0) {
     throw new InvalidChildrenError(
-      type_literal_type,
+      type,
       [
         "t:property",
         "t:index",
@@ -48,7 +54,7 @@ export function createTypeInterface(
   }
 
   return {
-    type: type_literal_type,
+    type: type,
     props,
     render: () =>
       `${props.exported ? "export " : ""}interface ${ident.render()}${
