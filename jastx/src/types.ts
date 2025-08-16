@@ -131,6 +131,7 @@ export type ElementType =
   | "set-accessor"
   | "method"
   | 'property'
+  | 'field'
   | ExpressionType
   | TypeElementType
   | LiteralElementType
@@ -143,7 +144,7 @@ export const STANDLONE_EXPRESSION_TYPES: readonly StandaloneExpressionType[] = [
   "expr:parens",
   "expr:prop-access",
   "expr:template",
-  "expr:cond",
+  "expr:cond"
 ];
 
 export function isStandaloneExpressionType(
