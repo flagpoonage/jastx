@@ -133,6 +133,7 @@ import {
   createTryStatement,
   TryStatementProps,
 } from "./builders/try-statement.js";
+import { createTypeAlias, TypeAliasProps } from "./builders/type-alias.js";
 import {
   createTypeConditional,
   TypeConditionalProps,
@@ -318,6 +319,8 @@ export const jsxs = <T>(
         return createTypeFunction(options as TypeFunctionProps);
       case "t:interface_":
         return createTypeInterface(options as TypeInterfaceProps);
+      case "t:alias":
+        return createTypeAlias(options as TypeAliasProps);
 
       // Expressions
       case "expr:as":
@@ -438,6 +441,7 @@ declare global {
       ["t:query"]: TypeQueryProps;
       ["t:function"]: TypeFunctionProps;
       ["t:interface_"]: TypeInterfaceProps;
+      ["t:alias"]: TypeAliasProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;

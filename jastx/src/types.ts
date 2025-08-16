@@ -70,6 +70,7 @@ export type ExpressionType =
   | StandaloneExpressionType;
 
 const _types = [
+  "alias",
   "primitive",
   "ref",
   "cond",
