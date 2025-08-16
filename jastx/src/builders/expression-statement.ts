@@ -31,7 +31,13 @@ export function createExpressionStatement(
 
   if (expr_node.type === "expr:function") {
     throw new AmbiguousParserError(
-      `<${type}> can not have an <expr:function> expression inside, because the code produced would be amibguos and ultimately resolved as a function declaration instead. You can just use a function declaration directly here.`
+      `<${type}> can not have an <expr:function> expression inside, because the code produced would be amibiguos and ultimately resolved as a function declaration instead. You can just use a <dclr:function> directly here.`
+    );
+  }
+
+  if (expr_node.type === "expr:class") {
+    throw new AmbiguousParserError(
+      `<${type}> can not have an <expr:class> expression inside, because the code produced would be amibiguos and ultimately resolved as a class declaration instead. You can just use a <dclr:class> directly here.`
     );
   }
 
