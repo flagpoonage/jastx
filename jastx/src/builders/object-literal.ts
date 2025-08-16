@@ -57,7 +57,8 @@ export function createObjectLiteral(
   const property_nodes = walker.spliceAssertGroup([
     "property",
     "get-accessor",
-    "set-accessor"
+    "set-accessor",
+    "method"
   ]);
 
   return {

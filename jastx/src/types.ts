@@ -129,6 +129,7 @@ export type ElementType =
   | "bind:object-elem"
   | "get-accessor"
   | "set-accessor"
+  | "method"
   | 'property'
   | ExpressionType
   | TypeElementType

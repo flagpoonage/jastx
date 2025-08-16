@@ -101,6 +101,7 @@ import {
   RegexLiteralProps,
   StringLiteralProps,
 } from "./builders/literals.js";
+import { createMethod, MethodProps } from "./builders/method.js";
 import {
   createNonNullExpression,
   NonNullExpressionProps,
@@ -265,6 +266,8 @@ export const jsxs = <T>(
         return createGetAccessor(options as GetAccessorProps);
       case "set-accessor":
         return createSetAccessor(options as SetAccessorProps);
+      case "method":
+        return createMethod(options as MethodProps);
 
       // Declarations
       case "dclr:function":
@@ -465,6 +468,7 @@ declare global {
       ["property"]: PropertyProps;
       ["get-accessor"]: GetAccessorProps;
       ["set-accessor"]: SetAccessorProps;
+      ["method"]: MethodProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;
