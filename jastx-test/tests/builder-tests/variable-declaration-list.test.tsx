@@ -76,14 +76,14 @@ test("dclr:var-list renders correctly with non-identifier bindings", () => {
           </bind:object-elem>
         </bind:object>
         <l:object>
-          <l:object-prop>
+          <property>
             <ident name="zz" />
             <l:string value="test" />
-          </l:object-prop>
-          <l:object-prop>
+          </property>
+          <property>
             <ident name="qq" />
             <l:number value={30} />
-          </l:object-prop>
+          </property>
         </l:object>
       </dclr:var>
       <dclr:var>

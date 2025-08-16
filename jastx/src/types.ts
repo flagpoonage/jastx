@@ -24,11 +24,6 @@ const _literals = [
 export type LiteralElementTypeName = (typeof _literals)[number];
 export type LiteralElementType = `l:${LiteralElementTypeName}`;
 
-const _literal_object_nodes = ["prop", "getter", "setter"] as const;
-
-export type LiteralObjectNodeTypeName = (typeof _literal_object_nodes)[number];
-export type LiteralObjectNodeType = `l:object-${LiteralObjectNodeTypeName}`;
-
 const _standalone_exressions = [
   "template",
   "function",
@@ -110,7 +105,7 @@ const _statements = [
 export type StatementElementTypeName = (typeof _statements)[number];
 export type StatementElementType = `stmt:${StatementElementTypeName}`;
 
-const _declarations = ["function", "var", "var-list", "export"] as const;
+const _declarations = ["function", "var", "var-list", "export", "property"] as const;
 
 export type DeclarationElementTypeName = (typeof _declarations)[number];
 export type DeclarationElementType = `dclr:${DeclarationElementTypeName}`;
@@ -132,7 +127,9 @@ export type ElementType =
   | "bind:array-elem"
   | "bind:object"
   | "bind:object-elem"
-  | LiteralObjectNodeType
+  | "get-accessor"
+  | "set-accessor"
+  | 'property'
   | ExpressionType
   | TypeElementType
   | LiteralElementType
@@ -271,6 +268,7 @@ export type AstNode = {
   type: ElementType;
   docs?: AstNode;
   props: any; // TODO: Make this more accurate
+  info?: Record<string, any>
   render: () => string;
 };
 
@@ -289,3 +287,5 @@ export interface JSXSCreationInterface {
 export type WithChildren<T> = T & {
   children?: AstNode[] | any;
 };
+
+export type ModifierType = 'public' | 'private' | 'protected';

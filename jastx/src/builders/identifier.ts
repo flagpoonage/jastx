@@ -11,6 +11,13 @@ export interface IdentifierProps {
 export interface IdentifierNode extends AstNode {
   type: typeof type;
   props: IdentifierProps;
+  info: {
+    isPrivateIdentifier: boolean
+  }
+}
+
+export function isPrivateIdentifier (node: AstNode): node is IdentifierNode & { info: { isPrivateIdentifier: true }} {
+  return node.type === type && !!node.info?.isPrivateIdentifier;
 }
 
 export function createIdentifier(props: IdentifierProps): IdentifierNode {
@@ -29,6 +36,11 @@ export function createIdentifier(props: IdentifierProps): IdentifierNode {
   return {
     type,
     props,
+    info: {
+      // TODO: Use this later on to error parent components that dont
+      // allow private identifiers.
+      isPrivateIdentifier: props.name[0] === '#'
+    },
     render: () => props.name,
   };
 }

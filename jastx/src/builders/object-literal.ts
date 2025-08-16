@@ -1,21 +1,21 @@
 import { assertMaxChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES, VALUE_TYPES } from "../types.js";
+import { AstNode, VALUE_TYPES } from "../types.js";
 
-const prop_type = "l:object-prop";
+const prop_type = "property";
 
-export interface ObjectPropertyProps {
+export interface PropertyProps {
   children?: any;
 }
 
-export interface ObjectPropertyNode extends AstNode {
+export interface PropertyNode extends AstNode {
   type: typeof prop_type;
-  props: ObjectPropertyProps;
+  props: PropertyProps;
 }
 
-export function createObjectProperty(
-  props: ObjectPropertyProps
-): ObjectPropertyNode {
+export function createProperty(
+  props: PropertyProps
+): PropertyNode {
   assertMaxChildren(prop_type, 2, props);
   const walker = createChildWalker(prop_type, props);
 
@@ -55,9 +55,9 @@ export function createObjectLiteral(
   const walker = createChildWalker(object_type, props);
 
   const property_nodes = walker.spliceAssertGroup([
-    "l:object-prop",
-    "l:object-getter",
-    "l:object-setter",
+    "property",
+    "get-accessor",
+    "set-accessor"
   ]);
 
   return {

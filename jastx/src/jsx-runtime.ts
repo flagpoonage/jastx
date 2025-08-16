@@ -75,6 +75,7 @@ import {
   createFunctionExpression,
   FunctionExpressionProps,
 } from "./builders/function-expression.js";
+import { createGetAccessor, GetAccessorProps } from "./builders/get-accessor.js";
 import {
   createHeritageClause,
   createHeritageIdentifier,
@@ -106,9 +107,9 @@ import {
 } from "./builders/non-null-expression.js";
 import {
   createObjectLiteral,
-  createObjectProperty,
+  createProperty,
   ObjectLiteralProps,
-  ObjectPropertyProps,
+  PropertyProps
 } from "./builders/object-literal.js";
 import { createParameter, ParameterProps } from "./builders/parameter.js";
 import {
@@ -123,6 +124,7 @@ import {
   createReturnStatement,
   ReturnStatementProps,
 } from "./builders/return-statement.js";
+import { createSetAccessor, SetAccessorProps } from "./builders/set-accessor.js";
 import {
   createTemplateExpression,
   TemplateExpressionlProps,
@@ -257,6 +259,12 @@ export const jsxs = <T>(
         return createHeritageClause(options as HeritageClauseProps);
       case "heritage-ident":
         return createHeritageIdentifier(options as HeritageIdentifierProps);
+      case "property":
+        return createProperty(options as PropertyProps);
+      case "get-accessor":
+        return createGetAccessor(options as GetAccessorProps);
+      case "set-accessor":
+        return createSetAccessor(options as SetAccessorProps);
 
       // Declarations
       case "dclr:function":
@@ -284,8 +292,6 @@ export const jsxs = <T>(
         return createBigintLiteral(options as BigintLiteralProps);
       case "l:object":
         return createObjectLiteral(options as ObjectLiteralProps);
-      case "l:object-prop":
-        return createObjectProperty(options as ObjectPropertyProps);
       case "l:array":
         return createArrayLiteral(options as ArrayLiteralProps);
 
@@ -427,8 +433,6 @@ declare global {
       ["l:object"]: ObjectLiteralProps;
       ["l:array"]: ArrayLiteralProps;
 
-      ["l:object-prop"]: ObjectPropertyProps;
-
       ["t:primitive"]: TypePrimitiveProps;
       ["t:ref"]: TypeReferenceProps;
       ["t:cond"]: TypeConditionalProps;
@@ -458,6 +462,9 @@ declare global {
       ["export-default"]: ExportDefaultProps;
       ["heritage-clause"]: HeritageClauseProps;
       ["heritage-ident"]: HeritageIdentifierProps;
+      ["property"]: PropertyProps;
+      ["get-accessor"]: GetAccessorProps;
+      ["set-accessor"]: SetAccessorProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;
