@@ -159,7 +159,10 @@ export interface ArrayLiteralNode extends AstNode {
 export function createArrayLiteral(props: ArrayLiteralProps): ArrayLiteralNode {
   const walker = createChildWalker(array_type, props);
 
-  const element_nodes = walker.spliceAssertGroup([...VALUE_TYPES]);
+  const element_nodes = walker.spliceAssertGroup([
+    ...VALUE_TYPES,
+    "spread-element",
+  ]);
 
   return {
     type: array_type,

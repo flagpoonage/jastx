@@ -139,6 +139,7 @@ export type ElementType =
   | "import-attribute"
   | "heritage-clause"
   | "heritage-ident"
+  | "spread-element"
   | "bind:array"
   | "bind:array-elem"
   | "bind:object"
@@ -286,7 +287,7 @@ export const VALUE_TYPES = [
   "arrow-function",
 ] as const;
 
-export const ANY_TYPE = [...EXPRESSION_OR_LITERAL_TYPES, ...TYPE_TYPES];
+export const ANY_TYPE = [...VALUE_TYPES, ...TYPE_TYPES];
 
 export type AstNode = {
   type: ElementType;

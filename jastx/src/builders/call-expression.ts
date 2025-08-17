@@ -5,6 +5,7 @@ import {
   EXPRESSION_OR_LITERAL_TYPES,
   isUnaryExpressionType,
   TYPE_TYPES,
+  VALUE_TYPES,
 } from "../types.js";
 
 const type = "expr:call";
@@ -38,7 +39,7 @@ export function createCallExpression(
 
   const type_args = walker.spliceAssertGroup([...TYPE_TYPES]);
 
-  const args = walker.spliceAssertGroup([...EXPRESSION_OR_LITERAL_TYPES]);
+  const args = walker.spliceAssertGroup([...VALUE_TYPES, "spread-element"]);
 
   if (walker.remainingChildren.length > 0) {
     throw new InvalidSyntaxError(
@@ -48,7 +49,7 @@ export function createCallExpression(
             return `- <text {${a}}>`;
           }
 
-          return `- <${a}>`;
+          return `- <${a.type}>`;
         })
         .join("\n")}`
     );

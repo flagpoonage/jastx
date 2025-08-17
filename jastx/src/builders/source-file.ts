@@ -29,7 +29,12 @@ export function createSourceFile(props: SourceFileProps): SourceFileNode {
 
   const values = walker.spliceAssertGroup(
     omitFrom(
-      [...TOP_LEVEL_DECLARATION_TYPES, ...STATEMENT_TYPES],
+      [
+        ...TOP_LEVEL_DECLARATION_TYPES,
+        ...STATEMENT_TYPES,
+        "t:alias",
+        "t:interface_",
+      ],
       // Return statements make no sense in the top level. But really
       // they can't be anywhere except inside functions. That requires deep traversal
       // though which we're avoiding for now.

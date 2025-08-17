@@ -155,6 +155,10 @@ import {
 } from "./builders/set-accessor.js";
 import { createSourceFile, SourceFileProps } from "./builders/source-file.js";
 import {
+  createSpreadElement,
+  SpreadElementProps,
+} from "./builders/spread-element.js";
+import {
   createTemplateExpression,
   TemplateExpressionlProps,
 } from "./builders/template-expression.js";
@@ -314,6 +318,8 @@ export const jsxs = <T>(
         return createImportSpecifier(options as ImportSpecifierProps);
       case "import-attribute":
         return createImportAttribute(options as ImportAttributeProps);
+      case "spread-element":
+        return createSpreadElement(options as SpreadElementProps);
 
       // Declarations
       case "dclr:function":
@@ -536,6 +542,7 @@ declare global {
       ["namespace-import"]: NamespaceImportProps;
       ["import-specifier"]: ImportSpecifierProps;
       ["import-attribute"]: ImportAttributeProps;
+      ["spread-element"]: SpreadElementProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;
