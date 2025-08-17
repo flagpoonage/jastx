@@ -81,6 +81,7 @@ const _types = [
   "infer",
   "union",
   "intersection",
+  "array",
 
   // Signatures
   "method",
@@ -212,6 +213,7 @@ export const TYPE_TYPES: readonly TypeElementType[] = [
   "t:predicate",
   "t:union",
   "t:intersection",
+  "t:array",
   // Infer is only allowed inside conditional extends clauses, but its technically "allowed"
   // to be contained in a variety of placed _within_ that clause, so we're going to allow it
   // here. The blocking needs to happen in higher level objects, such as a type alias, an
