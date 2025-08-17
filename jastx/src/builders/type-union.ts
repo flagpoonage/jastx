@@ -21,6 +21,10 @@ const allowed_types = [
   "l:boolean",
 ] satisfies ElementType[];
 
+function canCauseAmbiguity(node: AstNode) {
+  return ["t:function", "t:cond"];
+}
+
 export function createTypeUnion(props: TypeUnionProps): TypeUnionNode {
   const walker = createChildWalker(type, props);
 
@@ -37,6 +41,9 @@ export function createTypeUnion(props: TypeUnionProps): TypeUnionNode {
   return {
     type,
     props,
-    render: () => `${types.map((a) => a.render()).join("|")}`,
+    render: () =>
+      `${types
+        .map((a) => (canCauseAmbiguity(a) ? `(${a.render()})` : a.render()))
+        .join("|")}`,
   };
 }

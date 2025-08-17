@@ -21,6 +21,13 @@ const allowed_types = [
   "l:boolean",
 ] satisfies ElementType[];
 
+function canCauseAmbiguity(node: AstNode) {
+  // For type unions, we need to wrap them in parenthesis, as the intersection
+  // type has precedence, an intersection of A and the union B | C would otherwise
+  // be rendered as A & B | C, which resolves to (A & B) | C, rather than A & (B | C)
+  return ["t:function", "t:union", "t:cond"].includes(node.type);
+}
+
 export function createTypeIntersection(
   props: TypeIntersectionProps
 ): TypeIntersectionNode {
@@ -41,10 +48,7 @@ export function createTypeIntersection(
     props,
     render: () =>
       `${types
-        // For type unions, we need to wrap them in parenthesis, as the intersection
-        // type has precedence, an intersection of A and the union B | C would otherwise
-        // be rendered as A & B | C, which resolves to (A & B) | C, rather than A & (B | C)
-        .map((a) => (a.type === "t:union" ? `(${a.render()})` : a.render()))
+        .map((a) => (canCauseAmbiguity(a) ? `(${a.render()})` : a.render()))
         .join("&")}`,
   };
 }
