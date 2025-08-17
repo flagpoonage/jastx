@@ -152,6 +152,7 @@ import {
   TryStatementProps,
 } from "./builders/try-statement.js";
 import { createTypeAlias, TypeAliasProps } from "./builders/type-alias.js";
+import { createTypeArray, TypeArrayProps } from "./builders/type-array.js";
 import {
   createTypeConditional,
   TypeConditionalProps,
@@ -361,6 +362,8 @@ export const jsxs = <T>(
         return createTypeUnion(options as TypeUnionProps);
       case "t:intersection":
         return createTypeIntersection(options as TypeIntersectionProps);
+      case "t:array":
+        return createTypeArray(options as TypeArrayProps);
 
       // Expressions
       case "expr:as":
@@ -485,6 +488,7 @@ declare global {
       ["t:infer"]: TypeInferProps;
       ["t:union"]: TypeUnionProps;
       ["t:intersection"]: TypeIntersectionProps;
+      ["t:array"]: TypeArrayProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
