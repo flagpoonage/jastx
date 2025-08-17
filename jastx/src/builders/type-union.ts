@@ -22,7 +22,7 @@ const allowed_types = [
 ] satisfies ElementType[];
 
 function canCauseAmbiguity(node: AstNode) {
-  return ["t:function", "t:cond"];
+  return ["t:function", "t:cond"].includes(node.type);
 }
 
 export function createTypeUnion(props: TypeUnionProps): TypeUnionNode {

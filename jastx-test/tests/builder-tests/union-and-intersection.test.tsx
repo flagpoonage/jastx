@@ -65,6 +65,30 @@ test("<t:union> parenthesizes functions", () => {
   expect(v1.render()).toBe("(()=>string)|string");
 });
 
+test("<t:union> parenthesizes conditional", () => {
+  const v1 = (
+    <t:union>
+      <t:cond>
+        <t:ref>
+          <ident name="X" />
+        </t:ref>
+        <t:ref>
+          <ident name="Y" />
+        </t:ref>
+        <t:ref>
+          <ident name="A" />
+        </t:ref>
+        <t:ref>
+          <ident name="B" />
+        </t:ref>
+      </t:cond>
+      <t:primitive type="string" />
+    </t:union>
+  );
+
+  expect(v1.render()).toBe("(X extends Y?A:B)|string");
+});
+
 test("<t:intersection> parenthesizes functions", () => {
   const v1 = (
     <t:intersection>
@@ -76,4 +100,28 @@ test("<t:intersection> parenthesizes functions", () => {
   );
 
   expect(v1.render()).toBe("(()=>string)&string");
+});
+
+test("<t:intersection> parenthesizes conditional", () => {
+  const v1 = (
+    <t:intersection>
+      <t:cond>
+        <t:ref>
+          <ident name="X" />
+        </t:ref>
+        <t:ref>
+          <ident name="Y" />
+        </t:ref>
+        <t:ref>
+          <ident name="A" />
+        </t:ref>
+        <t:ref>
+          <ident name="B" />
+        </t:ref>
+      </t:cond>
+      <t:primitive type="string" />
+    </t:intersection>
+  );
+
+  expect(v1.render()).toBe("(X extends Y?A:B)&string");
 });
