@@ -184,6 +184,25 @@ export function createImportDeclaration(
     );
   }
 
+  if (!default_value && !values) {
+    if (props.typeOnly) {
+      throw new InvalidSyntaxError(
+        `<${type}> cannot be a type-only import if no values are being imported`
+      );
+    }
+
+    return {
+      type,
+      props,
+      render: () =>
+        `import ${source.render()}${
+          import_attributes.length > 0
+            ? ` with {${import_attributes.map((x) => x.render()).join(",")}}`
+            : ""
+        }`,
+    };
+  }
+
   const render_clause = () => {
     if (default_value && values) {
       return `${default_value.render()},${values.render()}`;

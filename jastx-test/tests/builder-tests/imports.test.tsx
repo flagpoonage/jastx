@@ -92,6 +92,15 @@ test("<namespace-import> renders correctly with a single alias", () => {
   expect(v1.render()).toBe("* as a");
 });
 
+test("<dclr:import> renders correctly as just a source import", () => {
+  const v1 = (
+    <dclr:import>
+      <l:string value="./test" />
+    </dclr:import>
+  );
+  expect(v1.render()).toBe('import "./test"');
+});
+
 test("<dclr:import> renders correctly with named-imports", () => {
   const v1 = (
     <dclr:import>
