@@ -170,6 +170,10 @@ import {
   TypeInterfaceProps,
 } from "./builders/type-interface.js";
 import {
+  createTypeIntersection,
+  TypeIntersectionProps,
+} from "./builders/type-intersection.js";
+import {
   createTypeLiteral,
   TypeLiteralProps,
 } from "./builders/type-literal.js";
@@ -201,6 +205,7 @@ import {
   PropertySignatureProps,
 } from "./builders/type-signatures.js";
 import { createTypeTuple, TypeTupleProps } from "./builders/type-tuple.js";
+import { createTypeUnion, TypeUnionProps } from "./builders/type-union.js";
 import {
   AwaitExpressionProps,
   createAwaitExpression,
@@ -352,6 +357,10 @@ export const jsxs = <T>(
         return createTypeAlias(options as TypeAliasProps);
       case "t:infer":
         return createTypeInfer(options as TypeInferProps);
+      case "t:union":
+        return createTypeUnion(options as TypeUnionProps);
+      case "t:intersection":
+        return createTypeIntersection(options as TypeIntersectionProps);
 
       // Expressions
       case "expr:as":
@@ -474,6 +483,8 @@ declare global {
       ["t:interface_"]: TypeInterfaceProps;
       ["t:alias"]: TypeAliasProps;
       ["t:infer"]: TypeInferProps;
+      ["t:union"]: TypeUnionProps;
+      ["t:intersection"]: TypeIntersectionProps;
 
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
