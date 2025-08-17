@@ -54,6 +54,7 @@ export function createForInStatement(
 
 import { AstNode } from "jastx/types";
 import { expect, test } from "vitest";
+import * as Q from "jastx/build";
 
 test("E2E: for-in builder", () => {
   const ast_node_ref = (

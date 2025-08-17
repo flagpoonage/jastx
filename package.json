@@ -10,7 +10,8 @@
   "types": "./dist/index.d.ts",
   "workspaces": [
     "jastx",
-    "jastx-test"
+    "jastx-test",
+    "jastx-parse"
   ],
   "exports": {
     ".": {
@@ -19,7 +20,7 @@
     "./jsx-runtime": "./dist/jsx-runtime.js"
   },
   "scripts": {
-    "dev": "concurrently 'npm run dev -w jastx' 'npm run dev -w jastx-test' -n 'build,test' -c 'yellow,green'",
+    "dev": "concurrently 'npm run dev -w jastx' 'npm run dev -w jastx-test'  -n 'build,test' -c 'yellow,green'",
     "build": "npm run build --workspaces --if-present",
     "prepublish": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present"
