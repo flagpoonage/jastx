@@ -1,6 +1,13 @@
+import {
+  createIdentifier,
+  createImportDeclaration,
+  createNamedImports,
+  createSourceFile,
+  createStringLiteral,
+} from "jastx/build";
+
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
-import { createSourceFile } from "jastx/build";
 
 const x = new Parser();
 x.setLanguage(ts.typescript);
@@ -10,7 +17,7 @@ import { assertNChildren, assertValue } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { AstNode, EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
 
-const type = "stmt:for-in";
+export const type = "stmt:for-in";
 
 export interface ForInStatementProps {
   children: AstNode[] | AstNode;
@@ -69,30 +76,92 @@ export function stringToJastx() {
  * @param {Parser.TreeCursor} walker
  */
 export function parseNode(n, walker) {
-  const jastxNode = getJastxNode(n);
+  const jastxNode = getJastxNode(n, walker);
+
+  if (typeof jastxNode !== "function") {
+    return jastxNode;
+  }
 
   const children = [];
 
-  walker.gotoFirstChild();
+  if (!walker.gotoFirstChild()) {
+    return jastxNode(children);
+  }
 
-  while (walker.currentNode) {
-    children.push(parseNode(walker.currentNode, walker));
-    walker.gotoNextSibling();
+  let has_next_node = true;
+
+  while (has_next_node) {
+    if (!walker.currentNode.isNamed) {
+      // TODO: Might need these...
+      has_next_node = walker.gotoNextSibling();
+      continue;
+    }
+
+    const nodes = parseNode(walker.currentNode, walker);
+
+    children.push(...(Array.isArray(nodes) ? nodes : [nodes]));
+    has_next_node = walker.gotoNextSibling();
   }
 
   walker.gotoParent();
 
-  jastxNode.props.children = children;
-  return jastxNode;
+  return jastxNode(children);
 }
 
-export function getJastxNode(n) {
+/**
+ *
+ * @param {Parser.SyntaxNode} n
+ * @returns
+ */
+export function getJastxNode(n, walker) {
   switch (n.type) {
     case "program":
-      return createSourceFile({ type: "module" });
-    default:
+      return () => createSourceFile({ type: "module" });
+    case "import_statement":
+      return (children) => parseImportStatement(n, children);
+    case "import":
+      return (children) => parseImport(n, children);
+    case "import_clause":
+      return (children) => children;
+    case "named_imports":
+      return (children) => createNamedImports({ children });
+    case "import_specifier":
+      return (children) => children;
+    case "identifier":
+      return () => createIdentifier({ name: n.text });
+    case "string": {
+      return parseString(n, walker);
+    }
+    default: {
+      console.log(n, n.toString(), n);
       throw new Error(`Unknown tree-sitter node [${n.type}]`);
+    }
   }
+}
+
+/**
+ *
+ * @param {Parser.SyntaxNode} n
+ * @param {Parser.TreeCursor} walker
+ */
+function parseString(n, walker) {
+  if (walker.currentNode.namedChildren.length !== 1) {
+    throw new Error(
+      `Unexpected child count on string node [${walker.currentNode.namedChildren.length}]`
+    );
+  }
+
+  const c_node = walker.currentNode.namedChildren[0];
+
+  if (c_node.type !== "string_fragment") {
+    throw new Error(`Unexpected child node [${c_node.type}] in string`);
+  }
+
+  return createStringLiteral({ value: c_node.text });
+}
+
+function parseImportStatement(n, children) {
+  return createImportDeclaration({ children });
 }
 
 stringToJastx();
