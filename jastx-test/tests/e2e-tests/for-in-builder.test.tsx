@@ -52,6 +52,7 @@ export function createForInStatement(
 }
 */
 
+import { AstNode } from "jastx/types";
 import { expect, test } from "vitest";
 
 test("E2E: for-in builder", () => {
@@ -59,6 +60,26 @@ test("E2E: for-in builder", () => {
     <t:ref>
       <ident name="AstNode" />
     </t:ref>
+  );
+
+  const AssertValue = (props: { name: string }) => (
+    <stmt:expr>
+      <expr:call>
+        <ident name="assertValue" />
+        <ident name={props.name} />
+      </expr:call>
+    </stmt:expr>
+  );
+
+  const SingleConst = (props: { name: string; children: AstNode }) => (
+    <stmt:var>
+      <dclr:var-list type="const">
+        <dclr:var>
+          <ident name={props.name} />
+          {props.children}
+        </dclr:var>
+      </dclr:var-list>
+    </stmt:var>
   );
 
   const v1 = (
@@ -84,14 +105,9 @@ test("E2E: for-in builder", () => {
         </named-imports>
         <l:string value="../types.js" />
       </dclr:import>
-      <stmt:var>
-        <dclr:var-list type="const">
-          <dclr:var>
-            <ident name="test" />
-            <l:string value="stmt:for-in" />
-          </dclr:var>
-        </dclr:var-list>
-      </stmt:var>
+      <SingleConst name="type">
+        <l:string value="stmt:for-in" />
+      </SingleConst>
       <t:interface_ exported>
         <ident name="ForInStatementProps" />
         <t:property>
@@ -185,18 +201,13 @@ test("E2E: for-in builder", () => {
               </dclr:var>
             </dclr:var-list>
           </stmt:var>
-          <stmt:var>
-            <dclr:var-list type="const">
-              <dclr:var>
-                <ident name="walker" />
-                <expr:call>
-                  <ident name="createChildWalker" />
-                  <ident name="type" />
-                  <ident name="props" />
-                </expr:call>
-              </dclr:var>
-            </dclr:var-list>
-          </stmt:var>
+          <SingleConst name="walker">
+            <expr:call>
+              <ident name="createChildWalker" />
+              <ident name="type" />
+              <ident name="props" />
+            </expr:call>
+          </SingleConst>
           <stmt:var>
             <dclr:var-list type="const">
               <dclr:var>
@@ -238,24 +249,9 @@ test("E2E: for-in builder", () => {
               </dclr:var>
             </dclr:var-list>
           </stmt:var>
-          <stmt:expr>
-            <expr:call>
-              <ident name="assertValue" />
-              <ident name="ident" />
-            </expr:call>
-          </stmt:expr>
-          <stmt:expr>
-            <expr:call>
-              <ident name="assertValue" />
-              <ident name="iterable" />
-            </expr:call>
-          </stmt:expr>
-          <stmt:expr>
-            <expr:call>
-              <ident name="assertValue" />
-              <ident name="block" />
-            </expr:call>
-          </stmt:expr>
+          <AssertValue name="ident" />
+          <AssertValue name="iterable" />
+          <AssertValue name="block" />
           <stmt:return>
             <l:object>
               <property>
@@ -296,6 +292,6 @@ test("E2E: for-in builder", () => {
   );
 
   expect(v1.render()).toBe(
-    'import {assertNChildren,assertValue} from "../asserts.js";import {createChildWalker} from "../child-walker.js";import {AstNode,EXPRESSION_TYPES,STATEMENT_TYPES} from "../types.js";const test="stmt:for-in";export interface ForInStatementProps{children:AstNode[]|AstNode;variableType?:"const"|"let"|"var";};interface ForInStatementNode extends AstNode{type:typeof type;props:ForInStatementProps;};export function isForInStatement(v:AstNode):v is ForInStatement{return v.type === "stmt:for-in";};export function createForInStatement(props:ForInStatementProps):ForInStatement{assertNChildren(type,3,props);const {variableType="const"}=props;const walker=createChildWalker(type,props);const [ident,iterable,block]=walker.spliceAssertExactPath(["ident",["ident","l:object","l:array","arrow-function",...EXPRESSION_TYPES],["block",...STATEMENT_TYPES]],{noTrailing:true});assertValue(ident);assertValue(iterable);assertValue(block);return {type:type,props,render:()=>`for(${variableType} ${ident(render)} in ${iterable(render)})${block(render)}`};}'
+    'import {assertNChildren,assertValue} from "../asserts.js";import {createChildWalker} from "../child-walker.js";import {AstNode,EXPRESSION_TYPES,STATEMENT_TYPES} from "../types.js";const type="stmt:for-in";export interface ForInStatementProps{children:AstNode[]|AstNode;variableType?:"const"|"let"|"var";};interface ForInStatementNode extends AstNode{type:typeof type;props:ForInStatementProps;};export function isForInStatement(v:AstNode):v is ForInStatement{return v.type === "stmt:for-in";};export function createForInStatement(props:ForInStatementProps):ForInStatement{assertNChildren(type,3,props);const {variableType="const"}=props;const walker=createChildWalker(type,props);const [ident,iterable,block]=walker.spliceAssertExactPath(["ident",["ident","l:object","l:array","arrow-function",...EXPRESSION_TYPES],["block",...STATEMENT_TYPES]],{noTrailing:true});assertValue(ident);assertValue(iterable);assertValue(block);return {type:type,props,render:()=>`for(${variableType} ${ident(render)} in ${iterable(render)})${block(render)}`};}'
   );
 });
