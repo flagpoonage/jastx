@@ -100,6 +100,18 @@ import {
   IfStatementProps,
 } from "./builders/if-statement.js";
 import {
+  createImportAttribute,
+  createImportDeclaration,
+  createImportSpecifier,
+  createNamedImports,
+  createNamespaceImport,
+  ImportAttributeProps,
+  ImportDeclarationProps,
+  ImportSpecifierProps,
+  NamedImportsProps,
+  NamespaceImportProps,
+} from "./builders/imports.js";
+import {
   ArrayLiteralProps,
   BigintLiteralProps,
   BooleanLiteralProps,
@@ -291,6 +303,14 @@ export const jsxs = <T>(
         return createMethod(options as MethodProps);
       case "field":
         return createField(options as FieldProps);
+      case "named-imports":
+        return createNamedImports(options as NamedImportsProps);
+      case "namespace-import":
+        return createNamespaceImport(options as NamespaceImportProps);
+      case "import-specifier":
+        return createImportSpecifier(options as ImportSpecifierProps);
+      case "import-attribute":
+        return createImportAttribute(options as ImportAttributeProps);
 
       // Declarations
       case "dclr:function":
@@ -306,6 +326,8 @@ export const jsxs = <T>(
         return createExportDeclaration(options as ExportDeclarationProps);
       case "dclr:class":
         return createClassDeclaration(options as ClassDeclarationProps);
+      case "dclr:import":
+        return createImportDeclaration(options as ImportDeclarationProps);
 
       // Literal values
       case "l:boolean":
@@ -506,12 +528,17 @@ declare global {
       ["set-accessor"]: SetAccessorProps;
       ["method"]: MethodProps;
       ["field"]: FieldProps;
+      ["named-imports"]: NamedImportsProps;
+      ["namespace-import"]: NamespaceImportProps;
+      ["import-specifier"]: ImportSpecifierProps;
+      ["import-attribute"]: ImportAttributeProps;
 
       ["dclr:function"]: FunctionDeclarationProps;
       ["dclr:var"]: VariableDeclarationProps;
       ["dclr:var-list"]: VariableDeclarationListProps;
       ["dclr:export"]: ExportDeclarationProps;
       ["dclr:class"]: ClassDeclarationProps;
+      ["dclr:import"]: ImportDeclarationProps;
 
       ["stmt:if"]: IfStatementProps;
       ["stmt:expr"]: ExpressionStatementProps;
