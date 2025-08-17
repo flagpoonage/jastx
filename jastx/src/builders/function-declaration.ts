@@ -10,6 +10,7 @@ export interface FunctionDeclarationProps {
    * Generator is only useable when a function body is provided,
    * it will throw an error if provided without a body
    */
+  declared?: boolean;
   generator?: boolean;
   exported?: boolean;
   async?: boolean;
@@ -20,6 +21,8 @@ export interface FunctionDeclarationNode extends AstNode {
   props: FunctionDeclarationProps;
 }
 
+type T = Generator;
+
 export function isFunctionDeclaration(
   node: AstNode
 ): node is FunctionDeclarationNode {
@@ -29,6 +32,18 @@ export function isFunctionDeclaration(
 export function createFunctionDeclaration(
   props: FunctionDeclarationProps
 ): FunctionDeclarationNode {
+  if (props.generator && props.declared) {
+    throw new InvalidSyntaxError(
+      `<${type}> can not be marked as generator when "declared" is set. You can however identify a generator function by ensuring the return type is Generator<...>`
+    );
+  }
+
+  if (props.async && props.declared) {
+    throw new InvalidSyntaxError(
+      `<${type}> can not be marked as async when "declared" is set. You can however identify a async function by ensuring the return type is Promise<...>`
+    );
+  }
+
   const walker = createChildWalker(type, props);
 
   const ident = walker.spliceAssertNext("ident");
@@ -63,6 +78,12 @@ export function createFunctionDeclaration(
   if (!block && props.generator) {
     throw new InvalidSyntaxError(
       `<${type}> cannot declare a generator function without a body. A body can be ommitted in the case that this is an overload declaration, but an overload declaration does not specify the generator syntax`
+    );
+  }
+
+  if (block && props.declared) {
+    throw new InvalidSyntaxError(
+      `<${type}> cannot specify an implementation when the "declared" flag is set`
     );
   }
 

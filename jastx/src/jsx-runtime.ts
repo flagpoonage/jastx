@@ -153,6 +153,7 @@ import {
   createSetAccessor,
   SetAccessorProps,
 } from "./builders/set-accessor.js";
+import { createSourceFile, SourceFileProps } from "./builders/source-file.js";
 import {
   createTemplateExpression,
   TemplateExpressionlProps,
@@ -271,6 +272,8 @@ export const jsxs = <T>(
   try {
     switch (element) {
       // Standalone elements
+      case "source-file":
+        return createSourceFile(options as SourceFileProps);
       case "ident":
         return createIdentifier(options as IdentifierProps);
       case "block":
@@ -512,6 +515,7 @@ declare global {
       ["t:intersection"]: TypeIntersectionProps;
       ["t:array"]: TypeArrayProps;
 
+      ["source-file"]: SourceFileProps;
       ["ident"]: IdentifierProps;
       ["block"]: BlockProps;
       ["param"]: ParameterProps;

@@ -7,6 +7,7 @@ const type = "stmt:var";
 export interface VariableStatementProps {
   children: AstNode[] | AstNode;
   exported?: boolean;
+  declared?: boolean;
 }
 
 export interface VariableStatementNode extends AstNode {
@@ -30,6 +31,9 @@ export function createVariableStatement(
   return {
     type: type,
     props,
-    render: () => `${props.exported ? "export " : ""}${property_node.render()}`,
+    render: () =>
+      `${props.exported ? "export " : ""}${
+        props.declared ? "declare " : ""
+      }${property_node.render()}`,
   };
 }

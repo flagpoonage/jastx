@@ -122,6 +122,7 @@ export type DeclarationElementTypeName = (typeof _declarations)[number];
 export type DeclarationElementType = `dclr:${DeclarationElementTypeName}`;
 
 export type ElementType =
+  | "source-file"
   | "ident"
   | "text"
   | "block"
