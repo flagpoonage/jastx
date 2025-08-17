@@ -114,8 +114,8 @@ const _declarations = [
   "var",
   "var-list",
   "export",
-  "property",
   "class",
+  "import",
 ] as const;
 
 export type DeclarationElementTypeName = (typeof _declarations)[number];
@@ -132,6 +132,10 @@ export type ElementType =
   | "named-exports"
   | "namespace-export"
   | "export-default"
+  | "import-specifier"
+  | "named-imports"
+  | "namespace-import"
+  | "import-attribute"
   | "heritage-clause"
   | "heritage-ident"
   | "bind:array"
@@ -249,6 +253,7 @@ export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
 export const TOP_LEVEL_DECLARATION_TYPES: readonly DeclarationElementType[] = [
   ...DECLARATION_TYPES,
   "dclr:export",
+  "dclr:import",
 ];
 
 export function omitFrom(
