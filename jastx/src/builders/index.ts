@@ -1,3 +1,4 @@
+export * from "./exports.js";
 export * from "./identifier.js";
 export * from "./imports.js";
 export * from "./literals.js";
