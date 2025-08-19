@@ -1,3 +1,4 @@
+export * from "./export-default.js";
 export * from "./exports.js";
 export * from "./identifier.js";
 export * from "./imports.js";
