@@ -252,10 +252,11 @@ export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
   // "dclr:export",
 ];
 
-export const TOP_LEVEL_DECLARATION_TYPES: readonly DeclarationElementType[] = [
+export const TOP_LEVEL_DECLARATION_TYPES: readonly ElementType[] = [
   ...DECLARATION_TYPES,
   "dclr:export",
   "dclr:import",
+  "export-default",
 ];
 
 export function omitFrom(

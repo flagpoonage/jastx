@@ -1,4 +1,4 @@
-import { createExportDefault } from "jastx/build";
+import { createExportDeclaration, createExportDefault } from "jastx/build";
 import type { SyntaxNode } from "tree-sitter";
 import type { AstNode } from "../../../jastx/dist/types.js";
 import { parseNode } from "../parse.js";
@@ -20,5 +20,10 @@ export function parseExportStatement(node: SyntaxNode) {
     return (children: AstNode[]) => createExportDefault({ children });
   }
 
-  return (children: AstNode[]) => createExportDefault({ children });
+  const type_only_import = !!node.children.find(
+    (a) => !a.isNamed && a.type === "type"
+  );
+
+  return (children: AstNode[]) =>
+    createExportDeclaration({ typeOnly: type_only_import, children });
 }

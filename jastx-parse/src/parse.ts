@@ -2,11 +2,14 @@ import type { SyntaxNode, TreeCursor } from "tree-sitter";
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
 import type { AstNode } from "../../jastx/dist/types.js";
+import { parseExportClause } from "./parsers/export_clause.js";
+import { parseExportSpecifier } from "./parsers/export_specifier.js";
 import { parseExportStatement } from "./parsers/export_statement.js";
 import { parseExpressionStatement } from "./parsers/expression_statement.js";
 import { parseIdentifier } from "./parsers/identifier.js";
 import { parseImportSpecifier } from "./parsers/import_specifier.js";
 import { parseImportStatement } from "./parsers/import_statement.js";
+import { parseLexicalDeclaration } from "./parsers/lexical_declaration.js";
 import { parseNamedImports } from "./parsers/named_imports.js";
 import { parseNamespaceImport } from "./parsers/namespace_import.js";
 import { parseProgram } from "./parsers/program.js";
@@ -79,8 +82,6 @@ export function getJastxNode(
       return parseProgram();
     case "import_statement":
       return parseImportStatement(n);
-    case "import_clause":
-      return passthrough;
     case "named_imports":
       return parseNamedImports();
     case "namespace_import":
@@ -95,6 +96,14 @@ export function getJastxNode(
       return parseExportStatement(n);
     case "expression_statement":
       return parseExpressionStatement();
+    case "export_specifier":
+      return parseExportSpecifier(n);
+    case "export_clause":
+      return parseExportClause(n);
+    case "import_clause":
+      return passthrough;
+    case "lexical_declaration":
+      return parseLexicalDeclaration(n);
     default: {
       console.log(n, n.toString());
       throw new Error(`Unknown tree-sitter node [${n.type}]`);
