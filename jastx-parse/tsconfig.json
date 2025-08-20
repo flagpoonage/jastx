@@ -1,19 +1,13 @@
 {
-  "include": ["./tests/**/*.tsx"],
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "jastx",
     "target": "es2024",
-    "module": "es2022",
-    "moduleResolution": "bundler",
-    "noEmit": true,
+    "module": "nodenext",
+    "outDir": "dist",
+    "strict": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "paths": {
-      "jastx": ["../jastx"],
-      "jastx/*": ["../jastx/dist/*"]
-    },
     "typeRoots": ["../node_modules/@types"]
   },
   "exclude": ["node_modules"]

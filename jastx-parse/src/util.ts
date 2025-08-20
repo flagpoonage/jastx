@@ -1,6 +1,7 @@
 import type { SyntaxNode } from "tree-sitter";
+import type { AstNode } from "../../jastx/dist/types.js";
 
-export function passthrough(children) {
+export function passthrough(children: AstNode[]) {
   return children;
 }
 

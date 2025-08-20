@@ -1,15 +1,17 @@
 import type { SyntaxNode, TreeCursor } from "tree-sitter";
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
-import type { AstNode } from "../../jastx/dist/types";
-import { parseExportStatement } from "./parsers/export_statement";
-import { parseIdentifier } from "./parsers/identifier";
-import { parseImportSpecifier } from "./parsers/import_specifier";
-import { parseImportStatement } from "./parsers/import_statement";
-import { parseNamedImports } from "./parsers/named_imports";
-import { parseProgram } from "./parsers/program";
-import { parseString } from "./parsers/string";
-import { passthrough } from "./util";
+import type { AstNode } from "../../jastx/dist/types.js";
+import { parseExportStatement } from "./parsers/export_statement.js";
+import { parseExpressionStatement } from "./parsers/expression_statement.js";
+import { parseIdentifier } from "./parsers/identifier.js";
+import { parseImportSpecifier } from "./parsers/import_specifier.js";
+import { parseImportStatement } from "./parsers/import_statement.js";
+import { parseNamedImports } from "./parsers/named_imports.js";
+import { parseNamespaceImport } from "./parsers/namespace_import.js";
+import { parseProgram } from "./parsers/program.js";
+import { parseString } from "./parsers/string.js";
+import { passthrough } from "./util.js";
 
 const x = new Parser();
 // @ts-expect-error The tree-sitter types are incorrect
@@ -24,7 +26,12 @@ export function stringToJastx(s: string) {
 
   const b = parseNode(tree, walker);
 
-  console.log("OUTPUT", b.render());
+  console.log(
+    "OUTPUT",
+    Array.isArray(b) ? b.map((x) => x.render()) : b.render()
+  );
+
+  return Array.isArray(b) ? b[0] : b;
 }
 
 export function parseNode(n: SyntaxNode, walker: TreeCursor) {
@@ -66,7 +73,7 @@ export function parseNode(n: SyntaxNode, walker: TreeCursor) {
 
 export function getJastxNode(
   n: SyntaxNode
-): AstNode | ((children: AstNode[]) => AstNode) {
+): AstNode | AstNode[] | ((children: AstNode[]) => AstNode | AstNode[]) {
   switch (n.type) {
     case "program":
       return parseProgram();
@@ -76,6 +83,8 @@ export function getJastxNode(
       return passthrough;
     case "named_imports":
       return parseNamedImports();
+    case "namespace_import":
+      return parseNamespaceImport();
     case "import_specifier":
       return parseImportSpecifier(n);
     case "identifier":
@@ -84,6 +93,8 @@ export function getJastxNode(
       return parseString(n);
     case "export_statement":
       return parseExportStatement(n);
+    case "expression_statement":
+      return parseExpressionStatement();
     default: {
       console.log(n, n.toString());
       throw new Error(`Unknown tree-sitter node [${n.type}]`);

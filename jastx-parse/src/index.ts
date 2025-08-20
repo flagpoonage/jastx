@@ -1,1 +1,1 @@
-export { stringToJastx } from "./parse";
+export { stringToJastx } from "./parse.js";

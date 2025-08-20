@@ -1,6 +1,7 @@
 import { createExportDefault } from "jastx/build";
 import type { SyntaxNode } from "tree-sitter";
-import { parseNode } from "../parse";
+import type { AstNode } from "../../../jastx/dist/types.js";
+import { parseNode } from "../parse.js";
 
 export function parseExportStatement(node: SyntaxNode) {
   const declaration = node.childForFieldName("declaration");
@@ -16,8 +17,8 @@ export function parseExportStatement(node: SyntaxNode) {
 
   if (value) {
     // TOOD: This is possible not a default export...
-    return (children) => createExportDefault({ children });
+    return (children: AstNode[]) => createExportDefault({ children });
   }
 
-  return (children) => createExportDefault({ children });
+  return (children: AstNode[]) => createExportDefault({ children });
 }

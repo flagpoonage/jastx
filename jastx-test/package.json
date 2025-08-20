@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "jastx": "file:///../jastx",
+    "jastx-parse": "file:///../jastx-parse",
     "typescript": "^5.8.3"
   },
   "dependencies": {

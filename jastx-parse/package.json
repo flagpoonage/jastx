@@ -4,8 +4,13 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "main": "index.js",
-  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "npx tsc",
     "dev": "npx tsc --watch --preserveWatchOutput"
@@ -15,6 +20,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/node": "^24.3.0",
     "tree-sitter": "^0.25.0",
     "tree-sitter-typescript": "^0.23.2"
   }

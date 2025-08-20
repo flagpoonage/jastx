@@ -12,7 +12,8 @@
     "declarationMap": true,
     "paths": {
       "jastx": ["../jastx"],
-      "jastx/*": ["../jastx/dist/*"]
+      "jastx/*": ["../jastx/dist/*"],
+      "jastx-parse": ["../jastx-parse"]
     },
     "typeRoots": ["../node_modules/@types"]
   },
