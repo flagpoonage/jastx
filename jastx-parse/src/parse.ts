@@ -6,14 +6,20 @@ import { parseExportClause } from "./parsers/export_clause.js";
 import { parseExportSpecifier } from "./parsers/export_specifier.js";
 import { parseExportStatement } from "./parsers/export_statement.js";
 import { parseExpressionStatement } from "./parsers/expression_statement.js";
+import { parseGenericType } from "./parsers/generic_type.js";
 import { parseIdentifier } from "./parsers/identifier.js";
 import { parseImportSpecifier } from "./parsers/import_specifier.js";
 import { parseImportStatement } from "./parsers/import_statement.js";
 import { parseLexicalDeclaration } from "./parsers/lexical_declaration.js";
 import { parseNamedImports } from "./parsers/named_imports.js";
 import { parseNamespaceImport } from "./parsers/namespace_import.js";
+import { parseNumber } from "./parsers/number.js";
+import { parsePredefinedType } from "./parsers/predefined_type.js";
 import { parseProgram } from "./parsers/program.js";
 import { parseString } from "./parsers/string.js";
+import { parseTypeAnnotation } from "./parsers/type_annotation.js";
+import { parseTypeArguments } from "./parsers/type_arguments.js";
+import { parseVariableDeclarator } from "./parsers/variable_declarator.js";
 import { passthrough } from "./util.js";
 
 const x = new Parser();
@@ -89,6 +95,7 @@ export function getJastxNode(
     case "import_specifier":
       return parseImportSpecifier(n);
     case "identifier":
+    case "type_identifier":
       return parseIdentifier(n);
     case "string":
       return parseString(n);
@@ -104,6 +111,18 @@ export function getJastxNode(
       return passthrough;
     case "lexical_declaration":
       return parseLexicalDeclaration(n);
+    case "variable_declarator":
+      return parseVariableDeclarator();
+    case "type_annotation":
+      return parseTypeAnnotation();
+    case "predefined_type":
+      return parsePredefinedType(n);
+    case "number":
+      return parseNumber(n);
+    case "generic_type":
+      return parseGenericType(n);
+    case "type_arguments":
+      return parseTypeArguments();
     default: {
       console.log(n, n.toString());
       throw new Error(`Unknown tree-sitter node [${n.type}]`);

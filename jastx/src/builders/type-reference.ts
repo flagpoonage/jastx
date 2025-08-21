@@ -1,6 +1,7 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError } from "../errors.js";
-import { AstNode, LITERAL_PRIMITIVE_TYPES, TYPE_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { LITERAL_PRIMITIVE_TYPES, TYPE_TYPES } from "../types.js";
 
 const type = "t:ref";
 

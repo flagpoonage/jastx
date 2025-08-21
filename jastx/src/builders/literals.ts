@@ -1,7 +1,8 @@
 import { assertZeroChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, VALUE_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { VALUE_TYPES } from "../types.js";
 
 const boolean_type = "l:boolean";
 
@@ -119,7 +120,7 @@ export function createRegexLiteral(props: RegexLiteralProps): RegexLiteralNode {
 const bigint_type = "l:bigint";
 
 export interface BigintLiteralProps {
-  value: number;
+  value: number | bigint;
 }
 
 export interface BigintLiteralNode extends AstNode {
@@ -132,7 +133,10 @@ export function createBigintLiteral(
 ): BigintLiteralNode {
   assertZeroChildren(bigint_type, props);
 
-  if (!Number.isInteger(props.value) || props.value.toString().includes("e")) {
+  if (
+    (typeof props.value === "number" && !Number.isInteger(props.value)) ||
+    props.value.toString().includes("e")
+  ) {
     throw new InvalidSyntaxError(
       `<${bigint_type}> value must be a non-exponential integer value`
     );
