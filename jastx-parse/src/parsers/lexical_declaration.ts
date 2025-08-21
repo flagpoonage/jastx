@@ -7,8 +7,9 @@ import type { AstNode } from "../../../jastx/dist/types";
 
 export function parseLexicalDeclaration(n: SyntaxNode) {
   const walker = n.walk();
-  // TODO: Get the "typeOnly" property from a parent export statement
-  walker.gotoParent();
+  const maybe_export = walker.currentNode.parent;
+
+  const exported = maybe_export?.type === "export_statement";
 
   const var_kind = n.children.find(
     (a) => !a.isNamed && ["const", "var", "let"].includes(a.type)
@@ -20,6 +21,7 @@ export function parseLexicalDeclaration(n: SyntaxNode) {
 
   return (children: AstNode[]) =>
     createVariableStatement({
+      exported,
       children: [
         createVariableDeclarationList({
           type: var_kind as ["const", "var", "let"][number],

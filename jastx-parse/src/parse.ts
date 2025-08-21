@@ -8,6 +8,7 @@ import { parseExportStatement } from "./parsers/export_statement.js";
 import { parseExpressionStatement } from "./parsers/expression_statement.js";
 import { parseGenericType } from "./parsers/generic_type.js";
 import { parseIdentifier } from "./parsers/identifier.js";
+import { parseIfStatement } from "./parsers/if_statement.js";
 import { parseImportSpecifier } from "./parsers/import_specifier.js";
 import { parseImportStatement } from "./parsers/import_statement.js";
 import { parseLexicalDeclaration } from "./parsers/lexical_declaration.js";
@@ -123,6 +124,8 @@ export function getJastxNode(
       return parseGenericType(n);
     case "type_arguments":
       return parseTypeArguments();
+    case "if_statement":
+      return parseIfStatement(n);
     default: {
       console.log(n, n.toString());
       throw new Error(`Unknown tree-sitter node [${n.type}]`);
