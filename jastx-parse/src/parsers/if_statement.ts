@@ -15,7 +15,20 @@ export function parseIfStatement(n: SyntaxNode) {
     throw new Error("Expected consequence for if_statement");
   }
 
-  const condition_node = parseNode(condition, condition.walk());
+  const condition_walker = condition.walk();
+  if (!condition_walker.gotoFirstChild()) {
+    throw new Error(
+      `Expected child for if statement condition, but found none :/`
+    );
+  }
+
+  console.log("ABOUT TO LOOK UP CONDITION", condition_walker.currentNode);
+
+  const condition_node = parseNode(
+    condition_walker.currentNode,
+    condition_walker
+  );
+
   const consequence_node = parseNode(consequence, consequence.walk());
 
   return createIfStatement({
