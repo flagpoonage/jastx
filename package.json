@@ -11,7 +11,8 @@
   "workspaces": [
     "jastx",
     "jastx-test",
-    "jastx-parse"
+    "jastx-parse",
+    "jastx-common"
   ],
   "exports": {
     ".": {

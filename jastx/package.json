@@ -17,9 +17,10 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "dev": "node ./build.mjs --watch"
+    "dev": "npx tsc --watch --preserveWatchOutput"
   },
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "jastx-common": "file:///../jastx-common"
   }
 }

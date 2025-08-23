@@ -13,14 +13,15 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "dev": "node ./build.mjs --watch"
+    "dev": "npx tsc --watch --preserveWatchOutput"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "jastx": "file:///../jastx",
+    "jastx-common": "file:///../jastx-common",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@types/node": "^24.3.0",
     "tree-sitter": "^0.25.0",
     "tree-sitter-typescript": "^0.23.2"
   }
