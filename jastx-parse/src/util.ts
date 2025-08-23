@@ -16,3 +16,7 @@ export function listUnnamedNodes(n: SyntaxNode) {
 
   return unnamed_nodes;
 }
+
+export function ensureArray<T>(v: T | T[]): T[] {
+  return Array.isArray(v) ? v : [v];
+}

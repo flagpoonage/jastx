@@ -1,12 +1,13 @@
 import { assertNChildren, assertValue } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
 
 const type = "expr:binary";
 
-const _arithmetic_operators = ["+", "-", "/", "*", "**", "%"] as const;
+export const _arithmetic_operators = ["+", "-", "/", "*", "**", "%"] as const;
 
-const _relational_operators = [
+export const _relational_operators = [
   "<",
   "<=",
   "==",
@@ -16,15 +17,15 @@ const _relational_operators = [
   "in",
 ] as const;
 
-const _equality_operators = ["==", "!=", "===", "!=="] as const;
+export const _equality_operators = ["==", "!=", "===", "!=="] as const;
 
-const _bitwise_shift_operators = ["<<", ">>", ">>>"] as const;
+export const _bitwise_shift_operators = ["<<", ">>", ">>>"] as const;
 
-const _binary_bitwise_operators = ["&", "|", "^"] as const;
+export const _binary_bitwise_operators = ["&", "|", "^"] as const;
 
-const _binary_logical_operators = ["&&", "||", "??"] as const;
+export const _binary_logical_operators = ["&&", "||", "??"] as const;
 
-const _assignment_operators = [
+export const _assignment_operators = [
   "=",
   "*=",
   "/=",

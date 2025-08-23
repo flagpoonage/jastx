@@ -2,24 +2,35 @@ import type { SyntaxNode, TreeCursor } from "tree-sitter";
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
 import type { AstNode } from "../../jastx/dist/types.js";
+import { parseArrayType } from "./parsers/array_type.js";
+import { parseAsExpression } from "./parsers/as_expression.js";
+import { parseBinaryExpression } from "./parsers/binary_expression.js";
+import { parseCallExpression } from "./parsers/call_expression.js";
 import { parseExportClause } from "./parsers/export_clause.js";
 import { parseExportSpecifier } from "./parsers/export_specifier.js";
 import { parseExportStatement } from "./parsers/export_statement.js";
 import { parseExpressionStatement } from "./parsers/expression_statement.js";
+import { parseFunctionDeclaration } from "./parsers/function_declaration.js";
 import { parseGenericType } from "./parsers/generic_type.js";
 import { parseIdentifier } from "./parsers/identifier.js";
 import { parseIfStatement } from "./parsers/if_statement.js";
 import { parseImportSpecifier } from "./parsers/import_specifier.js";
 import { parseImportStatement } from "./parsers/import_statement.js";
 import { parseLexicalDeclaration } from "./parsers/lexical_declaration.js";
+import { parseMemberExpression } from "./parsers/member_expression.js";
 import { parseNamedImports } from "./parsers/named_imports.js";
 import { parseNamespaceImport } from "./parsers/namespace_import.js";
 import { parseNumber } from "./parsers/number.js";
+import { parseOptionalParameter } from "./parsers/optional_parameter.js";
 import { parsePredefinedType } from "./parsers/predefined_type.js";
 import { parseProgram } from "./parsers/program.js";
+import { parseRequiredParameter } from "./parsers/required_parameter.js";
+import { parseReturnStatement } from "./parsers/return_statement.js";
+import { parseStatementBlock } from "./parsers/statement_block.js";
 import { parseString } from "./parsers/string.js";
-import { parseTypeAnnotation } from "./parsers/type_annotation.js";
-import { parseTypeArguments } from "./parsers/type_arguments.js";
+import { parseSubscriptExpression } from "./parsers/subscript_expression.js";
+import { parseTypeIdentifier } from "./parsers/type_identifier.js";
+import { parseTypeParameter } from "./parsers/type_parameter.js";
 import { parseVariableDeclarator } from "./parsers/variable_declarator.js";
 import { passthrough } from "./util.js";
 
@@ -96,7 +107,7 @@ export function getJastxNode(
     case "import_specifier":
       return parseImportSpecifier(n);
     case "identifier":
-    case "type_identifier":
+    case "property_identifier":
       return parseIdentifier(n);
     case "string":
       return parseString(n);
@@ -108,24 +119,65 @@ export function getJastxNode(
       return parseExportSpecifier(n);
     case "export_clause":
       return parseExportClause(n);
-    case "import_clause":
-      return passthrough;
     case "lexical_declaration":
       return parseLexicalDeclaration(n);
     case "variable_declarator":
       return parseVariableDeclarator();
-    case "type_annotation":
-      return parseTypeAnnotation();
     case "predefined_type":
       return parsePredefinedType(n);
     case "number":
       return parseNumber(n);
     case "generic_type":
       return parseGenericType(n);
-    case "type_arguments":
-      return parseTypeArguments();
+    // case "type_arguments":
+    //   return parseTypeArguments();
     case "if_statement":
       return parseIfStatement(n);
+    case "binary_expression":
+      return parseBinaryExpression(n);
+    case "statement_block":
+      return parseStatementBlock();
+    case "call_expression":
+      return parseCallExpression(n);
+    case "member_expression":
+      return parseMemberExpression(n);
+    case "subscript_expression":
+      return parseSubscriptExpression(n);
+    case "return_statement":
+      return parseReturnStatement();
+    case "function_declaration":
+      return parseFunctionDeclaration(n);
+    case "type_parameter":
+      return parseTypeParameter(n);
+    case "required_parameter":
+      return parseRequiredParameter(n);
+    case "optional_parameter":
+      return parseOptionalParameter(n);
+    case "type_identifier":
+      return parseTypeIdentifier(n);
+    case "array_type":
+      return parseArrayType();
+    case "as_expression":
+      return parseAsExpression();
+    // These don't define any syntax in jastx, they
+    // are basically grouping nodes
+    case "import_clause":
+    case "else_clause":
+    case "arguments":
+    case "type_parameters":
+    case "type_annotation":
+    case "constraint":
+    case "default_type":
+    case "literal_type":
+    case "formal_parameters":
+    case "rest_pattern":
+    case "type_arguments":
+      return passthrough;
+    // These are handled internally by each parent node
+    // that encounters them, so we don't consider their
+    // syntax directly.
+    case "optional_chain":
+      return [];
     default: {
       console.log(n, n.toString());
       throw new Error(`Unknown tree-sitter node [${n.type}]`);
