@@ -140,7 +140,7 @@ export type ElementType =
   | "namespace-import"
   | "import-attribute"
   | "heritage-clause"
-  | "heritage-ident"
+  // | "heritage-ident"
   | "spread-element"
   | "bind:array"
   | "bind:array-elem"

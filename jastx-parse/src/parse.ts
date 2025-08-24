@@ -202,7 +202,7 @@ export function getJastxNode(
     case "property_signature":
       return parsePropertySignature(n);
     case "extends_type_clause":
-      return parseExtendsTypeClause(n);
+      return parseExtendsTypeClause();
     // These don't define any syntax in jastx, they
     // are basically grouping nodes or marking nodes
     case "import_clause":

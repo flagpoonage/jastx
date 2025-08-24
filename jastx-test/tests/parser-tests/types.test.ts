@@ -54,6 +54,6 @@ test("generic interface", () => {
 test("extending interface", () => {
   const x1 = `export interface X<T> extends K<T> { name: T, opt?: string; [comp]: string; }`;
   expect(stringToJastx(x1).render()).toBe(
-    `export interface X<T>{name:T;opt?:string;[comp]:string;}`
+    `export interface X<T> extends K<T>{name:T;opt?:string;[comp]:string;}`
   );
 });

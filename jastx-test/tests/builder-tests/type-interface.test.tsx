@@ -57,12 +57,12 @@ test("<t:interface_> renders with generic heritage clause", () => {
         <ident name="X" />
       </t:param>
       <heritage-clause>
-        <heritage-ident>
+        <t:ref>
           <ident name="Base" />
-          <t:param>
+          <t:ref>
             <ident name="X" />
-          </t:param>
-        </heritage-ident>
+          </t:ref>
+        </t:ref>
       </heritage-clause>
     </t:interface_>
   );
@@ -78,12 +78,12 @@ test("<t:interface_> renders with generic heritage clause", () => {
         <ident name="X" />
       </t:param>
       <heritage-clause>
-        <heritage-ident>
+        <t:ref>
           <ident name="Base" />
-          <t:param>
+          <t:ref>
             <ident name="X" />
-          </t:param>
-        </heritage-ident>
+          </t:ref>
+        </t:ref>
       </heritage-clause>
     </t:interface_>
   );

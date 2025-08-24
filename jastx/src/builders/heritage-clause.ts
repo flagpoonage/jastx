@@ -1,50 +1,12 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError } from "../errors.js";
-import { AstNode } from "../types.js";
-
-const ident_type = "heritage-ident";
-
-export interface HeritageIdentifierProps {
-  children: any;
-}
-
-// This is called an ExpressionWithTypeArguments node in TS, which is dumb
-export interface HeritageIdentifierNode extends AstNode {
-  type: typeof ident_type;
-  props: HeritageIdentifierProps;
-}
-
-export function createHeritageIdentifier(
-  props: HeritageIdentifierProps
-): HeritageIdentifierNode {
-  const walker = createChildWalker(ident_type, props);
-
-  const ident = walker.spliceAssertNext("ident");
-  const types = walker.spliceAssertGroup("t:param");
-
-  if (walker.remainingChildren.length > 0) {
-    throw new InvalidChildrenError(
-      ident_type,
-      ["ident", "t:param"],
-      walker.remainingChildTypes
-    );
-  }
-
-  return {
-    type: ident_type,
-    props,
-    render: () =>
-      `${ident.render()}${
-        types.length > 0 ? `<${types.map((a) => a.render()).join(",")}>` : ""
-      }`,
-  };
-}
+import type { AstNode } from "../types.js";
 
 const type = "heritage-clause";
 
 export interface HeritageClauseProps {
   children: any;
-  kind?: 'implements' | 'extends'
+  kind?: "implements" | "extends";
 }
 
 export interface HeritageClauseNode extends AstNode {
@@ -57,12 +19,13 @@ export function createHeritageClause(
 ): HeritageClauseNode {
   const walker = createChildWalker(type, props);
 
-  const idents = walker.spliceAssertGroup(["ident", "heritage-ident"]);
+  // TODO: Support more than just static types
+  const idents = walker.spliceAssertGroup(["ident", "t:ref"]);
 
   if (walker.remainingChildren.length > 0) {
     throw new InvalidChildrenError(
       type,
-      ["ident", "heritage-ident"],
+      ["ident", "t:ref"],
       walker.remainingChildTypes
     );
   }
@@ -71,7 +34,9 @@ export function createHeritageClause(
     type,
     props,
     render: () => {
-      return `${props.kind === 'implements' ? 'implements' : 'extends'} ${idents.map((a) => a.render()).join(",")}`;
+      return `${props.kind === "implements" ? "implements" : "extends"} ${idents
+        .map((a) => a.render())
+        .join(",")}`;
     },
   };
 }

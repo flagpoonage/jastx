@@ -60,14 +60,8 @@ import type { FunctionExpressionProps } from "./builders/function-expression.js"
 import { createFunctionExpression } from "./builders/function-expression.js";
 import type { GetAccessorProps } from "./builders/get-accessor.js";
 import { createGetAccessor } from "./builders/get-accessor.js";
-import type {
-  HeritageClauseProps,
-  HeritageIdentifierProps,
-} from "./builders/heritage-clause.js";
-import {
-  createHeritageClause,
-  createHeritageIdentifier,
-} from "./builders/heritage-clause.js";
+import type { HeritageClauseProps } from "./builders/heritage-clause.js";
+import { createHeritageClause } from "./builders/heritage-clause.js";
 import type { IdentifierProps } from "./builders/identifier.js";
 import { createIdentifier } from "./builders/identifier.js";
 import type { IfStatementProps } from "./builders/if-statement.js";
@@ -254,8 +248,8 @@ export const jsxs = <T>(
         return createExportDefault(options as ExportDefaultProps);
       case "heritage-clause":
         return createHeritageClause(options as HeritageClauseProps);
-      case "heritage-ident":
-        return createHeritageIdentifier(options as HeritageIdentifierProps);
+      // case "heritage-ident":
+      //   return createHeritageIdentifier(options as HeritageIdentifierProps);
       case "property":
         return createProperty(options as PropertyProps);
       case "get-accessor":
@@ -492,7 +486,7 @@ declare global {
       ["export-specifier"]: ExportSpecifierProps;
       ["export-default"]: ExportDefaultProps;
       ["heritage-clause"]: HeritageClauseProps;
-      ["heritage-ident"]: HeritageIdentifierProps;
+      // ["heritage-ident"]: HeritageIdentifierProps;
       ["property"]: PropertyProps;
       ["get-accessor"]: GetAccessorProps;
       ["set-accessor"]: SetAccessorProps;
