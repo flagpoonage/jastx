@@ -15,10 +15,18 @@ test("lexical_declaration with export", () => {
 
 test("lexical_declaration with function", () => {
   const x = `const a: string = '10', x = function () { console.log('Go'); }, y: Q<S,T>`;
-  expect(stringToJastx(x).render()).toBe(`const a:string="10",x=10n,y:Q<S,T>`);
+  expect(stringToJastx(x).render()).toBe(
+    `const a:string="10",x=function (){console.log("Go");},y:Q<S,T>`
+  );
 });
 
 test("objects with get/set", () => {
   const x = `const x = { get a () { return '10'; }, set b (v: string) { this._b = v }}`;
   expect(stringToJastx(x).render()).toBe(`const a:string="10",x=10n,y:Q<S,T>`);
 });
+
+const a = {
+  get x() {
+    return this.x;
+  },
+};

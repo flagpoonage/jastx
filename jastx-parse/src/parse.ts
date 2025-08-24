@@ -18,6 +18,7 @@ import { parseExtendsTypeClause } from "./parsers/extends_type_clause.js";
 import { parseForInStatement } from "./parsers/for_in_statement.js";
 import { parseForStatement } from "./parsers/for_statement.js";
 import { parseFunctionDeclaration } from "./parsers/function_declaration.js";
+import { parseFunctionExpression } from "./parsers/function_expression.js";
 import { parseGenericType } from "./parsers/generic_type.js";
 import { parseIdentifier } from "./parsers/identifier.js";
 import { parseIfStatement } from "./parsers/if_statement.js";
@@ -224,6 +225,9 @@ export function getJastxNode(
       return parseUnionType(n);
     case "object":
       return parseObject(n);
+    case "function_expression":
+      return parseFunctionExpression(n);
+
     // These don't define any syntax in jastx, they
     // are basically grouping nodes or marking nodes
     case "import_clause":
