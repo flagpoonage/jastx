@@ -1,3 +1,4 @@
+import { createIdentifier } from "jastx/build";
 import type { SyntaxNode, TreeCursor } from "tree-sitter";
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
@@ -5,6 +6,7 @@ import type { AstNode } from "../../jastx/dist/types.js";
 import { parseArrayType } from "./parsers/array_type.js";
 import { parseArrowFunction } from "./parsers/arrow_function.js";
 import { parseAsExpression } from "./parsers/as_expression.js";
+import { parseAssignmentExpression } from "./parsers/assignment_expression.js";
 import { parseBinaryExpression } from "./parsers/binary_expression.js";
 import { parseCallExpression } from "./parsers/call_expression.js";
 import { parseConditionalType } from "./parsers/conditional_type.js";
@@ -30,6 +32,7 @@ import { parseInterfaceDeclaration } from "./parsers/interface_declaration.js";
 import { parseIntersectionType } from "./parsers/intersection_type.js";
 import { parseLexicalDeclaration } from "./parsers/lexical_declaration.js";
 import { parseMemberExpression } from "./parsers/member_expression.js";
+import { parseMethodDefinition } from "./parsers/method_definition.js";
 import { parseMethodSignature } from "./parsers/method_signature.js";
 import { parseNamedImports } from "./parsers/named_imports.js";
 import { parseNamespaceImport } from "./parsers/namespace_import.js";
@@ -230,6 +233,12 @@ export function getJastxNode(
       return parseFunctionExpression(n);
     case "spread_element":
       return parseSpreadElement(n);
+    case "method_definition":
+      return parseMethodDefinition(n);
+    case "assignment_expression":
+      return parseAssignmentExpression(n);
+    case "this":
+      return createIdentifier({ name: "this" });
 
     // These don't define any syntax in jastx, they
     // are basically grouping nodes or marking nodes

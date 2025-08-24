@@ -1,6 +1,7 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidSyntaxError } from "../errors.js";
-import { AstNode, ModifierType, TYPE_TYPES } from "../types.js";
+import type { AstNode, ModifierType } from "../types.js";
+import { TYPE_TYPES } from "../types.js";
 
 const type = "method";
 
@@ -20,9 +21,7 @@ export interface MethodNode extends AstNode {
   props: MethodProps;
 }
 
-export function isMethod(
-  node: AstNode
-): node is MethodNode {
+export function isMethod(node: AstNode): node is MethodNode {
   return node.type === type;
 }
 
@@ -33,9 +32,7 @@ export function MethodHasBody(node: MethodNode) {
   return child_array.some((a) => typeof a !== "string" && a.type === "block");
 }
 
-export function createMethod(
-  props: MethodProps
-): MethodNode {
+export function createMethod(props: MethodProps): MethodNode {
   const walker = createChildWalker(type, props);
 
   const ident = walker.spliceAssertNextOptional("ident");
@@ -50,7 +47,7 @@ export function createMethod(
 
   const type_parameters = walker.spliceAssertGroup("t:param");
 
-  let type_node = walker.spliceAssertNextOptional([
+  const type_node = walker.spliceAssertNextOptional([
     ...TYPE_TYPES,
     "t:predicate",
   ]);
@@ -77,7 +74,9 @@ export function createMethod(
     type,
     props,
     render: () =>
-      `${props.modifier ? `${props.modifier} ` : ''}${props.async ? "async " : ""}${props.generator ? "*" : ""}${
+      `${props.modifier ? `${props.modifier} ` : ""}${
+        props.async ? "async " : ""
+      }${props.generator ? "*" : ""}${
         ident ? ident.render() : ""
       }${render_parameters()}${type_node ? `:${type_node.render()}` : ""}${
         block ? block.render() : ""
