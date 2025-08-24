@@ -201,7 +201,7 @@ test("<dclr:class> renders with various property types", () => {
   );
 
   expect(v1.render()).toBe(
-    'export class Test<X> extends Base implements Root{private _x="initial_value";get x(){return this._x;};set x(value:string){this._x = value;};reset(){this._x = "";}}'
+    'export class Test<X> extends Base implements Root{private _x="initial_value";get x(){return this._x;};set x(value:string){this._x=value;};reset(){this._x="";}}'
   );
 });
 
@@ -388,6 +388,6 @@ test("<expr:class> renders with various property types", () => {
   );
 
   expect(v1.render()).toBe(
-    'class Test<X> extends Base implements Root{private _x="initial_value";get x(){return this._x;};set x(value:string){this._x = value;};reset(){this._x = "";}}'
+    'class Test<X> extends Base implements Root{private _x="initial_value";get x(){return this._x;};set x(value:string){this._x=value;};reset(){this._x="";}}'
   );
 });

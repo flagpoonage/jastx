@@ -1,6 +1,7 @@
 import { assertNChildren, assertValue } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
 
 const type = "stmt:for-in";
 
@@ -23,7 +24,7 @@ export function createForInStatement(
 ): ForInStatementNode {
   assertNChildren(type, 3, props);
 
-  const { variableType = "const" } = props;
+  const { variableType } = props;
 
   const walker = createChildWalker(type, props);
 
@@ -44,6 +45,8 @@ export function createForInStatement(
     type: type,
     props,
     render: () =>
-      `for(${variableType} ${ident.render()} in ${iterable.render()})${block.render()}`,
+      `for(${
+        variableType ? `${variableType} ` : ""
+      }${ident.render()} in ${iterable.render()})${block.render()}`,
   };
 }

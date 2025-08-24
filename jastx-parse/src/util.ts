@@ -10,8 +10,7 @@ export function listUnnamedNodes(n: SyntaxNode) {
   console.log(
     "Unnamed nodes in",
     n.type,
-    `\n`,
-    ...unnamed_nodes.map((a) => `- ${a.type}`)
+    ...unnamed_nodes.map((a) => `\n- ${a.type}`)
   );
 
   return unnamed_nodes;
@@ -19,4 +18,18 @@ export function listUnnamedNodes(n: SyntaxNode) {
 
 export function ensureArray<T>(v: T | T[]): T[] {
   return Array.isArray(v) ? v : [v];
+}
+
+export function hasUnnamedNode(n: SyntaxNode, type: string) {
+  return !!n.children.find((a) => !a.isNamed && a.type === type);
+}
+
+export function isParentOfType(n: SyntaxNode, type: string) {
+  return !!(n.parent?.type === type);
+}
+
+export function assertSingle<T>(n: T | T[]): asserts n is T {
+  if (Array.isArray(n)) {
+    throw new Error("Expected single result");
+  }
 }

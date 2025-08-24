@@ -95,6 +95,6 @@ export function createBinaryExpression(
   return {
     type,
     props,
-    render: () => `${lhs.render()} ${props.operator} ${rhs.render()}`,
+    render: () => `${lhs.render()}${props.operator}${rhs.render()}`,
   };
 }

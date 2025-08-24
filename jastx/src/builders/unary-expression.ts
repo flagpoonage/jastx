@@ -1,6 +1,7 @@
 import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, VALUE_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { VALUE_TYPES } from "../types.js";
 
 const requires_parens_types = ["arrow-function", "expr:yield_"];
 
@@ -119,5 +120,71 @@ export function createYieldExpression(
       `yield ${
         requires_parens ? `(${expression.render()})` : expression.render()
       }`,
+  };
+}
+
+const increment_type = "expr:increment";
+export interface IncrementExpressionProps {
+  children: any;
+  prefix?: boolean;
+}
+
+export interface IncrementExpressionNode extends AstNode {
+  type: typeof increment_type;
+  props: IncrementExpressionProps;
+}
+
+export function createIncrementExpression(
+  props: IncrementExpressionProps
+): IncrementExpressionNode {
+  assertNChildren(increment_type, 1, props);
+
+  const { prefix = false } = props;
+
+  const walker = createChildWalker(increment_type, props);
+  const expression = walker.spliceAssertNext([
+    "ident",
+    "expr:prop-access",
+    "expr:elem-access",
+  ]);
+
+  return {
+    type: increment_type,
+    props,
+    render: () =>
+      `${prefix ? "++" : ""}${expression.render()}${!prefix ? "++" : ""}`,
+  };
+}
+
+const decrement_type = "expr:decrement";
+export interface DecrementExpressionProps {
+  children: any;
+  prefix?: boolean;
+}
+
+export interface DecrementExpressionNode extends AstNode {
+  type: typeof decrement_type;
+  props: DecrementExpressionProps;
+}
+
+export function createDecrementExpression(
+  props: DecrementExpressionProps
+): DecrementExpressionNode {
+  assertNChildren(decrement_type, 1, props);
+
+  const { prefix = false } = props;
+
+  const walker = createChildWalker(decrement_type, props);
+  const expression = walker.spliceAssertNext([
+    "ident",
+    "expr:prop-access",
+    "expr:elem-access",
+  ]);
+
+  return {
+    type: decrement_type,
+    props,
+    render: () =>
+      `${prefix ? "--" : ""}${expression.render()}${!prefix ? "--" : ""}`,
   };
 }

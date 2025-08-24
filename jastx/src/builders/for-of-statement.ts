@@ -1,6 +1,7 @@
 import { assertNChildren, assertValue } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { EXPRESSION_TYPES, STATEMENT_TYPES } from "../types.js";
 
 const type = "stmt:for-of";
 
@@ -24,7 +25,7 @@ export function createForOfStatement(
 ): ForOfStatementNode {
   assertNChildren(type, 3, props);
 
-  const { await: _await = false, variableType = "const" } = props;
+  const { await: _await = false, variableType } = props;
 
   const walker = createChildWalker(type, props);
 
@@ -45,8 +46,8 @@ export function createForOfStatement(
     type: type,
     props,
     render: () =>
-      `for${
-        _await ? ` await` : ""
-      }(${variableType} ${ident.render()} of ${iterable.render()})${block.render()}`,
+      `for${_await ? ` await` : ""}(${
+        variableType ? `${variableType} ` : ""
+      }${ident.render()} of ${iterable.render()})${block.render()}`,
   };
 }

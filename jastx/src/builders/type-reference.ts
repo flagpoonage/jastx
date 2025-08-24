@@ -37,6 +37,9 @@ export function createTypeReference(
   return {
     type,
     props,
+    info: {
+      hasGenerics: () => type_args.length > 0,
+    },
     render: () =>
       `${ident.render()}${
         type_args.length > 0

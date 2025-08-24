@@ -184,12 +184,16 @@ import type { TypeUnionProps } from "./builders/type-union.js";
 import { createTypeUnion } from "./builders/type-union.js";
 import type {
   AwaitExpressionProps,
+  DecrementExpressionProps,
+  IncrementExpressionProps,
   NotExpressionProps,
   TypeofExpressionProps,
   YieldExpressionProps,
 } from "./builders/unary-expression.js";
 import {
   createAwaitExpression,
+  createDecrementExpression,
+  createIncrementExpression,
   createNotExpression,
   createTypeofExpression,
   createYieldExpression,
@@ -383,6 +387,10 @@ export const jsxs = <T>(
         return createBinaryExpression(options as BinaryExpressionProps);
       case "expr:class":
         return createClassExpression(options as ClassExpressionProps);
+      case "expr:increment":
+        return createIncrementExpression(options as IncrementExpressionProps);
+      case "expr:decrement":
+        return createDecrementExpression(options as DecrementExpressionProps);
 
       // Statements
       case "stmt:if":
@@ -529,6 +537,8 @@ declare global {
       ["expr:cond"]: ConditionExpressionProps;
       ["expr:binary"]: BinaryExpressionProps;
       ["expr:class"]: ClassExpressionProps;
+      ["expr:increment"]: IncrementExpressionProps;
+      ["expr:decrement"]: DecrementExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;
