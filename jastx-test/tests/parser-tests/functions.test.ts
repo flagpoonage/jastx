@@ -35,3 +35,17 @@ test("arrow-functions", () => {
     `const test=<T,K extends string="asd">(v:T,x?:T,...rest:T[]):K=>{return v as K;}`
   );
 });
+
+test("function predicate types", () => {
+  const x = `function test(a: unknown): a is string { return true; }`;
+  expect(stringToJastx(x).render()).toBe(
+    `function test(a:unknown):a is string{return true;}`
+  );
+});
+
+test("function assert predicate types", () => {
+  const x = `function test(a: unknown): asserts a is string { if (a) { return go() }; }`;
+  expect(stringToJastx(x).render()).toBe(
+    `function test(a:unknown):asserts a is string{if(a){return go();};}`
+  );
+});

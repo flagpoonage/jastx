@@ -1,4 +1,4 @@
-import { createIdentifier } from "jastx/build";
+import { createBooleanLiteral, createIdentifier } from "jastx/build";
 import type { SyntaxNode, TreeCursor } from "tree-sitter";
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
@@ -6,6 +6,7 @@ import type { AstNode } from "../../jastx/dist/types.js";
 import { parseArrayType } from "./parsers/array_type.js";
 import { parseArrowFunction } from "./parsers/arrow_function.js";
 import { parseAsExpression } from "./parsers/as_expression.js";
+import { parseAssertsAnnotation } from "./parsers/asserts_annotation.js";
 import { parseAssignmentExpression } from "./parsers/assignment_expression.js";
 import { parseBinaryExpression } from "./parsers/binary_expression.js";
 import { parseCallExpression } from "./parsers/call_expression.js";
@@ -53,6 +54,7 @@ import { parseSubscriptExpression } from "./parsers/subscript_expression.js";
 import { parseTypeAliasDeclaration } from "./parsers/type_alias_declaration.js";
 import { parseTypeIdentifier } from "./parsers/type_identifier.js";
 import { parseTypeParameter } from "./parsers/type_parameter.js";
+import { parseTypePredicateAnnotation } from "./parsers/type_predicate_annotation.js";
 import { parseUnionType } from "./parsers/union_type.js";
 import { parseUpdateExpression } from "./parsers/update_expression.js";
 import { parseVariableDeclarator } from "./parsers/variable_declarator.js";
@@ -237,8 +239,20 @@ export function getJastxNode(
       return parseMethodDefinition(n);
     case "assignment_expression":
       return parseAssignmentExpression(n);
+    case "type_predicate_annotation":
+      return parseTypePredicateAnnotation(n);
+    case "asserts_annotation":
+      return parseAssertsAnnotation(n);
+
+    case "true":
+    case "false":
+      return createBooleanLiteral({ value: n.type === "true" });
+
+    // Specifically named identifiers that are highlighted
+    // as their own syntax in tree-sitter, but mean very
+    // little to us in jastx
     case "this":
-      return createIdentifier({ name: "this" });
+      return createIdentifier({ name: n.type });
 
     // These don't define any syntax in jastx, they
     // are basically grouping nodes or marking nodes
@@ -255,11 +269,14 @@ export function getJastxNode(
     case "type_arguments":
     case "interface_body":
     case "computed_property_name":
+    case "type_predicate":
+    case "asserts":
       return passthrough;
     // These are handled internally by each parent node
     // that encounters them, so we don't consider their
     // syntax directly.
     case "optional_chain":
+    case "empty_statement":
       return [];
     default: {
       console.log(n, n.toString());
