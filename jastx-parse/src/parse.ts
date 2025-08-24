@@ -43,6 +43,7 @@ import { parseProgram } from "./parsers/program.js";
 import { parsePropertySignature } from "./parsers/property_signature.js";
 import { parseRequiredParameter } from "./parsers/required_parameter.js";
 import { parseReturnStatement } from "./parsers/return_statement.js";
+import { parseSpreadElement } from "./parsers/spread_element.js";
 import { parseStatementBlock } from "./parsers/statement_block.js";
 import { parseString } from "./parsers/string.js";
 import { parseSubscriptExpression } from "./parsers/subscript_expression.js";
@@ -227,6 +228,8 @@ export function getJastxNode(
       return parseObject(n);
     case "function_expression":
       return parseFunctionExpression(n);
+    case "spread_element":
+      return parseSpreadElement(n);
 
     // These don't define any syntax in jastx, they
     // are basically grouping nodes or marking nodes
