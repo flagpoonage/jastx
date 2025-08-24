@@ -8,6 +8,7 @@ import { parseAsExpression } from "./parsers/as_expression.js";
 import { parseBinaryExpression } from "./parsers/binary_expression.js";
 import { parseCallExpression } from "./parsers/call_expression.js";
 import { parseConditionalType } from "./parsers/conditional_type.js";
+import { parseConstructSignature } from "./parsers/construct_signature.js";
 import { parseDoStatement } from "./parsers/do_statement.js";
 import { parseExportClause } from "./parsers/export_clause.js";
 import { parseExportSpecifier } from "./parsers/export_specifier.js";
@@ -22,13 +23,18 @@ import { parseIdentifier } from "./parsers/identifier.js";
 import { parseIfStatement } from "./parsers/if_statement.js";
 import { parseImportSpecifier } from "./parsers/import_specifier.js";
 import { parseImportStatement } from "./parsers/import_statement.js";
+import { parseIndexSignature } from "./parsers/index_signature.js";
 import { parseInferType } from "./parsers/infer_type.js";
 import { parseInterfaceDeclaration } from "./parsers/interface_declaration.js";
+import { parseIntersectionType } from "./parsers/intersection_type.js";
 import { parseLexicalDeclaration } from "./parsers/lexical_declaration.js";
 import { parseMemberExpression } from "./parsers/member_expression.js";
+import { parseMethodSignature } from "./parsers/method_signature.js";
 import { parseNamedImports } from "./parsers/named_imports.js";
 import { parseNamespaceImport } from "./parsers/namespace_import.js";
 import { parseNumber } from "./parsers/number.js";
+import { parseObject } from "./parsers/object.js";
+import { parseObjectType } from "./parsers/object_type.js";
 import { parseOptionalParameter } from "./parsers/optional_parameter.js";
 import { parseParenthesizedExpression } from "./parsers/parenthesized_expression.js";
 import { parsePredefinedType } from "./parsers/predefined_type.js";
@@ -42,6 +48,7 @@ import { parseSubscriptExpression } from "./parsers/subscript_expression.js";
 import { parseTypeAliasDeclaration } from "./parsers/type_alias_declaration.js";
 import { parseTypeIdentifier } from "./parsers/type_identifier.js";
 import { parseTypeParameter } from "./parsers/type_parameter.js";
+import { parseUnionType } from "./parsers/union_type.js";
 import { parseUpdateExpression } from "./parsers/update_expression.js";
 import { parseVariableDeclarator } from "./parsers/variable_declarator.js";
 import { parseWhileStatement } from "./parsers/while_statement.js";
@@ -203,6 +210,20 @@ export function getJastxNode(
       return parsePropertySignature(n);
     case "extends_type_clause":
       return parseExtendsTypeClause();
+    case "construct_signature":
+      return parseConstructSignature(n);
+    case "method_signature":
+      return parseMethodSignature(n);
+    case "index_signature":
+      return parseIndexSignature(n);
+    case "object_type":
+      return parseObjectType(n);
+    case "intersection_type":
+      return parseIntersectionType(n);
+    case "union_type":
+      return parseUnionType(n);
+    case "object":
+      return parseObject(n);
     // These don't define any syntax in jastx, they
     // are basically grouping nodes or marking nodes
     case "import_clause":

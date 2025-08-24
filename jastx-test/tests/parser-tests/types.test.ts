@@ -57,3 +57,29 @@ test("extending interface", () => {
     `export interface X<T> extends K<T>{name:T;opt?:string;[comp]:string;}`
   );
 });
+
+test("different interface signatures", () => {
+  const x1 = `export interface X<T> extends K<T> { name: T, opt?: string; [comp]: string; new(): Q; x(): string; [K:string]: any }`;
+  expect(stringToJastx(x1).render()).toBe(
+    `export interface X<T> extends K<T>{name:T;opt?:string;[comp]:string;new():Q;x():string;[K:string]:any;}`
+  );
+});
+
+test("literal type", () => {
+  const x1 = `type T = { name: string }`;
+  expect(stringToJastx(x1).render()).toBe("type T={name:string;}");
+});
+
+test("intersection type", () => {
+  const x1 = `type T = { name: string } & { value: number }`;
+  expect(stringToJastx(x1).render()).toBe(
+    "type T={name:string;}&{value:number;}"
+  );
+});
+
+test("union type", () => {
+  const x1 = `type T = { name: string } | { value: number }`;
+  expect(stringToJastx(x1).render()).toBe(
+    "type T={name:string;}|{value:number;}"
+  );
+});
