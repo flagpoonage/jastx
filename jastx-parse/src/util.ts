@@ -33,3 +33,11 @@ export function assertSingle<T>(n: T | T[]): asserts n is T {
     throw new Error("Expected single result");
   }
 }
+
+export function markAsParsed(n: SyntaxNode) {
+  (n as SyntaxNode & { jastxParsed: boolean }).jastxParsed = true;
+}
+
+export function isMarkedAsParsed(n: SyntaxNode) {
+  return (n as SyntaxNode & { jastxParsed: boolean }).jastxParsed;
+}

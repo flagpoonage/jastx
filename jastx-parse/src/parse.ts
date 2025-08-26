@@ -10,6 +10,7 @@ import { parseAssertsAnnotation } from "./parsers/asserts_annotation.js";
 import { parseAssignmentExpression } from "./parsers/assignment_expression.js";
 import { parseBinaryExpression } from "./parsers/binary_expression.js";
 import { parseCallExpression } from "./parsers/call_expression.js";
+import { parseClassDeclaration } from "./parsers/class_declaration.js";
 import { parseConditionalType } from "./parsers/conditional_type.js";
 import { parseConstructSignature } from "./parsers/construct_signature.js";
 import { parseDoStatement } from "./parsers/do_statement.js";
@@ -45,6 +46,7 @@ import { parseParenthesizedExpression } from "./parsers/parenthesized_expression
 import { parsePredefinedType } from "./parsers/predefined_type.js";
 import { parseProgram } from "./parsers/program.js";
 import { parsePropertySignature } from "./parsers/property_signature.js";
+import { parsePublicFieldDefinition } from "./parsers/public_field_definition.js";
 import { parseRequiredParameter } from "./parsers/required_parameter.js";
 import { parseReturnStatement } from "./parsers/return_statement.js";
 import { parseSpreadElement } from "./parsers/spread_element.js";
@@ -59,7 +61,7 @@ import { parseUnionType } from "./parsers/union_type.js";
 import { parseUpdateExpression } from "./parsers/update_expression.js";
 import { parseVariableDeclarator } from "./parsers/variable_declarator.js";
 import { parseWhileStatement } from "./parsers/while_statement.js";
-import { passthrough } from "./util.js";
+import { isMarkedAsParsed, passthrough } from "./util.js";
 
 const x = new Parser();
 // @ts-expect-error The tree-sitter types are incorrect
@@ -99,7 +101,7 @@ export function parseNode(n: SyntaxNode, walker: TreeCursor) {
   let has_next_node = true;
 
   while (has_next_node) {
-    if (!walker.currentNode.isNamed) {
+    if (!walker.currentNode.isNamed || isMarkedAsParsed(walker.currentNode)) {
       // TODO: Might need these...
       has_next_node = walker.gotoNextSibling();
       continue;
@@ -243,6 +245,10 @@ export function getJastxNode(
       return parseTypePredicateAnnotation(n);
     case "asserts_annotation":
       return parseAssertsAnnotation(n);
+    case "class_declaration":
+      return parseClassDeclaration(n);
+    case "public_field_definition":
+      return parsePublicFieldDefinition(n);
 
     case "true":
     case "false":
@@ -271,6 +277,7 @@ export function getJastxNode(
     case "computed_property_name":
     case "type_predicate":
     case "asserts":
+    case "class_body":
       return passthrough;
     // These are handled internally by each parent node
     // that encounters them, so we don't consider their
