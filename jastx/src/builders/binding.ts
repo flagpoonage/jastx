@@ -1,12 +1,8 @@
 import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError, InvalidSyntaxError } from "../errors.js";
-import {
-  AstNode,
-  ElementType,
-  EXPRESSION_OR_LITERAL_TYPES,
-  VALUE_TYPES,
-} from "../types.js";
+import type { AstNode, ElementType } from "../types.js";
+import { VALUE_TYPES } from "../types.js";
 
 const array_type = "bind:array";
 

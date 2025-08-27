@@ -3,6 +3,8 @@ import type { SyntaxNode, TreeCursor } from "tree-sitter";
 import Parser from "tree-sitter";
 import ts from "tree-sitter-typescript";
 import type { AstNode } from "../../jastx/dist/types.js";
+import { parseArray } from "./parsers/array.js";
+import { parseArrayPattern } from "./parsers/array_pattern.js";
 import { parseArrayType } from "./parsers/array_type.js";
 import { parseArrowFunction } from "./parsers/arrow_function.js";
 import { parseAsExpression } from "./parsers/as_expression.js";
@@ -18,6 +20,7 @@ import { parseExportClause } from "./parsers/export_clause.js";
 import { parseExportSpecifier } from "./parsers/export_specifier.js";
 import { parseExportStatement } from "./parsers/export_statement.js";
 import { parseExpressionStatement } from "./parsers/expression_statement.js";
+import { parseExtendsClause } from "./parsers/extends_clause.js";
 import { parseExtendsTypeClause } from "./parsers/extends_type_clause.js";
 import { parseForInStatement } from "./parsers/for_in_statement.js";
 import { parseForStatement } from "./parsers/for_statement.js";
@@ -26,6 +29,7 @@ import { parseFunctionExpression } from "./parsers/function_expression.js";
 import { parseGenericType } from "./parsers/generic_type.js";
 import { parseIdentifier } from "./parsers/identifier.js";
 import { parseIfStatement } from "./parsers/if_statement.js";
+import { parseImplementsClause } from "./parsers/implements_clause.js";
 import { parseImportSpecifier } from "./parsers/import_specifier.js";
 import { parseImportStatement } from "./parsers/import_statement.js";
 import { parseIndexSignature } from "./parsers/index_signature.js";
@@ -53,6 +57,7 @@ import { parseSpreadElement } from "./parsers/spread_element.js";
 import { parseStatementBlock } from "./parsers/statement_block.js";
 import { parseString } from "./parsers/string.js";
 import { parseSubscriptExpression } from "./parsers/subscript_expression.js";
+import { parseTupleType } from "./parsers/tuple_type.js";
 import { parseTypeAliasDeclaration } from "./parsers/type_alias_declaration.js";
 import { parseTypeIdentifier } from "./parsers/type_identifier.js";
 import { parseTypeParameter } from "./parsers/type_parameter.js";
@@ -249,6 +254,16 @@ export function getJastxNode(
       return parseClassDeclaration(n);
     case "public_field_definition":
       return parsePublicFieldDefinition(n);
+    case "extends_clause":
+      return parseExtendsClause(n);
+    case "implements_clause":
+      return parseImplementsClause();
+    case "array_pattern":
+      return parseArrayPattern(n);
+    case "tuple_type":
+      return parseTupleType(n);
+    case "array":
+      return parseArray(n);
 
     case "true":
     case "false":
@@ -278,6 +293,7 @@ export function getJastxNode(
     case "type_predicate":
     case "asserts":
     case "class_body":
+    case "class_heritage":
       return passthrough;
     // These are handled internally by each parent node
     // that encounters them, so we don't consider their
