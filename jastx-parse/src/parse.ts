@@ -57,6 +57,7 @@ import { parseSpreadElement } from "./parsers/spread_element.js";
 import { parseStatementBlock } from "./parsers/statement_block.js";
 import { parseString } from "./parsers/string.js";
 import { parseSubscriptExpression } from "./parsers/subscript_expression.js";
+import { parseThrowStatement } from "./parsers/throw_statement.js";
 import { parseTupleType } from "./parsers/tuple_type.js";
 import { parseTypeAliasDeclaration } from "./parsers/type_alias_declaration.js";
 import { parseTypeIdentifier } from "./parsers/type_identifier.js";
@@ -268,6 +269,8 @@ export function getJastxNode(
     case "true":
     case "false":
       return createBooleanLiteral({ value: n.type === "true" });
+    case "throw_statement":
+      return parseThrowStatement(n);
 
     // Specifically named identifiers that are highlighted
     // as their own syntax in tree-sitter, but mean very
@@ -294,6 +297,7 @@ export function getJastxNode(
     case "asserts":
     case "class_body":
     case "class_heritage":
+    case "accessibility_modifier":
       return passthrough;
     // These are handled internally by each parent node
     // that encounters them, so we don't consider their

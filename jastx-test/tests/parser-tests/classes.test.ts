@@ -24,8 +24,8 @@ test("class declaration properties", () => {
 });
 
 test("extended class declaration", () => {
-  const x = `export class A<T, B> extends Q<T, B> implements I<B> { private readonly name: string = "test";}`;
+  const x = `export class A<T, B> extends Q<T, B> implements I<B> { private readonly name: string = "test"; get value () { return this.name } set value(v: string) { this._name = v; } protected makeSomething<T>(a: T): asserts T is string { throw new Error('test');}}`;
   expect(stringToJastx(x).render()).toBe(
-    'export class A<T,B> extends Q<T,B> implements I<B>{private readonly name:string="test"}'
+    'export class A<T,B> extends Q<T,B> implements I<B>{private readonly name:string="test";get value(){return this.name;};set value(v:string){this._name=v;}}'
   );
 });

@@ -124,6 +124,8 @@ import type { SpreadElementProps } from "./builders/spread-element.js";
 import { createSpreadElement } from "./builders/spread-element.js";
 import type { TemplateExpressionlProps } from "./builders/template-expression.js";
 import { createTemplateExpression } from "./builders/template-expression.js";
+import type { ThrowStatementProps } from "./builders/throw-statement.js";
+import { createThrowStatement } from "./builders/throw-statement.js";
 import type {
   CatchClauseProps,
   TryStatementProps,
@@ -407,6 +409,8 @@ export const jsxs = <T>(
         return createWhileStatement(options as WhileStatementProps);
       case "stmt:do-while":
         return createDoWhileStatement(options as DoWhileStatementProps);
+      case "stmt:throw":
+        return createThrowStatement(options as ThrowStatementProps);
 
       case "bind:array":
         return createArrayBinding(options as ArrayBindingProps);
@@ -515,6 +519,7 @@ declare global {
       ["stmt:for"]: ForStatementProps;
       ["stmt:while"]: WhileStatementProps;
       ["stmt:do-while"]: DoWhileStatementProps;
+      ["stmt:throw"]: ThrowStatementProps;
 
       ["expr:as"]: AsExpressionProps;
       ["expr:parens"]: ParensExpressionProps;

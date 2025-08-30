@@ -36,6 +36,7 @@ export * from "./source-file.js";
 export * from "./spread-element.js";
 export * from "./template-expression.js";
 export * from "./text-node.js";
+export * from "./throw-statement.js";
 export * from "./try-statement.js";
 export * from "./type-alias.js";
 export * from "./type-array.js";

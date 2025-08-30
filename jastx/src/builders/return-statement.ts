@@ -1,6 +1,7 @@
 import { assertMaxChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { EXPRESSION_OR_LITERAL_TYPES } from "../types.js";
 
 const type = "stmt:return";
 

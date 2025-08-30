@@ -106,6 +106,7 @@ const _statements = [
   "for",
   "while",
   "do-while",
+  "throw",
 ] as const;
 
 export type StatementElementTypeName = (typeof _statements)[number];
@@ -244,6 +245,7 @@ export const STATEMENT_TYPES: readonly StatementElementType[] = [
   "stmt:for",
   "stmt:while",
   "stmt:do-while",
+  "stmt:throw",
 ] as const;
 
 export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
