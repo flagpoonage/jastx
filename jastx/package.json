@@ -1,6 +1,6 @@
 {
   "name": "jastx",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "license": "ISC",
   "author": "",
@@ -11,6 +11,7 @@
     ".": {
       "default": "./dist/index.js"
     },
+    "./build": "./dist/builders/index.js",
     "./jsx-runtime": "./dist/jsx-runtime.js",
     "./jsx-dev-runtime": "./dist/jsx-runtime.js"
   },
@@ -19,6 +20,7 @@
     "dev": "npx tsc --watch --preserveWatchOutput"
   },
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "jastx-common": "file:///../jastx-common"
   }
 }

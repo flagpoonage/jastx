@@ -43,6 +43,8 @@ const _unary_expressions = [
   "call",
   "non-null",
   "yield_", // Reserved word
+  "increment",
+  "decrement",
 ] as const;
 
 export type UnaryExpressionTypeName = (typeof _unary_expressions)[number];
@@ -138,7 +140,7 @@ export type ElementType =
   | "namespace-import"
   | "import-attribute"
   | "heritage-clause"
-  | "heritage-ident"
+  // | "heritage-ident"
   | "spread-element"
   | "bind:array"
   | "bind:array-elem"
@@ -187,6 +189,8 @@ export const UNARY_EXPRESSION_TYPES: readonly UnaryExpressionType[] = [
   "expr:typeof",
   "expr:non-null",
   "expr:yield_",
+  "expr:decrement",
+  "expr:increment",
 ];
 
 export function isUnaryExpressionType(v: string): v is UnaryExpressionType {
@@ -252,10 +256,11 @@ export const DECLARATION_TYPES: readonly DeclarationElementType[] = [
   // "dclr:export",
 ];
 
-export const TOP_LEVEL_DECLARATION_TYPES: readonly DeclarationElementType[] = [
+export const TOP_LEVEL_DECLARATION_TYPES: readonly ElementType[] = [
   ...DECLARATION_TYPES,
   "dclr:export",
   "dclr:import",
+  "export-default",
 ];
 
 export function omitFrom(

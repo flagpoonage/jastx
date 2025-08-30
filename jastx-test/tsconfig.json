@@ -1,5 +1,12 @@
 {
-  "include": ["./tests/**/*.tsx"],
+  "include": [
+    "./tests/**/*.tsx",
+    "tests/parser-tests/loops.test.ts",
+    "tests/parser-tests/imports.test.ts",
+    "tests/parser-tests/ifs.test.ts",
+    "tests/parser-tests/exports.test.ts",
+    "tests/parser-tests/functions.test.ts"
+  ],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "jastx",
@@ -12,7 +19,8 @@
     "declarationMap": true,
     "paths": {
       "jastx": ["../jastx"],
-      "jastx/*": ["../jastx/dist/*"]
+      "jastx/*": ["../jastx/dist/*"],
+      "jastx-parse": ["../jastx-parse"]
     },
     "typeRoots": ["../node_modules/@types"]
   },

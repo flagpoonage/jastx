@@ -1,7 +1,6 @@
-import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
+import type { AstNode } from "../types.js";
 import {
-  AstNode,
   omitFrom,
   STATEMENT_TYPES,
   TOP_LEVEL_DECLARATION_TYPES,

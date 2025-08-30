@@ -58,7 +58,7 @@ test("<expr:binary renders all values correctly", () => {
           <ident name="b" />
         </expr:binary>
       ).render()
-    ).toBe(`a ${operator} b`);
+    ).toBe(`a${operator}b`);
   }
 });
 

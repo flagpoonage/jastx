@@ -1,6 +1,7 @@
 import { assertNChildren } from "../asserts.js";
 import { createChildWalker } from "../child-walker.js";
-import { AstNode, VALUE_TYPES } from "../types.js";
+import type { AstNode } from "../types.js";
+import { VALUE_TYPES } from "../types.js";
 
 const type = "export-default";
 

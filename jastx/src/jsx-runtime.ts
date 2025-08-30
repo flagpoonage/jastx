@@ -1,110 +1,72 @@
-import {
-  ArrowFunctionProps,
-  createArrowFunction,
-} from "./builders/arrow-function.js";
-import {
-  AsExpressionProps,
-  createAsExpression,
-} from "./builders/as-expression.js";
-import {
-  BinaryExpressionProps,
-  createBinaryExpression,
-} from "./builders/binary-expression.js";
-import {
+import type { ArrowFunctionProps } from "./builders/arrow-function.js";
+import { createArrowFunction } from "./builders/arrow-function.js";
+import type { AsExpressionProps } from "./builders/as-expression.js";
+import { createAsExpression } from "./builders/as-expression.js";
+import type { BinaryExpressionProps } from "./builders/binary-expression.js";
+import { createBinaryExpression } from "./builders/binary-expression.js";
+import type {
   ArrayBindingElementProps,
   ArrayBindingProps,
+  ObjectBindingElementProps,
+  ObjectBindingProps,
+} from "./builders/binding.js";
+import {
   createArrayBinding,
   createArrayBindingElement,
   createObjectBinding,
   createObjectBindingElement,
-  ObjectBindingElementProps,
-  ObjectBindingProps,
 } from "./builders/binding.js";
-import { BlockProps, createBlock } from "./builders/blocks.js";
-import {
-  CallExpressionProps,
-  createCallExpression,
-} from "./builders/call-expression.js";
-import {
-  ClassDeclarationProps,
-  createClassDeclaration,
-} from "./builders/class-declaration.js";
-import {
-  ClassExpressionProps,
-  createClassExpression,
-} from "./builders/class-expression.js";
-import {
-  ConditionExpressionProps,
-  createConditionExpression,
-} from "./builders/conditional-expression.js";
-import {
-  createDoWhileStatement,
-  DoWhileStatementProps,
-} from "./builders/do-while-statement.js";
-import {
-  createElementAccessExpression,
-  ElementAccessExpressionProps,
-} from "./builders/element-access-expression.js";
-import {
-  createExportDefault,
-  ExportDefaultProps,
-} from "./builders/export-default.js";
-import {
-  createExportDeclaration,
-  createExportSpecifier,
-  createNamedExports,
-  createNamespaceExport,
+import type { BlockProps } from "./builders/blocks.js";
+import { createBlock } from "./builders/blocks.js";
+import type { CallExpressionProps } from "./builders/call-expression.js";
+import { createCallExpression } from "./builders/call-expression.js";
+import type { ClassDeclarationProps } from "./builders/class-declaration.js";
+import { createClassDeclaration } from "./builders/class-declaration.js";
+import type { ClassExpressionProps } from "./builders/class-expression.js";
+import { createClassExpression } from "./builders/class-expression.js";
+import type { ConditionExpressionProps } from "./builders/conditional-expression.js";
+import { createConditionExpression } from "./builders/conditional-expression.js";
+import type { DoWhileStatementProps } from "./builders/do-while-statement.js";
+import { createDoWhileStatement } from "./builders/do-while-statement.js";
+import type { ElementAccessExpressionProps } from "./builders/element-access-expression.js";
+import { createElementAccessExpression } from "./builders/element-access-expression.js";
+import type { ExportDefaultProps } from "./builders/export-default.js";
+import { createExportDefault } from "./builders/export-default.js";
+import type {
   ExportDeclarationProps,
   ExportSpecifierProps,
   NamedExportsProps,
   NamespaceExportProps,
 } from "./builders/exports.js";
 import {
-  createExpressionStatement,
-  ExpressionStatementProps,
-} from "./builders/expression-statement.js";
-import { createField, FieldProps } from "./builders/field.js";
-import {
-  createForInStatement,
-  ForInStatementProps,
-} from "./builders/for-in-statement.js";
-import {
-  createForOfStatement,
-  ForOfStatementProps,
-} from "./builders/for-of-statement.js";
-import {
-  createForStatement,
-  ForStatementProps,
-} from "./builders/for-statement.js";
-import {
-  createFunctionDeclaration,
-  FunctionDeclarationProps,
-} from "./builders/function-declaration.js";
-import {
-  createFunctionExpression,
-  FunctionExpressionProps,
-} from "./builders/function-expression.js";
-import {
-  createGetAccessor,
-  GetAccessorProps,
-} from "./builders/get-accessor.js";
-import {
-  createHeritageClause,
-  createHeritageIdentifier,
-  HeritageClauseProps,
-  HeritageIdentifierProps,
-} from "./builders/heritage-clause.js";
-import { createIdentifier, IdentifierProps } from "./builders/identifier.js";
-import {
-  createIfStatement,
-  IfStatementProps,
-} from "./builders/if-statement.js";
-import {
-  createImportAttribute,
-  createImportDeclaration,
-  createImportSpecifier,
-  createNamedImports,
-  createNamespaceImport,
+  createExportDeclaration,
+  createExportSpecifier,
+  createNamedExports,
+  createNamespaceExport,
+} from "./builders/exports.js";
+import type { ExpressionStatementProps } from "./builders/expression-statement.js";
+import { createExpressionStatement } from "./builders/expression-statement.js";
+import type { FieldProps } from "./builders/field.js";
+import { createField } from "./builders/field.js";
+import type { ForInStatementProps } from "./builders/for-in-statement.js";
+import { createForInStatement } from "./builders/for-in-statement.js";
+import type { ForOfStatementProps } from "./builders/for-of-statement.js";
+import { createForOfStatement } from "./builders/for-of-statement.js";
+import type { ForStatementProps } from "./builders/for-statement.js";
+import { createForStatement } from "./builders/for-statement.js";
+import type { FunctionDeclarationProps } from "./builders/function-declaration.js";
+import { createFunctionDeclaration } from "./builders/function-declaration.js";
+import type { FunctionExpressionProps } from "./builders/function-expression.js";
+import { createFunctionExpression } from "./builders/function-expression.js";
+import type { GetAccessorProps } from "./builders/get-accessor.js";
+import { createGetAccessor } from "./builders/get-accessor.js";
+import type { HeritageClauseProps } from "./builders/heritage-clause.js";
+import { createHeritageClause } from "./builders/heritage-clause.js";
+import type { IdentifierProps } from "./builders/identifier.js";
+import { createIdentifier } from "./builders/identifier.js";
+import type { IfStatementProps } from "./builders/if-statement.js";
+import { createIfStatement } from "./builders/if-statement.js";
+import type {
   ImportAttributeProps,
   ImportDeclarationProps,
   ImportSpecifierProps,
@@ -112,145 +74,133 @@ import {
   NamespaceImportProps,
 } from "./builders/imports.js";
 import {
+  createImportAttribute,
+  createImportDeclaration,
+  createImportSpecifier,
+  createNamedImports,
+  createNamespaceImport,
+} from "./builders/imports.js";
+import type {
   ArrayLiteralProps,
   BigintLiteralProps,
   BooleanLiteralProps,
+  NumberLiteralProps,
+  RegexLiteralProps,
+  StringLiteralProps,
+} from "./builders/literals.js";
+import {
   createArrayLiteral,
   createBigintLiteral,
   createBooleanLiteral,
   createNumberLiteral,
   createRegexLiteral,
   createStringLiteral,
-  NumberLiteralProps,
-  RegexLiteralProps,
-  StringLiteralProps,
 } from "./builders/literals.js";
-import { createMethod, MethodProps } from "./builders/method.js";
-import {
-  createNonNullExpression,
-  NonNullExpressionProps,
-} from "./builders/non-null-expression.js";
-import {
-  createObjectLiteral,
-  createProperty,
+import type { MethodProps } from "./builders/method.js";
+import { createMethod } from "./builders/method.js";
+import type { NonNullExpressionProps } from "./builders/non-null-expression.js";
+import { createNonNullExpression } from "./builders/non-null-expression.js";
+import type {
   ObjectLiteralProps,
   PropertyProps,
 } from "./builders/object-literal.js";
-import { createParameter, ParameterProps } from "./builders/parameter.js";
 import {
-  createParensExpression,
-  ParensExpressionProps,
-} from "./builders/parens-expressions.js";
-import {
-  createPropertyAccessExpression,
-  PropertyAccessExpressionProps,
-} from "./builders/property-access-expression.js";
-import {
-  createReturnStatement,
-  ReturnStatementProps,
-} from "./builders/return-statement.js";
-import {
-  createSetAccessor,
-  SetAccessorProps,
-} from "./builders/set-accessor.js";
-import { createSourceFile, SourceFileProps } from "./builders/source-file.js";
-import {
-  createSpreadElement,
-  SpreadElementProps,
-} from "./builders/spread-element.js";
-import {
-  createTemplateExpression,
-  TemplateExpressionlProps,
-} from "./builders/template-expression.js";
-import {
+  createObjectLiteral,
+  createProperty,
+} from "./builders/object-literal.js";
+import type { ParameterProps } from "./builders/parameter.js";
+import { createParameter } from "./builders/parameter.js";
+import type { ParensExpressionProps } from "./builders/parens-expressions.js";
+import { createParensExpression } from "./builders/parens-expressions.js";
+import type { PropertyAccessExpressionProps } from "./builders/property-access-expression.js";
+import { createPropertyAccessExpression } from "./builders/property-access-expression.js";
+import type { ReturnStatementProps } from "./builders/return-statement.js";
+import { createReturnStatement } from "./builders/return-statement.js";
+import type { SetAccessorProps } from "./builders/set-accessor.js";
+import { createSetAccessor } from "./builders/set-accessor.js";
+import type { SourceFileProps } from "./builders/source-file.js";
+import { createSourceFile } from "./builders/source-file.js";
+import type { SpreadElementProps } from "./builders/spread-element.js";
+import { createSpreadElement } from "./builders/spread-element.js";
+import type { TemplateExpressionlProps } from "./builders/template-expression.js";
+import { createTemplateExpression } from "./builders/template-expression.js";
+import type {
   CatchClauseProps,
-  createCatchClause,
-  createTryStatement,
   TryStatementProps,
 } from "./builders/try-statement.js";
-import { createTypeAlias, TypeAliasProps } from "./builders/type-alias.js";
-import { createTypeArray, TypeArrayProps } from "./builders/type-array.js";
 import {
-  createTypeConditional,
-  TypeConditionalProps,
-} from "./builders/type-conditional.js";
-import {
-  createTypeFunction,
-  TypeFunctionProps,
-} from "./builders/type-function.js";
-import {
-  createTypeIndexed,
-  TypeIndexedProps,
-} from "./builders/type-indexed.js";
-import { createTypeInfer, TypeInferProps } from "./builders/type-infer.js";
-import {
-  createTypeInterface,
-  TypeInterfaceProps,
-} from "./builders/type-interface.js";
-import {
-  createTypeIntersection,
-  TypeIntersectionProps,
-} from "./builders/type-intersection.js";
-import {
-  createTypeLiteral,
-  TypeLiteralProps,
-} from "./builders/type-literal.js";
-import {
-  createTypeParameter,
-  TypeParameterProps,
-} from "./builders/type-parameter.js";
-import {
-  createTypePredicate,
-  TypePredicateProps,
-} from "./builders/type-predicate.js";
-import {
-  createTypePrimitive,
-  TypePrimitiveProps,
-} from "./builders/type-primitive.js";
-import { createTypeQuery, TypeQueryProps } from "./builders/type-query.js";
-import {
-  createTypeReference,
-  TypeReferenceProps,
-} from "./builders/type-reference.js";
-import {
+  createCatchClause,
+  createTryStatement,
+} from "./builders/try-statement.js";
+import type { TypeAliasProps } from "./builders/type-alias.js";
+import { createTypeAlias } from "./builders/type-alias.js";
+import type { TypeArrayProps } from "./builders/type-array.js";
+import { createTypeArray } from "./builders/type-array.js";
+import type { TypeConditionalProps } from "./builders/type-conditional.js";
+import { createTypeConditional } from "./builders/type-conditional.js";
+import type { TypeFunctionProps } from "./builders/type-function.js";
+import { createTypeFunction } from "./builders/type-function.js";
+import type { TypeIndexedProps } from "./builders/type-indexed.js";
+import { createTypeIndexed } from "./builders/type-indexed.js";
+import type { TypeInferProps } from "./builders/type-infer.js";
+import { createTypeInfer } from "./builders/type-infer.js";
+import type { TypeInterfaceProps } from "./builders/type-interface.js";
+import { createTypeInterface } from "./builders/type-interface.js";
+import type { TypeIntersectionProps } from "./builders/type-intersection.js";
+import { createTypeIntersection } from "./builders/type-intersection.js";
+import type { TypeLiteralProps } from "./builders/type-literal.js";
+import { createTypeLiteral } from "./builders/type-literal.js";
+import type { TypeParameterProps } from "./builders/type-parameter.js";
+import { createTypeParameter } from "./builders/type-parameter.js";
+import type { TypePredicateProps } from "./builders/type-predicate.js";
+import { createTypePredicate } from "./builders/type-predicate.js";
+import type { TypePrimitiveProps } from "./builders/type-primitive.js";
+import { createTypePrimitive } from "./builders/type-primitive.js";
+import type { TypeQueryProps } from "./builders/type-query.js";
+import { createTypeQuery } from "./builders/type-query.js";
+import type { TypeReferenceProps } from "./builders/type-reference.js";
+import { createTypeReference } from "./builders/type-reference.js";
+import type {
   ConstructSignatureProps,
-  createConstructSignature,
-  createIndexSignature,
-  createMethodSignature,
-  createPropertySignature,
   IndexSignatureProps,
   MethodSignatureProps,
   PropertySignatureProps,
 } from "./builders/type-signatures.js";
-import { createTypeTuple, TypeTupleProps } from "./builders/type-tuple.js";
-import { createTypeUnion, TypeUnionProps } from "./builders/type-union.js";
 import {
+  createConstructSignature,
+  createIndexSignature,
+  createMethodSignature,
+  createPropertySignature,
+} from "./builders/type-signatures.js";
+import type { TypeTupleProps } from "./builders/type-tuple.js";
+import { createTypeTuple } from "./builders/type-tuple.js";
+import type { TypeUnionProps } from "./builders/type-union.js";
+import { createTypeUnion } from "./builders/type-union.js";
+import type {
   AwaitExpressionProps,
-  createAwaitExpression,
-  createNotExpression,
-  createTypeofExpression,
-  createYieldExpression,
+  DecrementExpressionProps,
+  IncrementExpressionProps,
   NotExpressionProps,
   TypeofExpressionProps,
   YieldExpressionProps,
 } from "./builders/unary-expression.js";
 import {
-  createVariableDeclarationList,
-  VariableDeclarationListProps,
-} from "./builders/variable-declaration-list.js";
-import {
-  createVariableDeclaration,
-  VariableDeclarationProps,
-} from "./builders/variable-declaration.js";
-import {
-  createVariableStatement,
-  VariableStatementProps,
-} from "./builders/variable-statement.js";
-import {
-  createWhileStatement,
-  WhileStatementProps,
-} from "./builders/while-statement.js";
-import {
+  createAwaitExpression,
+  createDecrementExpression,
+  createIncrementExpression,
+  createNotExpression,
+  createTypeofExpression,
+  createYieldExpression,
+} from "./builders/unary-expression.js";
+import type { VariableDeclarationListProps } from "./builders/variable-declaration-list.js";
+import { createVariableDeclarationList } from "./builders/variable-declaration-list.js";
+import type { VariableDeclarationProps } from "./builders/variable-declaration.js";
+import { createVariableDeclaration } from "./builders/variable-declaration.js";
+import type { VariableStatementProps } from "./builders/variable-statement.js";
+import { createVariableStatement } from "./builders/variable-statement.js";
+import type { WhileStatementProps } from "./builders/while-statement.js";
+import { createWhileStatement } from "./builders/while-statement.js";
+import type {
   AstNode,
   ElementType,
   JSXCreationInterface,
@@ -298,8 +248,8 @@ export const jsxs = <T>(
         return createExportDefault(options as ExportDefaultProps);
       case "heritage-clause":
         return createHeritageClause(options as HeritageClauseProps);
-      case "heritage-ident":
-        return createHeritageIdentifier(options as HeritageIdentifierProps);
+      // case "heritage-ident":
+      //   return createHeritageIdentifier(options as HeritageIdentifierProps);
       case "property":
         return createProperty(options as PropertyProps);
       case "get-accessor":
@@ -431,6 +381,10 @@ export const jsxs = <T>(
         return createBinaryExpression(options as BinaryExpressionProps);
       case "expr:class":
         return createClassExpression(options as ClassExpressionProps);
+      case "expr:increment":
+        return createIncrementExpression(options as IncrementExpressionProps);
+      case "expr:decrement":
+        return createDecrementExpression(options as DecrementExpressionProps);
 
       // Statements
       case "stmt:if":
@@ -532,7 +486,7 @@ declare global {
       ["export-specifier"]: ExportSpecifierProps;
       ["export-default"]: ExportDefaultProps;
       ["heritage-clause"]: HeritageClauseProps;
-      ["heritage-ident"]: HeritageIdentifierProps;
+      // ["heritage-ident"]: HeritageIdentifierProps;
       ["property"]: PropertyProps;
       ["get-accessor"]: GetAccessorProps;
       ["set-accessor"]: SetAccessorProps;
@@ -577,6 +531,8 @@ declare global {
       ["expr:cond"]: ConditionExpressionProps;
       ["expr:binary"]: BinaryExpressionProps;
       ["expr:class"]: ClassExpressionProps;
+      ["expr:increment"]: IncrementExpressionProps;
+      ["expr:decrement"]: DecrementExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;

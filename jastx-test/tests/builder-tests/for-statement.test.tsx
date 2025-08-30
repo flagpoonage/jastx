@@ -41,7 +41,7 @@ test("<stmt:for> renders correctly with initializer", () => {
   expect(v2.render()).toBe(`for(let i=0,x;;){}`);
 });
 
-test("<stmt:for-in> renders correctly with a condition", () => {
+test("<stmt:for> renders correctly with a condition", () => {
   const v1 = (
     <stmt:for>
       <dclr:var-list type="let">
@@ -60,7 +60,7 @@ test("<stmt:for-in> renders correctly with a condition", () => {
   expect(v1.render()).toBe(`for(let i=0;shouldContinue();){}`);
 });
 
-test("<stmt:for-in> renders incrementer correctly without a condition", () => {
+test("<stmt:for> renders incrementer correctly without a condition", () => {
   const v1 = (
     <stmt:for noCondition={true}>
       <dclr:var-list type="let">
@@ -69,14 +69,14 @@ test("<stmt:for-in> renders incrementer correctly without a condition", () => {
           <l:number value={0} />
         </dclr:var>
       </dclr:var-list>
-      <expr:call>
-        <ident name="incrementer" />
-      </expr:call>
+      <expr:increment>
+        <ident name="i" />
+      </expr:increment>
       <block />
     </stmt:for>
   );
 
-  expect(v1.render()).toBe(`for(let i=0;;incrementer()){}`);
+  expect(v1.render()).toBe(`for(let i=0;;i++){}`);
 });
 
 test("<stmt:for-in> renders vars, incrementer and condition", () => {

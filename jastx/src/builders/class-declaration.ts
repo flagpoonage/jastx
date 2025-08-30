@@ -1,6 +1,6 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError, InvalidSyntaxError } from "../errors.js";
-import { AstNode } from "../types.js";
+import type { AstNode } from "../types.js";
 
 const type = "dclr:class";
 

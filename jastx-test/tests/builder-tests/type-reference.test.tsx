@@ -52,18 +52,17 @@ test("t:ref renders with literal type generics", () => {
   expect(v.render()).toBe("X<{name:string;}>");
 });
 
-test.skip("t:ref renders with tuple type generics", () => {
-  // TODO: Tuple type is basically a type array like
-  // [string, number];
-  // They also support being inside a parent "Type Operator" which
-  // allows a readonly flag:
-  // readonly [string, number];
-  //
-  // const v = (
-  //   <t:ref>
-  //   </t:ref>
-  // );
-  // expect(v.render()).toBe("X<[string, number]>");
+test("t:ref renders with tuple type generics", () => {
+  const v = (
+    <t:ref>
+      <ident name="X" />
+      <t:tuple>
+        <t:primitive type="string" />
+        <t:primitive type="number" />
+      </t:tuple>
+    </t:ref>
+  );
+  expect(v.render()).toBe("X<[string,number]>");
 });
 
 test("t:ref renders with indexed types", () => {

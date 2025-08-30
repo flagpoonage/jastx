@@ -9,7 +9,7 @@ test("<stmt:for-of> renders correctly with defaults", () => {
     </stmt:for-of>
   );
 
-  expect(v.render()).toBe(`for(const a of b){}`);
+  expect(v.render()).toBe(`for(a of b){}`);
 });
 
 test("<stmt:for-of> renders correctly with await", () => {
@@ -21,10 +21,20 @@ test("<stmt:for-of> renders correctly with await", () => {
     </stmt:for-of>
   );
 
-  expect(v.render()).toBe(`for await(const a of b){}`);
+  expect(v.render()).toBe(`for await(a of b){}`);
 });
 
 test("<stmt:for-of> renders correctly with other variable kinds", () => {
+  const v = (
+    <stmt:for-of variableType="const">
+      <ident name="a" />
+      <ident name="b" />
+      <block />
+    </stmt:for-of>
+  );
+
+  expect(v.render()).toBe(`for(const a of b){}`);
+
   const v1 = (
     <stmt:for-of variableType="let">
       <ident name="a" />

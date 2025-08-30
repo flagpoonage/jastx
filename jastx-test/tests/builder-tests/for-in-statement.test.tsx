@@ -9,10 +9,20 @@ test("<stmt:for-in> renders correctly with defaults", () => {
     </stmt:for-in>
   );
 
-  expect(v.render()).toBe(`for(const a in b){}`);
+  expect(v.render()).toBe(`for(a in b){}`);
 });
 
 test("<stmt:for-in> renders correctly with other variable kinds", () => {
+  const v = (
+    <stmt:for-in variableType="const">
+      <ident name="a" />
+      <ident name="b" />
+      <block />
+    </stmt:for-in>
+  );
+
+  expect(v.render()).toBe(`for(const a in b){}`);
+
   const v1 = (
     <stmt:for-in variableType="let">
       <ident name="a" />

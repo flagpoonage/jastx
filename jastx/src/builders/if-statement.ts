@@ -1,8 +1,7 @@
 import { createChildWalker } from "../child-walker.js";
 import { InvalidChildrenError } from "../errors.js";
+import type { AstNode, ElementType } from "../types.js";
 import {
-  AstNode,
-  ElementType,
   EXPRESSION_OR_LITERAL_TYPES,
   omitFrom,
   STATEMENT_TYPES,
