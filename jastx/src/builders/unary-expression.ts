@@ -188,3 +188,32 @@ export function createDecrementExpression(
       `${prefix ? "--" : ""}${expression.render()}${!prefix ? "--" : ""}`,
   };
 }
+
+const new_type = "expr:new";
+export interface NewExpressionProps {
+  children: any;
+}
+
+export interface NewExpressionNode extends AstNode {
+  type: typeof new_type;
+  props: NewExpressionProps;
+}
+
+export function createNewExpression(
+  props: NewExpressionProps
+): NewExpressionNode {
+  assertNChildren(new_type, 1, props);
+
+  const walker = createChildWalker(new_type, props);
+  const expression = walker.spliceAssertNext([...VALUE_TYPES]);
+  const requires_parens = requires_parens_types.includes(expression.type);
+
+  return {
+    type: new_type,
+    props,
+    render: () =>
+      `new ${
+        requires_parens ? `(${expression.render()})` : expression.render()
+      }`,
+  };
+}

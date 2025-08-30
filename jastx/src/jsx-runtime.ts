@@ -182,6 +182,7 @@ import type {
   AwaitExpressionProps,
   DecrementExpressionProps,
   IncrementExpressionProps,
+  NewExpressionProps,
   NotExpressionProps,
   TypeofExpressionProps,
   YieldExpressionProps,
@@ -190,6 +191,7 @@ import {
   createAwaitExpression,
   createDecrementExpression,
   createIncrementExpression,
+  createNewExpression,
   createNotExpression,
   createTypeofExpression,
   createYieldExpression,
@@ -387,6 +389,8 @@ export const jsxs = <T>(
         return createIncrementExpression(options as IncrementExpressionProps);
       case "expr:decrement":
         return createDecrementExpression(options as DecrementExpressionProps);
+      case "expr:new":
+        return createNewExpression(options as NewExpressionProps);
 
       // Statements
       case "stmt:if":
@@ -538,6 +542,7 @@ declare global {
       ["expr:class"]: ClassExpressionProps;
       ["expr:increment"]: IncrementExpressionProps;
       ["expr:decrement"]: DecrementExpressionProps;
+      ["expr:new"]: NewExpressionProps;
 
       ["bind:array"]: ArrayBindingProps;
       ["bind:object"]: ObjectBindingProps;

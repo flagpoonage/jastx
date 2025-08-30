@@ -102,3 +102,15 @@ test("expr:typeof renders parenthesis where required", () => {
 
   expect(v.render()).toBe("typeof (()=>x)");
 });
+
+test("expr:new renders correctly", () => {
+  const v = (
+    <expr:new>
+      <expr:call>
+        <ident name="X" />
+      </expr:call>
+    </expr:new>
+  );
+
+  expect(v.render()).toBe("new X()");
+});

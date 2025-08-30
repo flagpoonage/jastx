@@ -43,6 +43,7 @@ const _unary_expressions = [
   "call",
   "non-null",
   "yield_", // Reserved word
+  "new",
   "increment",
   "decrement",
 ] as const;
@@ -192,6 +193,7 @@ export const UNARY_EXPRESSION_TYPES: readonly UnaryExpressionType[] = [
   "expr:yield_",
   "expr:decrement",
   "expr:increment",
+  "expr:new",
 ];
 
 export function isUnaryExpressionType(v: string): v is UnaryExpressionType {

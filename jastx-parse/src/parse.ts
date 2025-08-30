@@ -42,6 +42,7 @@ import { parseMethodDefinition } from "./parsers/method_definition.js";
 import { parseMethodSignature } from "./parsers/method_signature.js";
 import { parseNamedImports } from "./parsers/named_imports.js";
 import { parseNamespaceImport } from "./parsers/namespace_import.js";
+import { parseNewExpression } from "./parsers/new_expression.js";
 import { parseNumber } from "./parsers/number.js";
 import { parseObject } from "./parsers/object.js";
 import { parseObjectType } from "./parsers/object_type.js";
@@ -265,6 +266,8 @@ export function getJastxNode(
       return parseTupleType(n);
     case "array":
       return parseArray(n);
+    case "new_expression":
+      return parseNewExpression(n);
 
     case "true":
     case "false":
